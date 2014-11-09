@@ -4,9 +4,11 @@
  * @author jokvedaras
  *
  */
-public class AirportController {
-	public static void main(String[] args){
-		
+public class AirportController 
+{
+	public static void main(String[] args)
+	{
+		//Accept list of list of PDFS
 		
 	}
 }
