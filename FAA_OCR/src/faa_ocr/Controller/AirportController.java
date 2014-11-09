@@ -5,5 +5,8 @@
  *
  */
 public class AirportController {
-	
+	public static void main(String[] args){
+		
+		
+	}
 }
