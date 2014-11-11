@@ -11,5 +11,10 @@ package faa_ocr.ADTs;
  * @author g_ric_000
  */
 public class Airport {
+    private String name;
+    private String location;
+    private String abbreviation;
+    private String pdf_file_path;
+    private float variation 
     
 }
