@@ -57,7 +57,7 @@ public class AirportController
 		AirportDataParser.parseTextData(airport);
 		
 		//get visual data from PDF
-		ImageDataParser.parseVisualData(airport);
+		PDFToImage.parseVisualData(airport);
 		
 		//turn Airport into an XML and save path to XML
 		String path_to_xml = XMLParser.writeXML(airport);
