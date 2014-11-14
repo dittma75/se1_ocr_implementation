@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author Joe Kvedaras
  *
  */
-public class ArguementParser 
+public class ArgumentParser 
 {
 	
 //	/**
