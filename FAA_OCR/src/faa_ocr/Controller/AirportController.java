@@ -34,13 +34,19 @@ public class AirportController
 		System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
 	}
 	
-	
+	/**
+	 * Control all behaviors of an airport
+	 */
 	public AirportController()
 	{
 		//initialize AirportController object
 		//TODO: may choose to hold instances of all the objects so we don't have to create them again for every pdf file.
 	}
 	
+	/**
+	 * Create an airport and gather all information from the PDF
+	 * @param path
+	 */
 	//only classes in same package can call getInformationFromPDF
 	private void getInformationFromPDF(String path)
 	{
@@ -48,13 +54,13 @@ public class AirportController
 		Airport airport = new Airport(path);
 		
 		//get textual data from PDF
-		parseTextData(airport);
+		AirportDataParser.parseTextData(airport);
 		
 		//get visual data from PDF
-		parseVisualData(airport);
+		ImageDataParser.parseVisualData(airport);
 		
 		//turn Airport into an XML and save path to XML
-		String path_to_xml = XXMLParser.writeXML(airport);
+		String path_to_xml = XMLParser.writeXML(airport);
 		
 		//turn xml file into a kml file.
 		//TODO: Strings or Files from xml???
@@ -65,6 +71,12 @@ public class AirportController
 		
 	}
 	
+	/**
+	 * Print results from xml and kml
+	 * @param airport
+	 * @param path_to_xml
+	 * @param path_to_kml
+	 */
 	private void printResults(Airport airport, String path_to_xml, String path_to_kml)
 	{
 		System.out.println();
