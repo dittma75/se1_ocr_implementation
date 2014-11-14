@@ -86,26 +86,4 @@ public class AirportController
 		System.out.println();
 	}
 	
-	
-//	private String writeKML(File xml_file)
-//	{
-//		return KMLParser.writeKML(xml_file);
-//	}
-//	
-//	private String writeXML(Airport airport)
-//	{
-//		return XMLParser.writeXML(airport);
-//	}
-//	
-//	
-//	private void parseVisualData(Airport airport)
-//	{
-//		
-//	}
-//	
-//	private void parseTextData(Airport airport)
-//	{
-//		
-//	}
-	
 }
