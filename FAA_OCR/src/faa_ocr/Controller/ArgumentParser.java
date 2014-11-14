@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Files;
 
 
-public class ArguementParser 
+public class ArgumentParser 
 {
 	
 	/**
@@ -37,19 +37,19 @@ public class ArguementParser
 	 */
 	public static boolean parseArguement(String path)
 	{
-			File file = new File(path);
-			if(file.exists())
-			{
-				if(Files.probeContentType(file.toPath()).equals("pdf"))
-				{
-					//TODO: How do we want to handle good/bad pdf files?
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
+                    File file = new File(path);
+                    if(file.exists())
+                    {
+                            if(Files.probeContentType(file.toPath()).equals("pdf"))
+                            {
+                                    //TODO: How do we want to handle good/bad pdf files?
+                                    return true;
+                            }
+                            else
+                            {
+                                    return false;
+                            }
+                    }
 	}
 	
 }

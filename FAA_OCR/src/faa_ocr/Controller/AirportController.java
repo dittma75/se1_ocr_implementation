@@ -1,4 +1,4 @@
-import faa_ocr.Controller.ArguementParser;
+import faa_ocr.Controller.ArgumentParser;
 
 
 
@@ -13,7 +13,7 @@ public class AirportController
 	{
 		//Accept list of list of PDFS
 		for(String arg : args){
-			if(ArguementParser.parseArguement(arg))
+			if(ArgumentParser.parseArguement(arg))
 			{
 				//do everything to pdf document
 			}
