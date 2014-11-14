@@ -15,6 +15,6 @@ public class Airport {
     private String location;
     private String abbreviation;
     private String pdf_file_path;
-    private float variation 
+    private float variation; 
     
 }
