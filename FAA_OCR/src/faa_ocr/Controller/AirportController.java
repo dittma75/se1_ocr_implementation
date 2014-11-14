@@ -3,7 +3,7 @@ package faa_ocr.Controller;
 import java.io.File;
 
 import faa_ocr.ADTs.Airport;
-import faa_ocr.Controller.ArguementParser;
+import faa_ocr.Controller.ArgumentParser;
 
 
 /**
@@ -20,7 +20,7 @@ public class AirportController
 		
 		//Accept list of list of PDFS
 		for(String arg : args){
-			if(ArguementParser.parseArguement(arg))
+			if(ArgumentParser.parseArgument(arg))
 			{
 				//are we going to pass airports around 1 at a time as we see that the path is valid?
 				// or are we going to check everything, then call all the airports?
@@ -32,7 +32,7 @@ public class AirportController
 				System.out.println(arg + " is not a valid PDF");
 			}
 		}
-		System.out.println(ArguementParser.parseArguement("./res/ACY/00669AD.PDF"));
+		System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
 	}
 	
 	

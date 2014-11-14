@@ -42,7 +42,7 @@ public class ArgumentParser
 	 * @return true if path is valid and it is a .pdf, false otherwise
 	 * @throws IOException 
 	 */
-	public static boolean parseArguement(String pdf_file_path)
+	public static boolean parseArgument(String pdf_file_path)
 	{
 			File file = new File(pdf_file_path);
 			if(file.exists())
