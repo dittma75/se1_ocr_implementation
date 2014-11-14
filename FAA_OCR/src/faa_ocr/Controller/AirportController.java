@@ -1,9 +1,8 @@
 package faa_ocr.Controller;
 
-import java.io.File;
-
-import faa_ocr.ADTs.Airport;
 import faa_ocr.Controller.ArgumentParser;
+import java.io.File;
+import faa_ocr.ADTs.Airport;
 
 
 /**
