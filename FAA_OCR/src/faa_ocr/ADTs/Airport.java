@@ -11,10 +11,64 @@ package faa_ocr.ADTs;
  * @author g_ric_000
  */
 public class Airport {
+    private final String pdf_file_path;
     private String name;
     private String location;
     private String abbreviation;
-    private String pdf_file_path;
-    private float variation; 
+    private float variation;
     
+    public Airport (String pdf_file_path)
+    {
+        this.pdf_file_path = pdf_file_path;
+    }
+    
+    public String getPath()
+    {
+        return pdf_file_path;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
+    public String getLocation()
+    {
+        return location;
+    }
+    
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
+    
+    public String getAbbreviation()
+    {
+        return abbreviation;
+    }
+    
+    public void setAbbreviation(String abbreviation)
+    {
+        this.abbreviation = abbreviation;
+    }
+    
+    public float getVariation()
+    {
+        return variation;
+    }
+    
+    public void setVariation(float variation)
+    {
+        this.variation = variation;
+    }
+    
+    public String toString()
+    {
+        return name;
+    }
 }

@@ -10,8 +10,8 @@ package faa_ocr.ADTs;
  * @author g_ric_000
  */
 public class Node {
-    private float longitude;
-    private float latitude;
+    private final float longitude;
+    private final float latitude;
     
     public Node(float longi, float lat)
     {

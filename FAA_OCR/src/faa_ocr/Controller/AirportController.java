@@ -56,7 +56,7 @@ public class AirportController
 		AirportDataParser.parseTextData(airport);
 		
 		//get visual data from PDF
-		ImageDataParser.parseVisualData(airport);
+		PDFToImage.parseVisualData(airport);
 		
 		//turn Airport into an XML and save path to XML
 		String path_to_xml = XMLParser.writeXML(airport);
@@ -84,27 +84,5 @@ public class AirportController
 		System.out.println("Path to KML: " + path_to_kml);
 		System.out.println();
 	}
-	
-	
-//	private String writeKML(File xml_file)
-//	{
-//		return KMLParser.writeKML(xml_file);
-//	}
-//	
-//	private String writeXML(Airport airport)
-//	{
-//		return XMLParser.writeXML(airport);
-//	}
-//	
-//	
-//	private void parseVisualData(Airport airport)
-//	{
-//		
-//	}
-//	
-//	private void parseTextData(Airport airport)
-//	{
-//		
-//	}
 	
 }
