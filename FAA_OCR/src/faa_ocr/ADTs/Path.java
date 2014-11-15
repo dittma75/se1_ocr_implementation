@@ -37,6 +37,7 @@ public class Path {
         intersections.add(newNode);
     }
     
+    @Override
     public String toString()
     {
         String pathString = (name + "/n" + "Path: ");

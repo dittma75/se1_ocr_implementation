@@ -5,10 +5,24 @@
  */
 package faa_ocr.ADTs;
 
+import java.util.*;
+
 /**
  *
  * @author g_ric_000
  */
-public class Taxiway {
+public class Taxiway extends Path
+{
+
+    /**
+     *
+     * @param name
+     */
+    public Taxiway(String name)
+    {
+        this.name = name;
+        paths = new ArrayList<Node>();
+        intersections = new ArrayList<Node>();
+    }
     
 }
