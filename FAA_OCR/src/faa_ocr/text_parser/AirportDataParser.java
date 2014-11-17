@@ -4,7 +4,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
- *
+ * The AirportDataParser extracts airport-specific information from the
+ * airport diagram and puts it in the appropriate fields of an Airport object.
  * @author Kevin Dittmar
  */
 public class AirportDataParser
@@ -31,11 +32,21 @@ public class AirportDataParser
             "([A-Z ]+, [A-Z ]+)"
     );
     
+    /**
+     * No initialization is necessary for the constructor.
+     */
     public AirportDataParser()
     {
 
     }
     
+    /**
+     * Parse the airport-specific data from the airport diagram.
+     * @param formatted_string is the String representation of the airport
+     * diagram to be analyzed.
+     * @param airport is the Airport that will be given the extracted
+     * information.
+     */
     public void parseAirportData(String formatted_string, Airport airport)
     {
         Scanner scanner = new Scanner(formatted_string);
@@ -86,6 +97,12 @@ public class AirportDataParser
         }
     }
     
+    /**
+     * See if the variation field is included in this line and return it.
+     * @param line is the line to check for the variation field.
+     * @return the String representation of the variation value, or the empty
+     * String if it is not found.
+     */
     private String searchForVariation(String line)
     {
         Matcher var_matcher = VARIATION_PATTERN.matcher(line);
@@ -98,6 +115,12 @@ public class AirportDataParser
         return "";
     }
     
+    /**
+     * See if the airport abbreviation code is included in this line and return
+     * it.
+     * @param line the line to be checked for the airport abbreviation.
+     * @return the airport abbreviation or the empty String if it isn't found.
+     */
     private String searchForAirportAbbreviation(String line)
     {
         Matcher abbrev_matcher = ABBREVIATION_PATTERN.matcher(line);
@@ -110,6 +133,11 @@ public class AirportDataParser
         return "";
     }
     
+    /**
+     * Look for the airport location in this line and return it if found.
+     * @param line the line to be checked for the airport location.
+     * @return the airport location or the empty String if it isn't found.
+     */
     private String searchForAirportLocation(String line)
     {
         Matcher loc_matcher = LOCATION_PATTERN.matcher(line);
