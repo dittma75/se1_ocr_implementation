@@ -19,11 +19,9 @@ public class Runway extends Path
     
     public Runway(int elevation, float heading, String name)
     {
+        super(name);
         this.elevation = elevation;
         this.heading = heading;
-        this.name = name;
-        paths = new ArrayList<Node>();
-        intersections = new ArrayList<Node>();
     }
     
     public int getElevation()
@@ -48,12 +46,12 @@ public class Runway extends Path
     
     public boolean hasThreshold()
     {
-        return threshold == null;
+        return threshold != null;
     }
     
     public String toString()
     {
-        return heading;
+        return "" + heading;
     }
     
 }

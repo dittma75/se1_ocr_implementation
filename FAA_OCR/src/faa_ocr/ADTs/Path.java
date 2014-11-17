@@ -11,17 +11,18 @@ import java.util.*;
  *
  * @author g_ric_000
  */
-public class Path {
+public abstract class Path {
     String name;
     private ArrayList<Node> paths;
     ArrayList<Node> intersections;
     
     public Path(String name)
-            {
-                this.name = name;
-                paths = new ArrayList<Node>();
-                intersections = new ArrayList<Node>();
-            }
+    {
+        this.name = name;
+        paths = new ArrayList<Node>();
+        intersections = new ArrayList<Node>();
+    }
+    
     public String getName()
     {
         return name;   

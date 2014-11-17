@@ -20,9 +20,7 @@ public class Taxiway extends Path
      */
     public Taxiway(String name)
     {
-        this.name = name;
-        paths = new ArrayList<Node>();
-        intersections = new ArrayList<Node>();
+        super(name);
     }
     
 }
