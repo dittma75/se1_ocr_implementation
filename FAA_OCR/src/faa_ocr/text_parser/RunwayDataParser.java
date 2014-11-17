@@ -6,7 +6,7 @@ import faa_ocr.ADTs.*;
  */
 public class RunwayDataParser
 {
-    public RunwayDataParser(String formatted_string, Airport airport)
+    public RunwayDataParser()
     {
         
     }

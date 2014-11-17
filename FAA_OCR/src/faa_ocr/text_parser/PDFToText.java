@@ -2,6 +2,7 @@ package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
 import java.io.IOException;
 import static java.lang.Runtime.getRuntime;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -27,7 +28,26 @@ public class PDFToText
      */
     public void parseTextData(Airport airport)
     {
+        //Get the airport diagram PDF file's path
+        String diagram_path = airport.getPath();
         
+        //Make a text representation of the airport diagram.
+        makeTextFile(diagram_path);
+        
+        AirportDataParser airport_parser = new AirportDataParser();
+        RunwayDataParser runway_parser = new RunwayDataParser();
+        LineFormatter line_formatter = new LineFormatter();
+        
+        //Format the diagram text for use in the parsers.
+        String diagram_text = line_formatter.getFormattedString(
+                getDiagramText(diagram_path)
+        );
+        
+        //Parse the diagram for airport-specific information.
+        airport_parser.parseAirportData(diagram_text, airport);
+        
+        //Parse the diagram for runway information.
+        runway_parser.parseRunwayData(diagram_text, airport);
     }
     
     /**
@@ -56,5 +76,34 @@ public class PDFToText
                     Level.SEVERE, null, ex
             );
         }
+    }
+    
+    /**
+     * Get the raw text of the airport diagram PDF whose file path is
+     * diagram_pdf_path.
+     * @param diagram_pdf_path is the path to the airport diagram PDF.
+     */
+    private String getDiagramText(String diagram_pdf_path)
+    {
+        Scanner scanner = new Scanner(getTextPath(diagram_pdf_path));
+        String diagram_text = "";
+        while (scanner.hasNextLine())
+        {
+            diagram_text += scanner.nextLine();
+        }
+        return diagram_text;
+    }
+    
+    /**
+     * Get the airport diagram's text file's path based on the airport
+     * diagram's PDF file's path.
+     * @param diagram_pdf_path is the path of the airport diagram PDF.
+     */
+    private String getTextPath(String diagram_pdf_path)
+    {
+        /*The txt file has the same name as the PDF file and is stored in the
+         *same directory, but the extension is .txt instead of .pdf.
+         */
+        return diagram_pdf_path.replace("\\.pdf", "\\.txt");
     }
 }
