@@ -1,7 +1,10 @@
 package faa_ocr.Controller;
 
 import java.io.File;
+
 import faa_ocr.ADTs.Airport;
+import faa_ocr.image_parser.PDFToImage;
+import faa_ocr.text_parser.AirportDataParser;
 
 
 /**
@@ -79,7 +82,7 @@ public class AirportController
 	private void printResults(Airport airport, String path_to_xml, String path_to_kml)
 	{
 		System.out.println();
-		System.out.println(airport.name)
+		System.out.println(airport.getName());
 		System.out.println("Path to XML: " + path_to_xml);
 		System.out.println("Path to KML: " + path_to_kml);
 		System.out.println();
