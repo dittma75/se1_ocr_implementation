@@ -51,24 +51,25 @@ public class AirportToXML {
     {
         for(int i = 0; i < airport.numPaths(); i++) {
             Path currPath = airport.getPath(i);
-            if(currPath instanceof Runway)
+            xml_string += "<path>" + "\n";
+            if(currPath instanceof Runway) {
                 runwayToXml(currPath);
-            else {
+            } else {
                 taxiwayToXml(currPath);
             }
+            xml_string += "</path>\n";
         }
     }
     
-    private String runwayToXml(Path runway)
+    private void runwayToXml(Path runway)
     {
-        xml_string = "Runway";
-        return xml_string;
+        xml_string += "<path_name>" + runway.getName() + "</path_name>\n";
+        xml_string += "<path_type>" + "runway" + "</path_type>\n";
     }
     
-    private String taxiwayToXml(Path taxiway)
+    private void taxiwayToXml(Path taxiway)
     {
-        xml_string = "Taxiway";
-        return xml_string;
+        xml_string += taxiway.getName();
     }
     
 }
