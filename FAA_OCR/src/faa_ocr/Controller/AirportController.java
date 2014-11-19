@@ -14,7 +14,7 @@ import faa_ocr.text_parser.AirportDataParser;
  */
 public class AirportController 
 {	
-	
+	/* For unit testing Argument Parser */
 	public static void main(String[] args)
 	{		
 		AirportController airport_controller = new AirportController();
@@ -35,6 +35,10 @@ public class AirportController
 		}
 		System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
 	}
+	
+	
+	
+	
 	
 	/**
 	 * Control all behaviors of an airport

@@ -4,6 +4,12 @@ import java.awt.image.BufferedImage;
 
 import faa_ocr.ADTs.Airport;
 
+
+/**
+ * 
+ * @author joe kvedaras
+ *
+ */
 public class TaxiwayDiagramParser 
 {
 	public TaxiwayDiagramParser()
