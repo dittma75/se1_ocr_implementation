@@ -2,12 +2,14 @@ package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
@@ -18,16 +20,26 @@ import org.apache.pdfbox.util.PDFTextStripper;
  */
 public class RunwayDataParser
 {
+    /******************************TEMPORARY**********************************
+     *This elevation pattern works for Atlanta, but it needs tweaking for
+     *the rest of the cases.
+     */
     private final Pattern ELEV_PATTERN = Pattern.compile(
         ".*\\b[A-Za-z]*(\\d{3,4}?)\\b.*"
     );
     
+    /*Angles always follow the pattern of a four significant digit number with
+     *accuracy to the tenths place.
+     */
     private final Pattern ANGLE_PATTERN = Pattern.compile(
         "(\\d\\d\\d\\.\\d?)"
     );
     
+    /*Runways always follow the pattern of a two digits and an optional
+     *letter.
+     */
     private final Pattern RUNWAY_PATTERN = Pattern.compile(
-        " RWY ([0-9]+[RL]*-[0-9]+[RL]?)"
+        "(\\d\\d[LCR]?)"
     );
     
     public RunwayDataParser()
@@ -38,80 +50,52 @@ public class RunwayDataParser
     public void parseRunwayData(String formatted_string, Airport airport)
     {
         
-        ArrayList valid_runways = makeListOfRunways();
+        ArrayList<String> valid_runways = makeListOfRunways(
+                airport.getFilePath()
+        );
 
-        ArrayList valid_headings = makeListOfProperHeadings();
+        ArrayList<String> valid_headings = makeListOfProperHeadings(
+                airport.getFilePath()
+        );
 
-        ArrayList<String> runways;
+        ArrayList<String> runways = new ArrayList<>();
 
-        ArrayList<Double> headings;
+        ArrayList<Double> headings = new ArrayList<>();
 
-        ArrayList<Integer> elevations;
+        ArrayList<Integer> elevations = new ArrayList<>();
+        
         Scanner scanner = new Scanner(formatted_string);
         
-//START OF PSEUDO-CODE ALGORITHM
         while (scanner.hasNextLine())
         {
             String current_line = scanner.nextLine();
-            /*\d is a number, . is a character, and this is the format for a
-             *runway name.
-             */
-            if (current_line.("\d\d."))
+            
+            //Check this line for runways.
+            String runway = searchForRunway(current_line);
+            if (valid_runways.contains(runway))
             {
-                if (valid_runways.contains(current_line.matchedText()))
-                {
-                    runways.add(current_line.matchedText());
-                }
+                runways.add(runway);
             }
-            /*\d is a number, \. is a period character, and this is the format
-             *for a runway heading.
+
+            /*Check this line for headings  String comparison is used because
+             *the headings start as Strings that have a defined format, and
+             *Doubles are hard to compare accurately.
              */
-            if (current_line.contains(“\d\d\d\.\d”))
+            String heading = searchForHeading(current_line);
+            if (valid_headings.contains(heading))
             {
-                if (valid_headings.contains(current_line.matchedText()))
-                {
-                    headings.add(current_line.matchedText());
-                }
+                headings.add(Double.parseDouble(heading));
             }
-            /*\d+ is a number of at least one digit, .* is any number of
-             *characters, and this is the format for a runway elevation.
-             */
-            if (current_line.contains(“ELEV.*\d+”))
+            
+            String elevation = searchForElevation(current_line);
+            if (!elevation.equals(""))
             {
-                elevations.add(current_line.matchedText());
+                elevations.add(Integer.parseInt(elevation));
             }
             /*At this point, the runway information is in order across the 
              *three lists.  Iterating across all three lists together will get
              *the proper runway data for each runway.
              */
-        }
-    }
-//END OF PSEUDO-CODE ALGORITHM
-    
-    /**Uses PDFBox to get a list of valid angles, since pdftotext doesn't
-     * currently transpose degree signs (might be an option for this).
-     * @param file_name the name of the PDF Airport Diagram to parse for angles.
-     */
-    public void parseAngleList(String file_name)
-    {
-        String pdf_text = getTextPDFBox(file_name);
-        Scanner scanner = new Scanner(pdf_text);
-        Pattern pdf_box_angle_pattern = Pattern.compile("(\\d\\d\\d\\.\\d?)°");
-        String next_line = "";
-        ArrayList<Double> valid_angles = new ArrayList<>();
-        while (scanner.hasNextLine())
-        {
-            //"\d\d\d\.\d°" is the regex to get all of the angles
-            next_line = scanner.nextLine();
-            Matcher matcher = pdf_box_angle_pattern.matcher(next_line);
-            if (matcher.find())
-            {
-                double angle = Double.parseDouble(matcher.group(1));
-                if (!valid_angles.contains(angle))
-                {
-                    valid_angles.add(angle);
-                }
-            }
         }
     }
     
@@ -165,13 +149,120 @@ public class RunwayDataParser
         return parsed_text;
     }
     
-    private ArrayList<String> makeListOfRunways()
+    private ArrayList<String> makeListOfRunways(String file_name)
     {
-        return null;
+        ArrayList<String> runways = new ArrayList<>();
+        File file = new File(file_name);
+        try
+        {
+            Scanner scanner = new Scanner(file);
+            String next_line = "";
+            while (scanner.hasNextLine())
+            {
+                next_line = scanner.nextLine();
+                next_line = " " + next_line;
+                
+                /*The runway list pattern looks for "RWY", which comes
+                 *before each runway pairing on the list of runways that is
+                 *included on every airport diagram.  Runways are named with
+                 *digits and an optional letter (L for left, R for right, and
+                 *C for center).
+                 */
+                Pattern runway_list_pattern = Pattern.compile(
+                    " RWY ([0-9]+[RLC]*-[0-9]+[RLC]?)"
+                );
+                
+                Matcher matcher = runway_list_pattern.matcher(next_line);
+                if (matcher.find())
+                {
+                    /*This will always be a set of two runways separated by a
+                     *minus sign, so split on the "-" character.
+                     */
+                    String rwy_set[] = matcher.group(1).split("-");
+                    
+                    runways.add(rwy_set[0]);
+                    runways.add(rwy_set[1]);
+                }
+            }
+            return runways;
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(RunwayDataParser.class.getName()).log(
+                Level.SEVERE, null, ex
+            );
+            return null;
+        }
     }
     
-    private ArrayList<Double> makeListOfProperHeadings()
+    /**
+     * Make a list of all of the valid headings for the given airport diagram.
+     * @param file_name is the file path of the airport diagram.
+     * @return an ArrayList of valid heading Strings for the given airport.
+     */
+    private ArrayList<String> makeListOfProperHeadings(String file_name)
     {
-        return null;
+        //Turn the PDF of the airport diagram into a String of plain text.
+        String pdf_text = getTextPDFBox(file_name);
+        
+        Scanner scanner = new Scanner(pdf_text);
+        
+        //All headings will have the pattern ###.#°.
+        Pattern heading_pattern = Pattern.compile("(\\d\\d\\d\\.\\d?)°");
+        
+        String next_line = "";
+        ArrayList<String> valid_angles = new ArrayList<>();
+        while (scanner.hasNextLine())
+        {
+            next_line = scanner.nextLine();
+            Matcher matcher = heading_pattern.matcher(next_line);
+            if (matcher.find())
+            {
+                String angle = matcher.group(1);
+                
+                //If we don't already have that heading in the list, add it.
+                if (!valid_angles.contains(angle))
+                {
+                    valid_angles.add(angle);
+                }
+            }
+        }
+        return valid_angles;
+    }
+    
+    private String searchForHeading(String line)
+    {
+        Matcher angle_matcher = ANGLE_PATTERN.matcher(line);
+        //If we found something matching the variation pattern...
+        if (angle_matcher.find())
+        {
+            //Return the part of the string that matched.
+            return angle_matcher.group(1);
+        }
+        return "";
+    }
+    
+    private String searchForRunway(String line)
+    {
+        Matcher runway_matcher = RUNWAY_PATTERN.matcher(line);
+        //If we found something matching the variation pattern...
+        if (runway_matcher.find())
+        {
+            //Return the part of the string that matched.
+            return runway_matcher.group(1);
+        }
+        return "";
+    }
+    
+    private String searchForElevation(String line)
+    {
+        Matcher elev_matcher = ELEV_PATTERN.matcher(line);
+        //If we found something matching the variation pattern...
+        if (elev_matcher.find())
+        {
+            //Return the part of the string that matched.
+            return elev_matcher.group(1);
+        }
+        return "";
     }
 }
