@@ -29,7 +29,7 @@ public class PDFToText
     public void parseTextData(Airport airport)
     {
         //Get the airport diagram PDF file's path
-        String diagram_path = airport.getPath();
+        String diagram_path = airport.getFilePath();
         
         //Make a text representation of the airport diagram.
         makeTextFile(diagram_path);
@@ -50,6 +50,7 @@ public class PDFToText
         runway_parser.parseRunwayData(diagram_text, airport);
     }
     
+    //TODO:  Needs documentation about the usage of Xpdftotext
     /**
      * Turns a PDF airport diagram into a text representation that can be
      * analyzed.
@@ -58,7 +59,6 @@ public class PDFToText
      */
     private void makeTextFile(String file_path)
     {
-        //TODO:  Needs documentation about the usage of Xpdftotext
         try
         {
             //Parse the PDF and turn its text into a plain text .txt file.
