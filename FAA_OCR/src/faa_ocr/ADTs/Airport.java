@@ -5,6 +5,7 @@
  * mapped onto the xml file.
  */
 package faa_ocr.ADTs;
+import java.util.*;
 
 /**
  *
@@ -17,6 +18,7 @@ public class Airport {
     private String location;
     private String abbreviation;
     private float variation;
+    private ArrayList<Path> paths;
     
     public Airport (String pdf_file_path)
     {
@@ -27,7 +29,7 @@ public class Airport {
      * Get the file path of the airport diagram PDF file.
      * @return the airport diagram file path as a String.
      */
-    public String getPath()
+    public String getFilePath()
     {
         return pdf_file_path;
     }
@@ -104,6 +106,33 @@ public class Airport {
     public void setVariation(float variation)
     {
         this.variation = variation;
+    }
+    /*
+     * Get a Path object located at a specified index number
+     * @param the int index value of the Path you wish to retrieve
+     * @return the Path object at index i
+     */
+    public Path getPath(int i)
+    {
+        return paths.get(i);
+    }
+    
+    /*
+     * get the number of Path objects in this Airport
+     * @return the int value of how many Paths are in the collection paths 
+     */
+    public int numPaths()
+    {
+        return paths.size();
+    }
+    
+    /*
+     * Add a Path object to the collection paths in the instance of Airport
+     * @param the Path object to be added to the collection
+     */
+    public void addPath(Path path)
+    {
+        paths.add(path);
     }
     
     /**
