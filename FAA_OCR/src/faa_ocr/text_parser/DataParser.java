@@ -24,6 +24,8 @@ public abstract class DataParser
      * @param text the String text to match against the pattern.
      * @return the String result that matches, or the empty string if there
      * is no match.
+     * Pre:  The searchForItem method assumes that there will be exactly
+     * 1 capturing group in the regular expression pattern.
      */
     protected String searchForItem(String pattern, String text)
     {
