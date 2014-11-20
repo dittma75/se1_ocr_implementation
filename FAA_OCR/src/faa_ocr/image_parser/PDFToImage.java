@@ -23,8 +23,8 @@ public class PDFToImage
 	{
 		BufferedImage airport_image;
 		try {
-			airport_image = ImageIO.read(new File("./FAA_OCR/res/ACY/00669AD_0001.png"));
-			Airport airport = new Airport("./FAA_OCR/res/ACY/00669AD_0001.png");
+			airport_image = ImageIO.read(new File("./FAA_OCR/lib/00669AD.jpg"));
+			Airport airport = new Airport("./FAA_OCR/res/ACY/00669AD.pdf");
 			
 			//get runway data from image
 			new RunwayDiagramParser().parseRunways(airport_image, airport);
