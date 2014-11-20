@@ -16,16 +16,20 @@ public class AirportToXML {
     
     public AirportToXML()
     {
-        xml_string = "<?xml version=\"1.0\" encoding=\UTF-8\"?>\n";
+        xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     }
     
     /**
-     *
      * @param airport
-     * @param fileName
+     * @return the path of the newly created .xml file
      */
-    public void airportToXml(Airport airport, String fileName)
+    public String convertToXml(Airport airport)
     {
+        //remove the extensions from the file path so that we
+        //can use the same name with a .xml extension for the new file
+        String filePath = airport.getFilePath().split("\\.")[0];
+        filePath += ".xml";
+
         xml_string += "<airport>\n" +
             "<location>" + airport.getLocation() + "</location>\n" +
             "<name>" + airport.getName() + "</name>\n" +
@@ -33,14 +37,14 @@ public class AirportToXML {
         sortPaths(airport);
         xml_string += "</airport>";
         try { 
-            File file = new File(fileName);
+            File file = new File(filePath);
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             output.write(xml_string);
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-            
+        return filePath;        
     }
     
     /*
@@ -54,22 +58,28 @@ public class AirportToXML {
             xml_string += "<path>" + "\n";
             if(currPath instanceof Runway) {
                 runwayToXml(currPath);
-            } else {
+            } else if(currPath instanceof Taxiway) {
                 taxiwayToXml(currPath);
+            } else {
+                //do nothing
+                //in the future there may be a need for a
+                //different extension of Path
             }
-            xml_string += "</path>\n";
-        }
+        xml_string += "</path>\n";
+        }  
     }
     
     private void runwayToXml(Path runway)
     {
         xml_string += "<path_name>" + runway.getName() + "</path_name>\n";
         xml_string += "<path_type>" + "runway" + "</path_type>\n";
+        
     }
     
     private void taxiwayToXml(Path taxiway)
     {
-        xml_string += taxiway.getName();
+        xml_string += "<path_name>" + taxiway.getName() + "</path_name>\n";
+        xml_string += "<path_type>" + "taxiway" + "</path_type>\n";
     }
     
 }

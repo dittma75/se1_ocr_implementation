@@ -13,13 +13,13 @@ import java.util.*;
  */
 public abstract class Path {
     String name;
-    private ArrayList<Node> paths;
+    private ArrayList<Node> nodes;
     ArrayList<Node> intersections;
     
     public Path(String name)
     {
         this.name = name;
-        paths = new ArrayList<Node>();
+        nodes = new ArrayList<Node>();
         intersections = new ArrayList<Node>();
     }
     
@@ -30,7 +30,12 @@ public abstract class Path {
     
     public void addPathNode(Node newNode)
     {
-        paths.add(newNode);
+        nodes.add(newNode);
+    }
+    
+    public int getNumPathNodes()
+    {
+        return nodes.size();
     }
     
     public void addIntNode(Node newNode)
@@ -38,11 +43,16 @@ public abstract class Path {
         intersections.add(newNode);
     }
     
+    public int getNumIntNodes()
+    {
+        return intersections.size();
+    }
+    
     @Override
     public String toString()
     {
         String pathString = (name + "/n" + "Path: ");
-        for(Node node : paths) {
+        for(Node node : nodes) {
             pathString += node.toString();
         }
         pathString += "Intersections: ";
