@@ -1,7 +1,10 @@
 package faa_ocr.image_parser;
 
 import java.awt.image.BufferedImage;
+
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.Node;
+
 import javax.media.jai.*;
 
 /**
@@ -11,6 +14,19 @@ import javax.media.jai.*;
  */
 public class RunwayDiagramParser 
 {
+	private BufferedImage diagram;
+	private Airport airport;
+	
+	//TODO: create helper method for getting red, blue, and green pixel
+	//TODO: create helper method to get pixel_color
+	//TODO: create class to hold red,green,blue values
+	//TODO: hold BufferedImage diagram as a field so I don't have to keep passing it around. same 
+			//for airport
+	//TODO: I can look for each individual pixel value being under 20 or the pixel color
+			//of -16777216
+	
+	
+	
 	
 	public RunwayDiagramParser()
 	{
@@ -25,14 +41,16 @@ public class RunwayDiagramParser
 	 */
 	public void parseRunways(BufferedImage diagram, Airport airport)
 	{
-		traverseImage(diagram);
+		this.diagram = diagram;
+		this.airport = airport;
+		traverseImage();
 	}
 	
 	/**
 	 * Traverse image looking for black pixels. Once a black pixel is found recursively 
 	 * find edges of that black square
 	 */
-	private void traverseImage(BufferedImage diagram)
+	private void traverseImage()
 	{
 		
 		int black_counter = 0;
@@ -45,17 +63,18 @@ public class RunwayDiagramParser
                 final int  red = (pixel_color & 0x00ff0000) >> 16;
                 final int  green = (pixel_color & 0x0000ff00) >> 8;
                 final int  blue = pixel_color & 0x000000ff;
-                
-
-                
+                                
                 //check and see if color is grey or darker
-                if(red < 110 && green < 110 && blue < 110){
+                if(red < 20 && green < 20 && blue < 20){
                 	System.out.println(x +  "  " + y);
                 	System.out.println();
                 	black_counter ++;
                 	
-                	findEdges(diagram,x,y);
-                	findSlope(diagram,x,y);
+                	System.out.println(pixel_color);
+                	
+                	findWidth(x,y);
+                	findEdges(x,y);
+                	findSlope(x,y);
                 }
                 
 
@@ -66,8 +85,49 @@ public class RunwayDiagramParser
 		System.out.println(black_counter);
 	}
 	
+	private void findWidth(int x, int y)
+	{
+		//look at right, bottom-right, bottom, bottom-left pixel to see what is black
+		//and what is white/grey
+		
+		//traverse the two outermost pixels
+		
+		//only go in one direction at most 20 pixels
+		
+		//we traverse until we find a point that does not find a black pixel
+		// in the (left, bottom-left, bottom) direction or (right,bottom-right,bottom) direction
+		//-------------Directions change by the way we are traversing
+		//return that point once found
+		
+		
+		
+		
+	}
 	
-	private void findEdges(BufferedImage diagram, int x, int y)
+	//traveseLeft, traverseRight, and traverseBottom function to go in all directions.
+	//or one function with parameters of what direction to look
+
+
+	private int[] traverseSlope(int[] initial_point, int[] slope)
+	{
+		int x = initial_point[0];
+		int y = initial_point[1];
+		
+		int pixel_color = diagram.getRGB(x, y);
+        int  red = (pixel_color & 0x00ff0000) >> 16;
+        int  green = (pixel_color & 0x0000ff00) >> 8;
+        int  blue = pixel_color & 0x000000ff;
+		
+        //check to see if next point is going to be black.
+        // if it is, get that new point and loop again
+        
+        //return the point where the next point is NOT going to be black
+		
+		return null;
+	}
+	
+
+	private void findEdges(int x, int y)
 	{
 		//the initial pixel WILL be a corner. We just need to find the other 3 corners now.
 		
@@ -85,7 +145,7 @@ public class RunwayDiagramParser
 	}
 	
 	
-	private void findSlope(BufferedImage diagram, int x, int y)
+	private void findSlope(int x, int y)
 	{
 		
 		
