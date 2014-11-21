@@ -17,8 +17,6 @@ public class RunwayDiagramParser
 	//TODO: create helper method for getting red, blue, and green pixel
 	//TODO: create helper method to get pixel_color
 	//TODO: create class to hold red,green,blue values
-	//TODO: hold BufferedImage diagram as a field so I don't have to keep passing it around. same 
-			//for airport
 	//TODO: I can look for each individual pixel value being under 20 or the pixel color
 			//of -16777216
 	
@@ -94,6 +92,76 @@ public class RunwayDiagramParser
 		System.out.println(black_counter);
 	}
 	
+	
+	/**
+	 * Check the pixels to the above-right, above, above-left, and left
+	 * to the parameter pixel and return True if they are not black
+	 * @param Starting pixel
+	 * @return true if none the pixels checked are black
+	 * 			false if there is a black pixel
+	 */
+	private boolean checkPixel(Point pixel)
+	{
+		return (Boolean) null;
+	}
+	
+	/**
+	 * Check the pixels to the right, bottom-right, bottom, bottom-left
+	 * of the parameter point. 3 pixels must be black to traverse the 
+	 * two outermost. If less than 3 are black, do nothing.
+	 * @param pixel
+	 */
+	//TODO: we can return the 2 outermost pixels or traverse them from here
+	private void checkCorner(Point pixel)
+	{
+		
+		
+	}
+	
+	/**
+	 * Check left, bottom-left, and bottom pixels.
+	 * traverse the left-most black pixel
+	 * Stop traversing when all 3 pixels are not black. Return that
+	 * pixel location
+	 * @return
+	 */
+	private Point traverseLeft(Point point)
+	{
+		
+	}
+	
+	/**
+	 * Check right, bottom-right, and bottom pixels.
+	 * traverse the right-most black pixel
+	 * Stop traversing when all 3 pixels are not black. Return that
+	 * pixel location
+	 * @return
+	 */
+	private Point traverseRight(Point point)
+	{
+		
+	}
+	
+	
+	//TODO: This method might have to look at bottom, bl, br pixel.
+	//If the black pixel is in the bl,b, and br call traverseLeft
+	//if the black pixel is just on the br, traverse right
+	//if the pixel is b and br, call this method again
+	/**
+	 * Check bottom-left, bottom, and bottom-right pixels.
+	 * traverse the bottom-most black pixel
+	 * Stop traversing when all 3 pixels are not black. Return that
+	 * pixel location
+	 * @return
+	 */
+	private Point traverseBottom(Point point)
+	{
+		
+	}
+	
+	
+	
+	//May use to control the finding of the width of the runway
 	private void findWidth(int x, int y)
 	{
 		//look at right, bottom-right, bottom, bottom-left pixel to see what is black
@@ -108,63 +176,23 @@ public class RunwayDiagramParser
 		//-------------Directions change by the way we are traversing
 		//return that point once found
 		
-		
-		
-		
-	}
+	}	
 	
-	//traveseLeft, traverseRight, and traverseBottom function to go in all directions.
-	//or one function with parameters of what direction to look
-
-
-	private void look (Point point)
+	/**
+	 * Traverse the slop at the rate of the slope. Stop when
+	 * you reach the last black point.
+	 * @param initial_point
+	 * @param slope
+	 * @return last black point
+	 */
+	private Point traverseSlope(Point initial_point, Point slope)
 	{
+		int x = initial_point.getX();
+		int y = initial_point.getY();
 		
-		
-	}
-	
-	
-	
-	
-	
-	private int[] traverseSlope(int[] initial_point, int[] slope)
-	{
-		int x = initial_point[0];
-		int y = initial_point[1];
-		
-		int pixel_color = diagram.getRGB(x, y);
-        int  red = (pixel_color & 0x00ff0000) >> 16;
-        int  green = (pixel_color & 0x0000ff00) >> 8;
-        int  blue = pixel_color & 0x000000ff;
-		
-        //check to see if next point is going to be black.
-        // if it is, get that new point and loop again
-        
         //return the point where the next point is NOT going to be black
 		
 		return null;
-	}
-	
-
-	private void findEdges(int x, int y)
-	{
-		//the initial pixel WILL be a corner. We just need to find the other 3 corners now.
-		
-		
-		//find the initial 2 edges, find the middle pixel, save it, traverse at slope of the runway to find
-		//the end of the runway. save that point.
-		
-		//we also need a place to store what pixels we have already visited so we don't waste
-		//time on them
-		
-		//need to find slope of the runway so we can traverse it.
-	}
-	
-	
-	private void findSlope(int x, int y)
-	{
-		
-		
 	}
 	
 	
