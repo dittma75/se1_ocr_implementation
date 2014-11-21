@@ -59,7 +59,18 @@ public class Point {
 		int xx = point_two.getX() - this.x;
 		//TODO: it may have to divide y by x to get a smaller slope.
 		//if it is a decimal, make into a whole number.
-		return new Point(xx,yy);
+		return new Point(yy,xx);
+	}
+	
+	/**
+	 * Inverse the slope to find a perpendicular line to that slope
+	 * y/x = -x/y
+	 * @param slope
+	 * @return inverse slope 
+	 */
+	public Point inverseSlope(Point slope)
+	{
+		return (new Point(-slope.getX(), slope.getY()));
 	}
 	
 	

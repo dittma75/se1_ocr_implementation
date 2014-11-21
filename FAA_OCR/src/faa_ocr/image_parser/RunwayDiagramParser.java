@@ -3,9 +3,6 @@ package faa_ocr.image_parser;
 import java.awt.image.BufferedImage;
 
 import faa_ocr.ADTs.Airport;
-import faa_ocr.ADTs.Node;
-
-import javax.media.jai.*;
 
 /**
  * 
@@ -53,6 +50,9 @@ public class RunwayDiagramParser
 	private void traverseImage()
 	{
 		
+		//26813 pixels that are less than 20,20,20 rgb
+		//26184 pixels that are truly 0,0,0
+		
 		int black_counter = 0;
 
 		for (int y = 0; y < diagram.getHeight(); y++) 
@@ -60,15 +60,24 @@ public class RunwayDiagramParser
             for (int x = 0; x < diagram.getWidth(); x++) 
             {
                 final int pixel_color = diagram.getRGB(x, y);
-                final int  red = (pixel_color & 0x00ff0000) >> 16;
-                final int  green = (pixel_color & 0x0000ff00) >> 8;
-                final int  blue = pixel_color & 0x000000ff;
-                                
+                final int red = (pixel_color >> 16) & 0xff;
+                final int green = (pixel_color >> 8) & 0xff;
+                final int blue = (pixel_color) & 0xff;
+                
+                if(pixel_color == -16777216){
+                	System.out.println(red);
+                	System.out.println(green);
+                	System.out.println(blue);
+                	
+                	black_counter ++;
+                }
+                
+                
                 //check and see if color is grey or darker
                 if(red < 20 && green < 20 && blue < 20){
                 	System.out.println(x +  "  " + y);
                 	System.out.println();
-                	black_counter ++;
+                	
                 	
                 	System.out.println(pixel_color);
                 	
@@ -108,6 +117,16 @@ public class RunwayDiagramParser
 	//or one function with parameters of what direction to look
 
 
+	private void look (Point point)
+	{
+		
+		
+	}
+	
+	
+	
+	
+	
 	private int[] traverseSlope(int[] initial_point, int[] slope)
 	{
 		int x = initial_point[0];
@@ -130,9 +149,6 @@ public class RunwayDiagramParser
 	private void findEdges(int x, int y)
 	{
 		//the initial pixel WILL be a corner. We just need to find the other 3 corners now.
-		
-		
-		
 		
 		
 		//find the initial 2 edges, find the middle pixel, save it, traverse at slope of the runway to find
