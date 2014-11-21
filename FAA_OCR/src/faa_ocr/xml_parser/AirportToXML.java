@@ -25,26 +25,14 @@ public class AirportToXML {
      */
     public String convertToXml(Airport airport)
     {
-        //remove the extensions from the file path so that we
-        //can use the same name with a .xml extension for the new file
-        String filePath = airport.getFilePath().split("\\.")[0];
-        filePath += ".xml";
-
         xml_string += "<airport>\n" +
             "<location>" + airport.getLocation() + "</location>\n" +
             "<name>" + airport.getName() + "</name>\n" +
             "<variation>" + airport.getVariation() + "</variation>\n";
-        sortPaths(airport);
+        
+        sortPaths(airport); // take the loop from sortPaths and put it here to send each Path to be redirected individually
         xml_string += "</airport>";
-        try { 
-            File file = new File(filePath);
-            BufferedWriter output = new BufferedWriter(new FileWriter(file));
-            output.write(xml_string);
-            output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return filePath;        
+        return writeToFile(airport.getFilePath());
     }
     
     /*
@@ -57,9 +45,13 @@ public class AirportToXML {
             Path currPath = airport.getPath(i);
             xml_string += "<path>" + "\n";
             if(currPath instanceof Runway) {
-                runwayToXml(currPath);
+                runwayToXml((Runway)currPath);
+                //we know that currPath is an instance of Runway so cast it 
+                //as one when we pass it to runwayToXml(Runway runway)
             } else if(currPath instanceof Taxiway) {
-                taxiwayToXml(currPath);
+                taxiwayToXml((Taxiway)currPath);
+                //we know that currPath is an instance of Taxiway so cast it
+                //as one when we pass it to taxiwayToXml(Taxiway taxiway)
             } else {
                 //do nothing
                 //in the future there may be a need for a
@@ -69,17 +61,91 @@ public class AirportToXML {
         }  
     }
     
-    private void runwayToXml(Path runway)
+    /*
+     *
+     * @param
+     */
+    private void runwayToXml(Runway runway)
     {
         xml_string += "<path_name>" + runway.getName() + "</path_name>\n";
         xml_string += "<path_type>" + "runway" + "</path_type>\n";
-        
+        xml_string += "<heading>" + runway.getHeading() + "</heading>\n";
+        xml_string += "<elevation>" + runway.getElevation() + "</elevation>\n";
+        xml_string += "<coordinates>\n";
+        //there will always be two nodes in a Runway, the start and the end
+        xml_string += "<start>\n";
+        Node startNode = runway.getPathNode(0);
+        xml_string += "<longitude>" + startNode.getLong() + "</longitude>\n";
+        xml_string += "<latitude>" + startNode.getLat() + "</latitude>\n";
+        xml_string += "</start>\n";
+        xml_string += "<end>\n";
+        Node endNode = runway.getPathNode(1);
+        xml_string += "<longitude>" + endNode.getLong() + "</longitude>\n";
+        xml_string += "<latitude>" + endNode.getLat() + "</latitude>\n";
+        xml_string += "</end>\n";
+        if(runway.hasThreshold()) {
+            Node threshold = runway.getThreshold();
+            xml_string += "<threshold>\n";
+            xml_string += "<longitude>" + threshold.getLong() + "</longitude>\n";
+            xml_string += "<latitude>" + threshold.getLat() + "</latitude>\n";
+            xml_string += "</threshold>\n";
+        }
+        if(runway.getNumIntNodes() != 0) {
+            for(int i = 0; i < runway.getNumIntNodes(); i++) {
+                //any given runway may have 0 or more intersection nodes
+                Node intersection = runway.getIntNode(i);
+                xml_string += "<intersection>\n";
+                xml_string += "<longitude>" + intersection.getLong() + "</longitude>\n";
+                xml_string += "<latitude>" + intersection.getLat() + "</latitude>\n";
+                xml_string += "</intersection>\n";
+            }
+        }
+        xml_string += "</coordinates>\n";
     }
     
-    private void taxiwayToXml(Path taxiway)
+    /*
+     *
+     * @param
+     */
+    private void taxiwayToXml(Taxiway taxiway)
     {
         xml_string += "<path_name>" + taxiway.getName() + "</path_name>\n";
         xml_string += "<path_type>" + "taxiway" + "</path_type>\n";
+        xml_string += "<coordinates>\n";
+        for(int i = 0; i < taxiway.getNumPathNodes(); i++) {
+            Node currNode = taxiway.getPathNode(i);
+            xml_string += "<node>\n";
+            xml_string += "<longitude>" + currNode.getLong() + "</longitude>\n";
+            xml_string += "<latitude>" + currNode.getLat() + "</latitude>\n";
+            xml_string += "</node>\n";
+        }
+        for(int i = 0; i < taxiway.getNumIntNodes(); i++) {
+            Node intersection = taxiway.getIntNode(i);
+            xml_string += "<intersection>\n";
+            xml_string += "<longitude>" + intersection.getLong() + "</longitude>\n";
+            xml_string += "<latitude>" + intersection.getLat() + "</latitude>\n";
+            xml_string += "</intersection>\n";
+        }
+        xml_string += "</coordinates>\n";
+    }
+    
+    private String writeToFile(String filePath)
+    {
+        String xmlPath = filePath.split("\\.")[0];
+        xmlPath += ".xml";
+        //remove the extensions from the file path so that we
+        //can use the same name with a .xml extension for the new file
+        
+        try {
+            //create the new .xml file and write the formatted String to it
+            File file = new File(xmlPath);
+            BufferedWriter output = new BufferedWriter(new FileWriter(file));
+            output.write(xml_string);
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return xmlPath;        
     }
     
 }
