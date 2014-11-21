@@ -1,10 +1,15 @@
 package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import static java.lang.Runtime.getRuntime;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 /**
  * The PDFToText module turns the given PDF representation of an airport
  * diagram into a text file.
@@ -105,5 +110,56 @@ public class PDFToText
          *same directory, but the extension is .txt instead of .pdf.
          */
         return diagram_pdf_path.replace("\\.pdf", "\\.txt");
+    }
+    
+    //TODO:  DOCUMENT USAGE OF PDFBOX.
+    /**
+     * Get PDFBox output of airport diagram.
+     * @param file_name name of airport diagram PDF file.
+     * @return text representation of airport diagram.
+     */
+    String getTextPDFBox(String file_name)
+    {
+        PDFParser parser;
+        String parsed_text = "";
+        PDFTextStripper pdf_stripper;
+        File diagram_file = new File(file_name);
+        
+        //Make sure that the airport diagram exists.
+        if (!diagram_file.isFile()) 
+        {
+            System.err.println("File " + file_name + " does not exist.");
+            return null;
+        }
+        try 
+        {
+            //Make a new parser from the airport diagram file.
+            parser = new PDFParser(new FileInputStream(diagram_file));
+        } 
+        catch (IOException e) {
+            System.err.println("Unable to open PDF Parser. " + e.getMessage());
+            return null;
+        }
+        try
+        {
+            parser.parse();
+            pdf_stripper = new PDFTextStripper();
+            pdf_stripper.setSortByPosition(false);
+            
+            //Get the parsed text from the text stripper.
+            parsed_text = pdf_stripper.getText(
+                new PDDocument(
+                    parser.getDocument()
+                )
+            );
+        } 
+        catch (Exception e) 
+        {
+            System.err.println(
+                "An exception occured in parsing the PDF Document." + 
+                e.getMessage()
+            );
+        }
+        return parsed_text;
     }
 }

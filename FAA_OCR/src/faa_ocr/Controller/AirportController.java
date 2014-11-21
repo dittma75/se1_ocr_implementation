@@ -60,20 +60,20 @@ public class AirportController
 		Airport airport = new Airport(path);
 		
 		//get textual data from PDF
-		AirportDataParser.parseTextData(airport);
+//		AirportDataParser.parseTextData(airport);
 		
 		//get visual data from PDF
-		PDFToImage.parseVisualData(airport);
+//		PDFToImage.parseVisualData(airport);
 		
 		//turn Airport into an XML and save path to XML
-		String path_to_xml = XMLParser.writeXML(airport);
+//		String path_to_xml = XMLParser.writeXML(airport);
 		
 		//turn xml file into a kml file.
 		//TODO: Strings or Files from xml???
-		String path_to_kml = KMLParser.writeKML(new File(path_to_xml));
+//		String path_to_kml = KMLParser.writeKML(new File(path_to_xml));
 		
 		//print out results of transformations
-		printResults(airport, path_to_xml,path_to_xml);
+//		printResults(airport, path_to_xml,path_to_xml);
 		
 	}
 	

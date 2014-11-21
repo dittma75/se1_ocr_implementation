@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import faa_ocr.ADTs.Airport;
 import faa_ocr.ADTs.Node;
 
-import javax.media.jai.*;
 
 /**
  * 

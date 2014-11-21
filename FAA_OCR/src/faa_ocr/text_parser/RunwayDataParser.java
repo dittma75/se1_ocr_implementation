@@ -115,57 +115,6 @@ public class RunwayDataParser extends DataParser
         }
     }
     
-    //TODO:  DOCUMENT USAGE OF PDFBOX.
-    /**
-     * Get PDFBox output of airport diagram.
-     * @param file_name name of airport diagram PDF file.
-     * @return text representation of airport diagram.
-     */
-    private String getTextPDFBox(String file_name)
-    {
-        PDFParser parser;
-        String parsed_text = "";
-        PDFTextStripper pdf_stripper;
-        File diagram_file = new File(file_name);
-        
-        //Make sure that the airport diagram exists.
-        if (!diagram_file.isFile()) 
-        {
-            System.err.println("File " + file_name + " does not exist.");
-            return null;
-        }
-        try 
-        {
-            //Make a new parser from the airport diagram file.
-            parser = new PDFParser(new FileInputStream(diagram_file));
-        } 
-        catch (IOException e) {
-            System.err.println("Unable to open PDF Parser. " + e.getMessage());
-            return null;
-        }
-        try
-        {
-            parser.parse();
-            pdf_stripper = new PDFTextStripper();
-            pdf_stripper.setSortByPosition(false);
-            
-            //Get the parsed text from the text stripper.
-            parsed_text = pdf_stripper.getText(
-                new PDDocument(
-                    parser.getDocument()
-                )
-            );
-        } 
-        catch (Exception e) 
-        {
-            System.err.println(
-                "An exception occured in parsing the PDF Document." + 
-                e.getMessage()
-            );
-        }
-        return parsed_text;
-    }
-    
     /**
      * Make a list of runway names that the parser will be looking for based
      * on the runway list that is included somewhere in every airport diagram.
@@ -228,8 +177,12 @@ public class RunwayDataParser extends DataParser
      */
     private ArrayList<String> makeListOfProperHeadings(String file_name)
     {
-        //Turn the PDF of the airport diagram into a String of plain text.
-        String pdf_text = getTextPDFBox(file_name);
+        /*Turn the PDF of the airport diagram into a String of plain text.
+         *pdftotext reads the PDF more correctly in most cases, but doesn't
+         *preserve the ° characters, which are the best way to find the
+         *heading angles.
+         */
+        String pdf_text = new PDFToText().getTextPDFBox(file_name);
         
         Scanner scanner = new Scanner(pdf_text);
         String next_line = "";
