@@ -38,6 +38,11 @@ public abstract class Path {
         return nodes.size();
     }
     
+    public Node getPathNode(int index)
+    {
+        return nodes.get(index);
+    }
+    
     public void addIntNode(Node newNode)
     {
         intersections.add(newNode);
@@ -46,6 +51,11 @@ public abstract class Path {
     public int getNumIntNodes()
     {
         return intersections.size();
+    }
+    
+    public Node getIntNode(int index)
+    {
+        return intersections.get(index);
     }
     
     @Override
