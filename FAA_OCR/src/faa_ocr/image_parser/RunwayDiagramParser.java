@@ -125,40 +125,102 @@ public class RunwayDiagramParser
 	 * traverse the left-most black pixel
 	 * Stop traversing when all 3 pixels are not black. Return that
 	 * pixel location
-	 * @return
+	 * @return the left-most Point that is black or null if none of
+         * the three pixels tested are black.
 	 */
 	private Point traverseLeft(Point point)
 	{
-		
-	}
-	
+            Point left = new Point(point.getX() - 1, point.getY());
+            Point bottom_left = new Point(point.getX() - 1, point.getY() + 1);
+            Point bottom = new Point(point.getX(), point.getY() + 1);
+            if (left.isBlack(diagram))
+            {
+                return traverseLeft(left);
+            }
+            else if (bottom_left.isBlack(diagram))
+            {
+                return traverseLeft(bottom_left);
+            }
+            else if (bottom.isBlack(diagram))
+            {
+                return traverseLeft(bottom);
+            }
+            else
+            {
+                return point;
+            }
+        }
 	/**
 	 * Check right, bottom-right, and bottom pixels.
 	 * traverse the right-most black pixel
 	 * Stop traversing when all 3 pixels are not black. Return that
 	 * pixel location
-	 * @return
+	 * @return the right-most Point that is black or null if none of
+         * the three pixels tested are black.
 	 */
 	private Point traverseRight(Point point)
 	{
-		
+            Point right = new Point(point.getX() + 1, point.getY());
+            Point bottom_right = new Point(point.getX() + 1, point.getY() + 1);
+            Point bottom = new Point(point.getX(), point.getY() + 1);
+            if (right.isBlack(diagram))
+            {
+                return traverseRight(right);
+            }
+            else if (bottom_right.isBlack(diagram))
+            {
+                return traverseRight(bottom_right);
+            }
+            else if (bottom.isBlack(diagram))
+            {
+                return traverseRight(bottom);
+            }
+            else
+            {
+                return point;
+            }	
 	}
 	
 	
 	//TODO: This method might have to look at bottom, bl, br pixel.
 	//If the black pixel is in the bl,b, and br call traverseLeft
-	//if the black pixel is just on the br, traverse right
+	//if the black pixel is just on the br, traverseRight
 	//if the pixel is b and br, call this method again
 	/**
 	 * Check bottom-left, bottom, and bottom-right pixels.
 	 * traverse the bottom-most black pixel
 	 * Stop traversing when all 3 pixels are not black. Return that
 	 * pixel location
-	 * @return
+	 * @return the Point returned by traverseLeft if the bottom left,
+         * bottom, and bottom right pixels are black, the Point returned by
+         * traverseRight if the bottom right pixel is black, or the Point
+         * returned by another call to traverseBottom if the bottom and bottom
+         * right pixels are black.
 	 */
 	private Point traverseBottom(Point point)
 	{
-		
+            Point bottom_left = new Point(point.getX() - 1, point.getY() + 1);
+            Point bottom_right = new Point(point.getX() + 1, point.getY() + 1);
+            Point bottom = new Point(point.getX(), point.getY() + 1);
+            if (bottom_left.isBlack(diagram) &&
+                bottom.isBlack(diagram) &&
+                bottom_right.isBlack(diagram))
+            {
+                return traverseLeft(bottom_left);
+            }
+            else if (bottom.isBlack(diagram) &&
+                     bottom_right.isBlack(diagram))
+            {
+                return traverseBottom(bottom);
+            }
+            else if (bottom_right.isBlack(diagram))
+            {
+                return traverseRight(bottom_right);
+            }
+            else
+            {
+                return point;
+            }
 	}
 	
 	
@@ -196,7 +258,5 @@ public class RunwayDiagramParser
 		
 		return null;
 	}
-	
-	
 	
 }

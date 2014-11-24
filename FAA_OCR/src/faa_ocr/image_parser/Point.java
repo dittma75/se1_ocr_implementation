@@ -1,5 +1,7 @@
 package faa_ocr.image_parser;
 
+import java.awt.image.BufferedImage;
+
 /** Represents a Cartesian (x,y) point */
 public class Point {
 	private int x;
@@ -73,5 +75,17 @@ public class Point {
 		return (new Point(-slope.getX(), slope.getY()));
 	}
 	
-	
+	/**
+         * Determine whether the point provided is black or not.
+         * @param diagram is the picture to use when getting the color.
+         * @return true if the point is black and false if it isn't.
+         */
+        boolean isBlack(BufferedImage diagram)
+        {
+            final int pixel_color = diagram.getRGB(getX(), getY());
+            final int red = (pixel_color >> 16) & 0xff;
+            final int green = (pixel_color >> 8) & 0xff;
+            final int blue = (pixel_color) & 0xff;
+            return (red < 20 && green < 20 && blue < 20);
+        }
 }
