@@ -8,7 +8,7 @@ import faa_ocr.ADTs.Node;
 
 /**
  * 
- * @author joe kvedaras
+ * @author Joe Kvedaras
  *
  */
 public class RunwayDiagramParser 
@@ -21,13 +21,10 @@ public class RunwayDiagramParser
 	//TODO: create class to hold red,green,blue values
 	//TODO: I can look for each individual pixel value being under 20 or the pixel color
 			//of -16777216
-	
-	
-	
-	
+
 	public RunwayDiagramParser()
 	{
-		
+		//do nothing
 	}
 	
 	/**
@@ -52,38 +49,27 @@ public class RunwayDiagramParser
 		
 		//26813 pixels that are less than 20,20,20 rgb
 		//26184 pixels that are truly 0,0,0
-		
-		int black_counter = 0;
 
 		for (int y = 0; y < diagram.getHeight(); y++) 
 		{
             for (int x = 0; x < diagram.getWidth(); x++) 
             {
-                final int pixel_color = diagram.getRGB(x, y);
-                final int red = (pixel_color >> 16) & 0xff;
-                final int green = (pixel_color >> 8) & 0xff;
-                final int blue = (pixel_color) & 0xff;
-                
-                if(pixel_color == -16777216){
-                	System.out.println(red);
-                	System.out.println(green);
-                	System.out.println(blue);
-                	
-                	black_counter ++;
+                Point pixel = new Point(x,y);
+                if (pixel.isBlack(diagram))
+                {
+                	//Can I add this if to the if above. will it short circuit complete?
+                	if (checkPixel(pixel))
+                	{
+                		
+                	}
+                	else
+                	{
+                		//skip pixel
+                	}
                 }
-                
-                
-                //check and see if color is grey or darker
-                if(red < 20 && green < 20 && blue < 20){
-                	System.out.println(x +  "  " + y);
-                	System.out.println();
-                	
-                	
-                	System.out.println(pixel_color);
-                	
-                	findWidth(x,y);
-                	findEdges(x,y);
-                	findSlope(x,y);
+                else
+                {
+                	//skip pixel
                 }
                 
 
@@ -91,7 +77,6 @@ public class RunwayDiagramParser
 		}
 		
 		System.out.println("Size of diagram: " + diagram.getHeight() + " " + diagram.getWidth());
-		System.out.println(black_counter);
 	}
 	
 	
@@ -114,10 +99,63 @@ public class RunwayDiagramParser
 	 * @param pixel
 	 */
 	//TODO: we can return the 2 outermost pixels or traverse them from here
+	//TODO: how will we know which point is the right point of the runway after traversing the edges?
 	private void checkCorner(Point pixel)
 	{
-		
-		
+        Point bottom_left = new Point(pixel.getX() - 1, pixel.getY() + 1);
+        Point bottom = new Point(pixel.getX(), pixel.getY() + 1);
+        Point bottom_right = new Point(pixel.getX() + 1, pixel.getY() + 1);
+        Point right = new Point(pixel.getX() + 1, pixel.getY());
+        
+        //Check to see if 3 pixels are black
+        boolean bottom_left_black = bottom_left.isBlack(diagram);
+        boolean bottom_black = bottom.isBlack(diagram);
+        boolean bottom_right_black = bottom_right.isBlack(diagram);
+        boolean right_black = right.isBlack(diagram);
+        
+//        if( (bottom_left_black && bottom_black && bottom_right_black) ||
+//        		(bottom_left_black && bottom_black && right_black) ||
+//        		(bottom_left_black && bottom_right_black && right_black) ||
+//        		(bottom_black && bottom_right_black && right_black))
+//        {
+//        	//return 2 outermost pixels or we can traverse them from here
+//        	
+//        }
+        
+        
+        /* check r+br, r+br+b, r+b+bl, bl+b+br, bl+b */
+        if(bottom_left_black && bottom_black && bottom_right_black)
+        {
+        	//traverse bottom left and right
+        }
+        else if(bottom_left_black && bottom_black && right_black)
+        {
+        	//traverse bottom left and right
+        }
+        else if(bottom_left_black && bottom_right_black && right_black)
+        {
+            //TODO: will this condition ever be true???
+        	//traverse bottom left and right
+        	//pass
+        }
+        else if(bottom_black && bottom_right_black && right_black)
+        {
+        	
+        }
+        else if(right_black && bottom_right_black)
+        {
+        	
+        }
+        else if(bottom_left_black && bottom_black)
+        {
+        	
+        }
+        else
+        {
+        	//do nothing
+        }
+        
+        
 	}
 	
 	/**
@@ -150,6 +188,7 @@ public class RunwayDiagramParser
                 return point;
             }
         }
+	
 	/**
 	 * Check right, bottom-right, and bottom pixels.
 	 * traverse the right-most black pixel
