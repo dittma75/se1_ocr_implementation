@@ -89,8 +89,28 @@ public class RunwayDiagramParser
 	 */
 	private boolean checkPixel(Point pixel)
 	{
-		return (Boolean) null;
-	}
+            boolean noBlack = true;
+            int x = pixel.getX();
+            int y = pixel.getY();
+            //Point(0,0) is the top left corner of the document so the pixels
+            //above a certain point have a smaller y coordinate
+            Point left = new Point(x-1, y);
+            Point topLeft = new Point(x-1, y-1);
+            Point top = new Point(x, y-1);
+            Point topRight = new Point(x+1, y-1);
+            if(left.isBlack(diagram)) {
+                noBlack = false;
+            } else if(topLeft.isBlack(diagram)) {
+                noBlack = false;
+            } else if(top.isBlack(diagram)) {
+                noBlack = false;
+            } else if(topRight.isBlack(diagram)) {
+                noBlack = false;
+            } else {
+                //do nothing, no black pixels were found 
+            } 
+            return noBlack;
+        }
 	
 	/**
 	 * Check the pixels to the right, bottom-right, bottom, bottom-left

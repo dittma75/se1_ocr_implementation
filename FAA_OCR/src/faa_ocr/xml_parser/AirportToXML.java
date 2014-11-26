@@ -62,8 +62,14 @@ public class AirportToXML {
     }
     
     /*
+     * Take all of the information stored in an instance of Runway that we pass
+     * as a parameter and add it to the String we will be writing to the .xml
+     * file we are to create.  runwayToXml(Runway runway) will be called only by 
+     * sortPaths(Airport airport) and will organize all of the information into
+     * organized and labeled XML formatted lines.
      *
-     * @param
+     * @param runway is the instance of Runway that we are currently converting
+     * to XML format.
      */
     private void runwayToXml(Runway runway)
     {
@@ -73,16 +79,13 @@ public class AirportToXML {
         xml_string += "<elevation>" + runway.getElevation() + "</elevation>\n";
         xml_string += "<coordinates>\n";
         //there will always be two nodes in a Runway, the start and the end
-        xml_string += "<start>\n";
-        Node startNode = runway.getPathNode(0);
-        xml_string += "<longitude>" + startNode.getLong() + "</longitude>\n";
-        xml_string += "<latitude>" + startNode.getLat() + "</latitude>\n";
-        xml_string += "</start>\n";
-        xml_string += "<end>\n";
-        Node endNode = runway.getPathNode(1);
-        xml_string += "<longitude>" + endNode.getLong() + "</longitude>\n";
-        xml_string += "<latitude>" + endNode.getLat() + "</latitude>\n";
-        xml_string += "</end>\n";
+        for(int i = 0; i < runway.getNumPathNodes(); i++) {
+            Node currNode = runway.getPathNode(i);
+            xml_string += "<node>\n";
+            xml_string += "<longitude>" + currNode.getLong() + "</longitude>\n";
+            xml_string += "<latitude>" + currNode.getLat() + "</latitude>\n";
+            xml_string += "</node>\n";
+        }
         if(runway.hasThreshold()) {
             Node threshold = runway.getThreshold();
             xml_string += "<threshold>\n";
