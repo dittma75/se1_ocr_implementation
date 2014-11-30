@@ -178,37 +178,105 @@ public class RunwayDiagramParser
 	 */
 	private void traversePixels(Point initial_point, Point left_point, Point right_point)
 	{
-		
+            
+        }
+                
+            
+	
+	/**
+	 * Starting from the corner of the runway, follow the left side of
+         * the rectangular runway and the right side of the rectangular
+         * runway until the end of the short side is found.
+	 * @param initial_point is the starting point at the corner of the
+         * runway.  This point will either be the upper right corner or the
+         * upper left corner of the runway depending on the runway's
+         * orientation.
+	 */
+	private void findSlope(Point initial_point)
+	{
+            /* Initialize the left point and right point.  We will traverse
+             * a black pixel path going left from the left point and going
+             * right from the right point.  We will stop when we can no longer
+             * find a black pixel in one of the paths.  This path represents
+             * the width of the runway because the width is always shorter than
+             * the length.
+             */
+            Point left_point = traverseLeft(initial_point);
+            Point right_point = traverseRight(initial_point);
+            
+            /* There is no point for the end of the width of the runway yet.
+             * The best starting point for the endpoint is the initial point.
+             */
+            Point end_of_width = initial_point;
+            
+            boolean width_found = false;
+            
+            //Until the width is found, keep traversing.
+            while (!width_found)
+            {
+                /* The next point on the left traversal path may be the end
+                 * of the width of the runway.
+                 */
+                end_of_width = traverseLeft(left_point);
+                if (left_point.equals(end_of_width))
+                {
+                    width_found = true;
+                }
+                
+                /* The next point on the right traversal path may be the end
+                 * of the width of the runway.
+                 */
+                end_of_width = traverseRight(right_point);
+                if (right_point.equals(end_of_width))
+                {
+                    width_found = true;
+                }
+            }
+            
+            /* The width of the runway is now a line segment from the
+             * Point intial_point to the Point end_of_width.  The
+             * slope of the length of the runway is the negative
+             * reciprocal of the slope of the width of the runway
+             * since the length and width are perpendicular.  Hence, the
+             * x component of the slope that we want is the difference between
+             * the y components that we have, and the y component is the
+             * difference between the x components that we have.
+             */
+            int slope_x = -1 *(end_of_width.getY() - initial_point.getY());
+            int slope_y = end_of_width.getX() - initial_point.getX();
+            
+            
+//Now, what do we do with this slope?  Should I return a slope object? A Point object?
 	}
 	
 	
-	
-	
 	/**
-	 * Check left, bottom-left, and bottom pixels.
-	 * traverse the left-most black pixel
-	 * Stop traversing when all 3 pixels are not black. Return that
-	 * pixel location
-	 * @return the left-most Point that is black or null if none of
-         * the three pixels tested are black.
+	 * Get the location of the left-most adjacent black point or the
+         * location of the parameter point if all of the pixels to the left
+         * are white.
+	 * @return the left-most Point that is black or the given point
+         * if none of the three pixels tested are black.
 	 */
 	private Point traverseLeft(Point point)
 	{
             Point left = new Point(point.getX() - 1, point.getY());
             Point bottom_left = new Point(point.getX() - 1, point.getY() + 1);
             Point bottom = new Point(point.getX(), point.getY() + 1);
+            
             if (left.isBlack(diagram))
             {
-                return traverseLeft(left);
+                return left;
             }
             else if (bottom_left.isBlack(diagram))
             {
-                return traverseLeft(bottom_left);
+                return bottom_left;
             }
             else if (bottom.isBlack(diagram))
             {
-                return traverseLeft(bottom);
+                return bottom;
             }
+            
+            //If no adjacent points were black, return the given point.
             else
             {
                 return point;
@@ -220,30 +288,32 @@ public class RunwayDiagramParser
 //TODO:convert recursive structure to iterative and traverse both (length and width) points at the same time	
 	
 	/**
-	 * Check right, bottom-right, and bottom pixels.
-	 * traverse the right-most black pixel
-	 * Stop traversing when all 3 pixels are not black. Return that
-	 * pixel location
-	 * @return the right-most Point that is black or null if none of
-         * the three pixels tested are black.
+	 * Get the location of the right-most adjacent black point or the
+         * location of the parameter point if all of the pixels to the right
+         * are white.
+	 * @return the right-most Point that is black or the given point
+         * if none of the three pixels tested are black.
 	 */
 	private Point traverseRight(Point point)
 	{
             Point right = new Point(point.getX() + 1, point.getY());
             Point bottom_right = new Point(point.getX() + 1, point.getY() + 1);
             Point bottom = new Point(point.getX(), point.getY() + 1);
+            
             if (right.isBlack(diagram))
             {
-                return traverseRight(right);
+                return right;
             }
             else if (bottom_right.isBlack(diagram))
             {
-                return traverseRight(bottom_right);
+                return bottom_right;
             }
             else if (bottom.isBlack(diagram))
             {
-                return traverseRight(bottom);
+                return bottom;
             }
+            
+            //If no adjacent points were black, return the given point.
             else
             {
                 return point;
@@ -252,7 +322,7 @@ public class RunwayDiagramParser
 	
 
 	/**
-	 * Traverse the slop at the rate of the slope. Stop when
+	 * Traverse the slope at the rate of the slope. Stop when
 	 * you reach the last black point.
 	 * @param initial_point
 	 * @param slope

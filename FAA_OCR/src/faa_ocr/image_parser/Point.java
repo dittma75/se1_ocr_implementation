@@ -88,4 +88,19 @@ public class Point {
             final int blue = (pixel_color) & 0xff;
             return (red < 20 && green < 20 && blue < 20);
         }
+        
+        public boolean equals(Object object)
+        {
+            //Can't be equal if the object isn't a point.
+            if (!(object instanceof Point))
+            {
+                return false;
+            }
+            
+            //Cast the object as a point, since it is an instance of Point.
+            Point point = (Point) object;
+            
+            //If the coordinates are equal, the points are the same.
+            return (point.getX() == x && point.getY() == y);
+        }
 }
