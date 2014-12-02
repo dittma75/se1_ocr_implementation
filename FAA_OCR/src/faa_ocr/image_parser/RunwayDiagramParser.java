@@ -313,8 +313,24 @@ public class RunwayDiagramParser
 	 */
 	private Point traverseSlope(Point initial_point, Point slope)
 	{
-		int x = initial_point.getX();
-		int y = initial_point.getY();
+                int slopeX = slope.getX();
+                int slopeY = slope.getY();
+                Point currPoint = initial_point;
+                
+                boolean lastBlack = false;
+                while(lastBlack = false) {
+                   Point next_point = new Point(slopeX - currPoint.getX(), slopeY - currPoint.getY()); //I'm not sure if I should be adding or subtracting these values
+                   // also I'm not entirely sure why netbeans is telling me I'm not using next_point because I am in the next line
+                   if(next_point.isBlack(diagram)) {
+                       currPoint = next_point; 
+                   } else {
+                       lastBlack = true;
+                   }
+                }
+                return currPoint;
+        }
+                
+                
 		
         //return the point where the next point is NOT going to be black
 		
