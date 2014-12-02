@@ -95,6 +95,9 @@ public class AirportDataParser
                 }
             }
         }
+        
+        //close scanner
+        scanner.close();
     }
     
     /**

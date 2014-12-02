@@ -40,10 +40,6 @@ public class RunwayDiagramParser
 	 */
 	private void traverseImage()
 	{
-		
-		//26813 pixels that are less than 20,20,20 rgb
-		//26184 pixels that are truly 0,0,0
-
 		for (int y = 0; y < diagram.getHeight(); y++) 
 		{
             for (int x = 0; x < diagram.getWidth(); x++) 
@@ -65,11 +61,8 @@ public class RunwayDiagramParser
                 {
                 	//skip pixel
                 }
-                
-
             }
 		}
-		
 		System.out.println("Size of diagram: " + diagram.getHeight() + " " + diagram.getWidth());
 	}
 	
@@ -83,7 +76,6 @@ public class RunwayDiagramParser
 	 */
 	private boolean checkPixel(Point pixel)
 	{
-            boolean noBlack = true;
             int x = pixel.getX();
             int y = pixel.getY();
             
@@ -96,21 +88,21 @@ public class RunwayDiagramParser
             
             if(left.isBlack(diagram)) 
             {
-            	noBlack = false;
+            	return false;
             } else if(topLeft.isBlack(diagram)) 
             {
-                noBlack = false;
+                return false;
             } else if(top.isBlack(diagram)) 
             {
-                noBlack = false;
+                return false;
             } else if(topRight.isBlack(diagram)) 
             {
-                noBlack = false;
+                return false;
             } else 
             {
-                //do nothing, no black pixels were found 
+                //no black pixels were found
+            	return true;
             } 
-            return noBlack;
         }
 
 	
@@ -118,7 +110,7 @@ public class RunwayDiagramParser
 	/**
 	 * Check the pixels to the right, bottom-right, bottom, bottom-left
 	 * of the parameter point. 3 pixels must be black to traverse the 
-	 * two outermost. If less than 3 are black, do nothing.
+	 * two outermost. If less than 3 surrounding pixels are black, do nothing.
 	 * @param pixel
 	 */
 	private void checkCorner(Point pixel)
@@ -131,28 +123,18 @@ public class RunwayDiagramParser
         Point bottom_right = new Point(x + 1, y + 1);
         Point right = new Point(x + 1, y);
         
-        //Check to see if 3 pixels are black
+        //Check to see if pixels around the initial point are black
         boolean bottom_left_black = bottom_left.isBlack(diagram);
         boolean bottom_black = bottom.isBlack(diagram);
         boolean bottom_right_black = bottom_right.isBlack(diagram);
         boolean right_black = right.isBlack(diagram);
         
-        
-//TODO: combine into one if
+        //3 pixels must be black so we know it is a runway
         /* check r+br+b, bl+b+br, r+br+b+bl */
-        if(bottom_right_black && bottom_black && bottom_left_black)
+        if(bottom_right_black && bottom_black && bottom_left_black ||
+        		right_black && bottom_right_black && bottom_black ||
+        		right_black && bottom_right_black && bottom_black && bottom_left_black)
         {
-        	//traverse bottom left and bottom right pixel
-        	findSlope(pixel);
-        }
-        else if(right_black && bottom_right_black && bottom_black)
-        {
-        	//traverse right and bottom pixel
-        	findSlope(pixel);
-        }
-        else if(right_black && bottom_right_black && bottom_black && bottom_left_black)
-        {
-        	//traverse right and bottom left pixel
         	findSlope(pixel);
         }
         else
@@ -172,7 +154,6 @@ public class RunwayDiagramParser
          * upper left corner of the runway depending on the runway's
          * orientation.
 	 */
-//TODO: I added parameters for the 2 most outermost pixels found so we know where to travers
 	private void findSlope(Point initial_point)
 	{
             /* Initialize the left point and right point.  We will traverse
@@ -227,12 +208,12 @@ public class RunwayDiagramParser
 //            int slope_x = -1 *(end_of_width.getY() - initial_point.getY());
 //            int slope_y = end_of_width.getX() - initial_point.getX();
             
+            //Calculate slope between initial point and end point. Invert that slope to get
+            //slope of the runway
             Point slope_of_runway = initial_point.calculateSlope(end_of_width).inverseSlope();
             Point midpoint_of_runway = initial_point.findMidpoint(end_of_width);
             
             addToAirport(midpoint_of_runway, slope_of_runway);
-            
-//Now, what do we do with this slope?  Should I return a slope object? A Point object?
 	}
 	
 	
@@ -245,10 +226,12 @@ public class RunwayDiagramParser
 	{
 		Point end_point = traverseSlope(midpoint, slope);
 		
+		//Translate the midpoint and end_point from x/y to lat/long
+		
+		//Add points to airport object.
 		
 		
 	}
-	
 	
 	
 	

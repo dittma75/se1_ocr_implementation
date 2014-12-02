@@ -61,21 +61,6 @@ public class PDFToImage
     public static void main(String[] args)
     {
             BufferedImage airport_image = new PDFToImage().makeImageFile("res/ACY/00669AD.pdf");
-//            try {
-//                    airport_image = ImageIO.read(new File("./FAA_OCR/lib/00669AD.jpg"));
-//                    Airport airport = new Airport("./FAA_OCR/res/ACY/00669AD.pdf");
-//
-//                    //get runway data from image
-//                    new RunwayDiagramParser().parseRunways(airport_image, airport);
-//
-//                    //get taxiway date from image
-//                    new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
-//
-//            } catch (IOException e) {
-//                    System.err.println("Error when making PDF an image");
-//                    e.printStackTrace();
-//            }
-
     }
 
     /**

@@ -47,8 +47,6 @@ public class AirportController
 	 */
 	public AirportController()
 	{
-		//initialize AirportController object
-		//TODO: may choose to hold instances of all the objects so we don't have to create them again for every pdf file.
 		pdf_to_text = new PDFToText();
 		pdf_to_image = new PDFToImage();
 		xml_parser = new AirportToXML();
