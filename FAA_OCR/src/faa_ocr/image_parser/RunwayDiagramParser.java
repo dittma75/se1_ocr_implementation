@@ -318,9 +318,9 @@ public class RunwayDiagramParser
                 Point currPoint = initial_point;
                 
                 boolean lastBlack = false;
-                while(lastBlack = false) {
-                   Point next_point = new Point(slopeX - currPoint.getX(), slopeY - currPoint.getY()); //I'm not sure if I should be adding or subtracting these values
-                   // also I'm not entirely sure why netbeans is telling me I'm not using next_point because I am in the next line
+                while(lastBlack == false) {
+                    // to get the next point, we must add the slope to the current point 
+                   Point next_point = new Point(currPoint.getX() + slopeX, currPoint.getY() + slopeY); 
                    if(next_point.isBlack(diagram)) {
                        currPoint = next_point; 
                    } else {
