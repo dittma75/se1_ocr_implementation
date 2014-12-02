@@ -5,6 +5,7 @@
  * mapped onto the xml file.
  */
 package faa_ocr.ADTs;
+import faa_ocr.image_parser.PDFToImage;
 import java.util.*;
 
 /**
@@ -19,10 +20,14 @@ public class Airport {
     private String abbreviation;
     private float variation;
     private ArrayList<Path> paths;
+    private final int PIXELS_PER_DEGREE_LAT;
+    private final int PIXELS_PER_DEGREE_LONG;
     
     public Airport (String pdf_file_path)
     {
         this.pdf_file_path = pdf_file_path;
+        PIXELS_PER_DEGREE_LAT = PDFToImage.findLatitudeScale(pdf_file_path);
+        PIXELS_PER_DEGREE_LONG = PDFToImage.findLongitudeScale(pdf_file_path);
     }
     
     /**
