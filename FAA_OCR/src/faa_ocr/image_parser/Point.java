@@ -47,35 +47,6 @@ public class Point {
 		return new Point(xx,yy);
 	}
 	
-	
-	/**
-	 * Calculate the slope between 2, x-y coordinates
-	 * Slope = y2 - y1 / x2 - x1
-	 * @param one
-	 * @param two
-	 * @return slope of the two points
-	 */
-	public Point calculateSlope(Point point_two)
-	{
-		int yy = point_two.getY() - this.y;
-		int xx = point_two.getX() - this.x;
-		//TODO: it may have to divide y by x to get a smaller slope.
-		//if it is a decimal, make into a whole number.
-		return new Point(yy,xx);
-	}
-	
-	/**
-	 * Inverse the slope to find a perpendicular line to that slope
-	 * y/x = -x/y
-	 * We assume the slope is the current point
-	 * @param slope
-	 * @return inverse slope 
-	 */
-	public Point inverseSlope()
-	{
-		return (new Point(-this.getX(), this.getY()));
-	}
-	
 	/**
          * Determine whether the point provided is black or not.
          * @param diagram is the picture to use when getting the color.

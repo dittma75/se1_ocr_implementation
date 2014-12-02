@@ -1,8 +1,8 @@
 package faa_ocr.image_parser;
 
-import java.awt.image.BufferedImage;
-
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.Slope;
+import java.awt.image.BufferedImage;
 
 
 /**
@@ -165,6 +165,11 @@ public class RunwayDiagramParser
              */
             Point left_point = traverseLeft(initial_point);
             Point right_point = traverseRight(initial_point);
+            
+            /* We will need to know where we started for later, so we have to
+             * save the initial point.
+             */
+            Point runway_start = initial_point;
 
             
             /* There is no point for the end of the width of the runway yet.
@@ -183,6 +188,11 @@ public class RunwayDiagramParser
                 end_of_width = traverseLeft(left_point);
                 if (left_point.equals(end_of_width))
                 {
+                    /* Our starting place should two pixels to the left of
+                     * our starting place, which was the upper right corner.
+                     */
+                    runway_start = traverseLeft(traverseLeft(runway_start));
+                    
                     width_found = true;
                 }
                 
@@ -192,6 +202,11 @@ public class RunwayDiagramParser
                 end_of_width = traverseRight(right_point);
                 if (right_point.equals(end_of_width))
                 {
+                    /* Our starting place should two pixels to the right of
+                     * our starting place, which was the upper left corner.
+                     */
+                    runway_start = traverseRight(traverseRight(runway_start));
+                    
                     width_found = true;
                 }
             }
@@ -205,15 +220,11 @@ public class RunwayDiagramParser
              * the y components that we have, and the y component is the
              * difference between the x components that we have.
              */
-//            int slope_x = -1 *(end_of_width.getY() - initial_point.getY());
-//            int slope_y = end_of_width.getX() - initial_point.getX();
-            
-            //Calculate slope between initial point and end point. Invert that slope to get
-            //slope of the runway
-            Point slope_of_runway = initial_point.calculateSlope(end_of_width).inverseSlope();
-            Point midpoint_of_runway = initial_point.findMidpoint(end_of_width);
-            
-            addToAirport(midpoint_of_runway, slope_of_runway);
+            int slope_x = -1 *(end_of_width.getY() - initial_point.getY());
+            int slope_y = end_of_width.getX() - initial_point.getX();
+            Slope slope = new Slope(slope_y, slope_x);
+            slope.invertSlope();
+            addToAirport(runway_start, slope);
 	}
 	
 	
@@ -222,7 +233,7 @@ public class RunwayDiagramParser
 	 * @param midpoint of the current runway
 	 * @param slope of the current runway
 	 */
-	private void addToAirport(Point midpoint, Point slope)
+	private void addToAirport(Point midpoint, Slope slope)
 	{
 		Point end_point = traverseSlope(midpoint, slope);
 		
@@ -311,7 +322,7 @@ public class RunwayDiagramParser
 	 * @param slope
 	 * @return last black point
 	 */
-	private Point traverseSlope(Point initial_point, Point slope)
+	private Point traverseSlope(Point initial_point, Slope slope)
 	{
                 int slopeX = slope.getX();
                 int slopeY = slope.getY();
