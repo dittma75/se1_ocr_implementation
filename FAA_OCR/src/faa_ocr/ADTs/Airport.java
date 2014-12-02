@@ -25,10 +25,14 @@ public class Airport {
     private String abbreviation;
     private float variation;
     private ArrayList<Path> paths;
+    private final int PIXELS_PER_DEGREE_LAT;
+    private final int PIXELS_PER_DEGREE_LONG;
     
     public Airport (String pdf_file_path)
     {
         this.pdf_file_path = pdf_file_path;
+        PIXELS_PER_DEGREE_LAT = PDFToImage.findLatitudeScale(pdf_file_path);
+        PIXELS_PER_DEGREE_LONG = PDFToImage.findLongitudeScale(pdf_file_path);
     }
     
     /**

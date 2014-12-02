@@ -96,6 +96,7 @@ public class PDFToText
         {
             diagram_text += scanner.nextLine();
         }
+        scanner.close();
         return diagram_text;
     }
     

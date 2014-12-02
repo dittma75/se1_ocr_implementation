@@ -1,10 +1,10 @@
 package faa_ocr.Controller;
 
-import java.io.File;
 
 import faa_ocr.ADTs.Airport;
 import faa_ocr.image_parser.PDFToImage;
-import faa_ocr.text_parser.AirportDataParser;
+import faa_ocr.text_parser.PDFToText;
+import faa_ocr.xml_parser.AirportToXML;
 
 
 /**
@@ -33,11 +33,13 @@ public class AirportController
 				System.out.println(arg + " is not a valid PDF");
 			}
 		}
-		System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
+		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
 	}
 	
 	
-	
+	private PDFToText pdf_to_text;
+	private PDFToImage pdf_to_image;
+	private AirportToXML xml_parser;
 	
 	
 	/**
@@ -45,8 +47,10 @@ public class AirportController
 	 */
 	public AirportController()
 	{
-		//initialize AirportController object
-		//TODO: may choose to hold instances of all the objects so we don't have to create them again for every pdf file.
+		pdf_to_text = new PDFToText();
+		pdf_to_image = new PDFToImage();
+		xml_parser = new AirportToXML();
+//		kml_parser = new AirportToKML();
 	}
 	
 	/**
@@ -60,13 +64,13 @@ public class AirportController
 		Airport airport = new Airport(path);
 		
 		//get textual data from PDF
-//		AirportDataParser.parseTextData(airport);
+		pdf_to_text.parseTextData(airport);
 		
 		//get visual data from PDF
-//		PDFToImage.parseVisualData(airport);
+		pdf_to_image.parseVisualData(airport);
 		
 		//turn Airport into an XML and save path to XML
-//		String path_to_xml = XMLParser.writeXML(airport);
+		String path_to_xml = xml_parser.convertToXml(airport);
 		
 		//turn xml file into a kml file.
 		//TODO: Strings or Files from xml???
@@ -78,7 +82,7 @@ public class AirportController
 	}
 	
 	/**
-	 * Print results from xml and kml
+	 * Print resulting files from XML and KML
 	 * @param airport
 	 * @param path_to_xml
 	 * @param path_to_kml

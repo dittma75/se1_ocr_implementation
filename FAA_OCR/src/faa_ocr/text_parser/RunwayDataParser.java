@@ -1,16 +1,11 @@
 package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.pdfbox.pdfparser.PDFParser;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
 
 /**
  * RunwayDataParser extracts all runway data from an airport diagram and puts
@@ -98,6 +93,7 @@ public class RunwayDataParser extends DataParser
                 elevations.add(Integer.parseInt(elevation));
             }
         }
+        scanner.close();
         
         /*At this point, the runway information is in order across the 
          *three lists.  Iterating across all three lists together will get
@@ -157,6 +153,7 @@ public class RunwayDataParser extends DataParser
                     runways.add(rwy_set[1]);
                 }
             }
+            scanner.close();
             return runways;
         }
         catch (FileNotFoundException ex)
@@ -206,6 +203,7 @@ public class RunwayDataParser extends DataParser
                 }
             }
         }
+        scanner.close();
         return valid_headings;
     }
 }
