@@ -56,6 +56,7 @@ public class PDFToImage
         }
         return diagram_image;
     }
+    
     /* Main method for testing */
     public static void main(String[] args)
     {
@@ -84,7 +85,6 @@ public class PDFToImage
     public void parseVisualData(Airport airport)
     {
         //create buffered image with the pdf file
-        //TODO: if it doesn't work, we need to use PDFbox to create a jpeg
         BufferedImage airport_image;
         try 
         {

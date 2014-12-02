@@ -67,12 +67,13 @@ public class Point {
 	/**
 	 * Inverse the slope to find a perpendicular line to that slope
 	 * y/x = -x/y
+	 * We assume the slope is the current point
 	 * @param slope
 	 * @return inverse slope 
 	 */
-	public Point inverseSlope(Point slope)
+	public Point inverseSlope()
 	{
-		return (new Point(-slope.getX(), slope.getY()));
+		return (new Point(-this.getX(), this.getY()));
 	}
 	
 	/**
