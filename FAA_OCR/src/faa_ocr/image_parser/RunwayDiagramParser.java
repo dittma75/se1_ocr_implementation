@@ -329,12 +329,4 @@ public class RunwayDiagramParser
                 }
                 return curr_point;
         }
-                
-                
-		
-        //return the point where the next point is NOT going to be black
-		
-		return null;
-	}
-        
 }
