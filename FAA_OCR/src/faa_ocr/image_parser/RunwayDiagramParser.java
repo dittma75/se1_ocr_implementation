@@ -315,19 +315,19 @@ public class RunwayDiagramParser
 	{
                 int slopeX = slope.getX();
                 int slopeY = slope.getY();
-                Point currPoint = initial_point;
+                Point curr_point = initial_point;
                 
                 boolean lastBlack = false;
                 while(lastBlack == false) {
                     // to get the next point, we must add the slope to the current point 
-                   Point next_point = new Point(currPoint.getX() + slopeX, currPoint.getY() + slopeY); 
+                   Point next_point = new Point(curr_point.getX() + slopeX, curr_point.getY() + slopeY); 
                    if(next_point.isBlack(diagram)) {
-                       currPoint = next_point; 
+                       curr_point = next_point; 
                    } else {
                        lastBlack = true;
                    }
                 }
-                return currPoint;
+                return curr_point;
         }
                 
                 
