@@ -1,9 +1,14 @@
-
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Purpose: Software Engineering I: FAA OCR Project 
+ * Status: Complete and thoroughly tested
+ * Last update: 12/02/14
+ * Submitted: 
+ * Comment: Path ADT
+ * @author: Greg Richards
+ * @version: 2014.11.20
+ * 
  */
+
 package faa_ocr.ADTs;
 import java.util.*;
 
