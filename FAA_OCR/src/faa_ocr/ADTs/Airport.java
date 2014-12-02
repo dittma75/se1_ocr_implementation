@@ -10,6 +10,7 @@
  */
 
 package faa_ocr.ADTs;
+import faa_ocr.image_parser.PDFToImage;
 import java.util.*;
 
 /*
