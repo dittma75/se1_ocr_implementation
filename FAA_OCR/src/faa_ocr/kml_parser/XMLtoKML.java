@@ -1,4 +1,4 @@
-package xmltokml;
+package faa_ocr.kml_parser;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -20,7 +20,14 @@ public class XMLtoKML
 	private String kml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         private String kml_path = "";
 
-	/**
+
+        public XMLtoKML()
+        {
+        	//constructor
+        }
+        
+        
+        /**
 	 * This method takes the XML representation of an airport and converts it to
 	 * KML format.
 	 * 

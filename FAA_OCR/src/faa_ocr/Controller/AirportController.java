@@ -1,10 +1,13 @@
 package faa_ocr.Controller;
 
 
+import java.io.File;
+
 import faa_ocr.ADTs.Airport;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
+import faa_ocr.kml_parser.XMLtoKML;
 
 
 /**
@@ -40,7 +43,7 @@ public class AirportController
 	private PDFToText pdf_to_text;
 	private PDFToImage pdf_to_image;
 	private AirportToXML xml_parser;
-	
+	private XMLtoKML kml_parser;
 	
 	/**
 	 * Control all behaviors of an airport
@@ -50,7 +53,7 @@ public class AirportController
 		pdf_to_text = new PDFToText();
 		pdf_to_image = new PDFToImage();
 		xml_parser = new AirportToXML();
-//		kml_parser = new AirportToKML();
+		kml_parser = new XMLtoKML();
 	}
 	
 	/**
@@ -73,11 +76,10 @@ public class AirportController
 		String path_to_xml = xml_parser.convertToXml(airport);
 		
 		//turn xml file into a kml file.
-		//TODO: Strings or Files from xml???
-//		String path_to_kml = KMLParser.writeKML(new File(path_to_xml));
+		String path_to_kml = kml_parser.writeKML(new File(path_to_xml));
 		
 		//print out results of transformations
-//		printResults(airport, path_to_xml,path_to_xml);
+		printResults(airport, path_to_xml,path_to_kml);
 		
 	}
 	
