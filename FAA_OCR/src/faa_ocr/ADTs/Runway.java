@@ -13,7 +13,6 @@ package faa_ocr.ADTs;
 
 /**
  *
- * @author g_ric_000
  */
 public class Runway extends Path 
 {
@@ -56,7 +55,8 @@ public class Runway extends Path
     @Override
     public String toString()
     {
-        return "" + heading;
+        String runwayString = "Path Type: Runway\n";
+        return runwayString;
     }
     
 }

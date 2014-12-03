@@ -1,4 +1,4 @@
-/*
+/**
  * Purpose: Software Engineering I: FAA OCR Project 
  * Status: Complete and thoroughly tested
  * Last update: 12/02/14
@@ -13,11 +13,11 @@ package faa_ocr.ADTs;
 import faa_ocr.image_parser.PDFToImage;
 import java.util.*;
 
-/*
- * The Airport class is an abstrat data type that represents the entire Airport
- * diagram pdf.  It contains all of the textual identification information that
+/**
+ * The Airport class is an abstract data type that represents the entire Airport
+ * diagram .pdf file.  It contains all of the textual identification information that
  * makes each airport diagram unique, as well as all of the nodes that are to be
- * mapped onto the xml file.
+ * mapped onto the .xml file.
  */
 public class Airport {
     private final String pdf_file_path;
@@ -128,9 +128,9 @@ public class Airport {
         return paths.get(i);
     }
     
-    /*
+    /**
      * get the number of Path objects in this Airport
-     * @return the int value of how many Paths are in the collection paths 
+     * @return the integer value of how many Paths are in the collection paths 
      */
     public int numPaths()
     {
@@ -147,13 +147,22 @@ public class Airport {
     }
     
     /**
-     * Get the String representation of an Airport object, which is the name
-     * of the airport.
+     * Get the String representation of an Airport object, including all of the
+     * current values of the object's data fields in an organized labeled fashion.
      * @return the String representation of the airport.
      */
     @Override
     public String toString()
     {
-        return name;
+        String airportString = "";
+        airportString += "File Path: " + pdf_file_path + "\n"
+                        + "Name: " + name + "\n"
+                        + "Location: " + location + "\n"
+                        + "Abbreviation: " + abbreviation + "\n"
+                        + "Variation: " + variation + "\n";
+        for(int i = 0; i < numPaths(); i++) {
+            airportString += "Path: " + getPath(i).toString() + "\n";
+        }
+        return airportString;
     }
-}
+}//end Airport

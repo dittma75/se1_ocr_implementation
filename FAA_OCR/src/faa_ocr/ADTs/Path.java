@@ -1,4 +1,4 @@
-/*
+/**
  * Purpose: Software Engineering I: FAA OCR Project 
  * Status: Complete and thoroughly tested
  * Last update: 12/02/14
@@ -14,7 +14,6 @@ import java.util.*;
 
 /**
  *
- * @author g_ric_000
  */
 public abstract class Path {
     String name;
@@ -71,7 +70,7 @@ public abstract class Path {
             pathString += node.toString();
         }
         pathString += "Intersections: ";
-        if( intersections.size() == 0){
+        if(intersections.isEmpty()){
             pathString += "This path does not have any intersections.";
         } else {
             for(Node node : intersections) {
