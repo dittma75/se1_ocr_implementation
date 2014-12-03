@@ -20,6 +20,10 @@ public abstract class Path {
     private ArrayList<Node> nodes;
     ArrayList<Node> intersections;
     
+    /**
+     * 
+     * @param name 
+     */
     public Path(String name)
     {
         this.name = name;
@@ -27,41 +31,75 @@ public abstract class Path {
         intersections = new ArrayList<Node>();
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String getName()
     {
         return name;   
     }
     
+    /**
+     * 
+     * @param newNode 
+     */
     public void addPathNode(Node newNode)
     {
         nodes.add(newNode);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getNumPathNodes()
     {
         return nodes.size();
     }
     
+    /**
+     * 
+     * @param index
+     * @return 
+     */
     public Node getPathNode(int index)
     {
         return nodes.get(index);
     }
     
+    /**
+     * 
+     * @param newNode 
+     */
     public void addIntNode(Node newNode)
     {
         intersections.add(newNode);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getNumIntNodes()
     {
         return intersections.size();
     }
     
+    /**
+     * 
+     * @param index
+     * @return 
+     */
     public Node getIntNode(int index)
     {
         return intersections.get(index);
     }
     
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString()
     {

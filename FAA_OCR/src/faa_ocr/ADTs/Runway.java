@@ -20,6 +20,12 @@ public class Runway extends Path
     private final float heading;
     private Node threshold;
     
+    /**
+     * 
+     * @param elevation
+     * @param heading
+     * @param name 
+     */
     public Runway(int elevation, float heading, String name)
     {
         super(name);
@@ -27,31 +33,55 @@ public class Runway extends Path
         this.heading = heading;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getElevation()
     {
         return elevation;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public float getHeading()
     {
         return heading;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public Node getThreshold()
     {
         return threshold;
     }
     
+    /**
+     * 
+     * @param threshold 
+     */
     public void setThreshold(Node threshold)
     {
         this.threshold = threshold;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public boolean hasThreshold()
     {
         return threshold != null;
     }
     
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString()
     {
