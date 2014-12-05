@@ -119,7 +119,7 @@ public class PDFToText
      * @param file_name name of airport diagram PDF file.
      * @return text representation of airport diagram.
      */
-    String getTextPDFBox(String file_name)
+    public static String getTextPDFBox(String file_name)
     {
         PDFParser parser;
         String parsed_text = "";

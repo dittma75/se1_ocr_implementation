@@ -12,6 +12,7 @@
 package faa_ocr.ADTs;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.image_parser.Point;
+import faa_ocr.text_parser.PDFToText;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
@@ -28,10 +29,36 @@ public class Airport {
     private String abbreviation;
     private float variation;
     private ArrayList<Path> paths;
-    private int pixels_per_degree_lat;
-    private int pixels_per_degree_long;
+    
+    //Y-coordinate to latitude conversion factor.
+    private int pixels_per_unit_lat;
+    
+    //X-coordinate to longitude conversion factor.
+    private int pixels_per_unit_long;
+    
+    //Offset from top of diagram to first unit marker.
     private int latitude_offset;
+    
+    //Offset from left side of diagram to first unit marker.
     private int longitude_offset;
+    
+    /* The margins are the distance from edge of the diagram to the
+     * first whitespace pixel of the diagram.  The x_margin is the
+     * length of the left and right margins in pixels, and the y_margin
+     * is the length of the top and bottom margins in pixels.
+     */
+    private int x_margin;
+    private int y_margin;
+    
+    //True if half minutes are used; false if whole minutes are used.
+    private final boolean USES_HALF_MINUTES;
+    
+    //The latitude that coordinates will be based on for this airport.
+    private final float BASE_LATITUDE;
+    
+    //The latitude that coordinates will be based on for this airport.
+    private final float BASE_LONGITUDE;
+    
     public Airport (String pdf_file_path)
     {
         this.pdf_file_path = pdf_file_path;
@@ -41,6 +68,10 @@ public class Airport {
          * corner of the diagram.
          */
         findPixelConversionScales();
+        String diagram_text = PDFToText.getTextPDFBox(pdf_file_path);
+        USES_HALF_MINUTES = containsHalfMinutes(diagram_text);
+        BASE_LATITUDE = findBaseLatitude(diagram_text);
+        BASE_LONGITUDE = findBaseLongitude(diagram_text);
     }
     
     /**
@@ -183,14 +214,6 @@ public class Airport {
     {
         BufferedImage diagram = PDFToImage.makeImage(this.pdf_file_path);
         
-        /* The margins are the distance from edge of the diagram to the
-         * first whitespace pixel of the diagram.  The x_margin is the
-         * length of the left and right margins in pixels, and the y_margin
-         * is the length of the top and bottom margins in pixels.
-         */
-        int x_margin;
-        int y_margin;
-        
         /* The longer side has a margin of 61 pixels, and the shorter side
          * has a margin of 25 pixels for all airport diagrams.  In other
          * words, the first whitespace pixel of the actual diagram is at
@@ -295,7 +318,7 @@ public class Airport {
         this.longitude_offset = grid_offset;
         
         //Set the pixels-to-longitude conversion factor
-        this.pixels_per_degree_long = unit_in_pixels;
+        this.pixels_per_unit_long = unit_in_pixels;
         
         //We found our scale information.
         return true;
@@ -355,9 +378,60 @@ public class Airport {
         this.latitude_offset = grid_offset;
         
         //Set the pixels-to-latitude conversion factor.
-        this.pixels_per_degree_lat = unit_in_pixels;
+        this.pixels_per_unit_lat = unit_in_pixels;
         
         //We found our scale information.
         return true;
+    }
+    
+    /**
+     * Determine whether this airport diagram uses half minutes or whole
+     * minutes for measurements.
+     * @param diagram_text is the text representation of the diagram.
+     * @return true if the measurement is half minutes and false if it is
+     * whole minutes.
+     */
+    private boolean containsHalfMinutes(String diagram_text)
+    {
+        //Look for a minute measurement with a ".5" component.
+        return diagram_text.contains(".*\\.5\\'[NSWE].*");
+    }
+    
+    /**
+     * Convert a y-coordinate into a latitude coordinate.
+     * @param y is the y-coordinate of the diagram.
+     * @return the latitude coordinate that corresponds to the pixel at the
+     * given y-coordinate.
+     */
+    private float latitudeConversion(int y)
+    {
+        return BASE_LATITUDE + (y - y_margin) / pixels_per_unit_lat;
+    }
+    
+    /**
+     * Convert the x-coordinate into a longitude coordinate.
+     * @param x is the x-coordinate of the diagram.
+     * @return the longitude coordinate that corresponds to the pixel at the
+     * given x-coordinate.
+     */
+    private float longitudeConversion(int x)
+    {
+        return BASE_LONGITUDE + (x - x_margin) / pixels_per_unit_lat;
+    }
+    
+    private float findBaseLatitude()
+    {
+       //Find all numbers in the format \d+(degree) *\d+'[NS]
+       //Find the largest number if there were Ns, smallest if there were Ss
+       //return that.
+       return 0.0f;
+    }
+    
+    private float findBaseLongitude()
+    {
+       //Find all numbers in the format \d+(degree) *\d+'[WE]
+       //Find the largest number if there were Ws, smallest if there were Es
+       //return that.
+       return 0.0f;
     }
 }//end Airport

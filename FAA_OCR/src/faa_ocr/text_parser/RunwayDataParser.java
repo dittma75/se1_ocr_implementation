@@ -179,7 +179,7 @@ public class RunwayDataParser extends DataParser
          *preserve the ° characters, which are the best way to find the
          *heading angles.
          */
-        String pdf_text = new PDFToText().getTextPDFBox(file_name);
+        String pdf_text = PDFToText.getTextPDFBox(file_name);
         
         Scanner scanner = new Scanner(pdf_text);
         String next_line = "";
