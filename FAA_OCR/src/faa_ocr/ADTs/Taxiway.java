@@ -6,7 +6,6 @@
  * Comment: Taxiway ADT
  * @author: Greg Richards
  * @version: 2014.11.20
- * 
  */
 package faa_ocr.ADTs;
 

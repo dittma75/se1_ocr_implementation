@@ -12,27 +12,34 @@ package faa_ocr.ADTs;
 import java.util.*;
 
 /**
- *
+ * Path is an abstract super class that encapsulates all similarities amongst 
+ * Runways and Taxiways and gives the subclasses three data fields and several
+ * methods that all instances of Path should have regardless of the type. It 
+ * is important to encapsulate this information in a super class because it is
+ * good possibility that in the future there will be new extensions of Path that
+ * will need the same fields and methods.
  */
 public abstract class Path {
     String name;
-    private ArrayList<Node> nodes;
+    private final ArrayList<Node> nodes;
     ArrayList<Node> intersections;
     
     /**
+     * constructor for the Path class
      * 
-     * @param name 
+     * @param name String name of the class that we have pulled from the diagram
      */
     public Path(String name)
     {
         this.name = name;
-        nodes = new ArrayList<Node>();
-        intersections = new ArrayList<Node>();
+        nodes = new ArrayList<>();
+        intersections = new ArrayList<>();
     }
     
     /**
+     * get the name of the 
      * 
-     * @return 
+     * @return String name of the Path
      */
     public String getName()
     {
@@ -40,8 +47,9 @@ public abstract class Path {
     }
     
     /**
+     * add a Node to the list defining the coordinates of the Path
      * 
-     * @param newNode 
+     * @param newNode Node we are adding to the nodes collection
      */
     public void addPathNode(Node newNode)
     {
@@ -49,8 +57,9 @@ public abstract class Path {
     }
     
     /**
+     * get the number of Node objects in the Path
      * 
-     * @return 
+     * @return int size of the collection
      */
     public int getNumPathNodes()
     {
@@ -58,9 +67,10 @@ public abstract class Path {
     }
     
     /**
+     * get the Node at the specified index in the ArrayList
      * 
-     * @param index
-     * @return 
+     * @param index int value of the desired position in the nodes collection 
+     * @return the Node at the desired spot in the collection
      */
     public Node getPathNode(int index)
     {
@@ -68,8 +78,9 @@ public abstract class Path {
     }
     
     /**
+     * add a new Node to the collection of intersections
      * 
-     * @param newNode 
+     * @param newNode intersection Node we are adding to the collection
      */
     public void addIntNode(Node newNode)
     {
@@ -77,8 +88,9 @@ public abstract class Path {
     }
     
     /**
+     * get the number of intersections in an instance of Path
      * 
-     * @return 
+     * @return int size of the intersections collection 
      */
     public int getNumIntNodes()
     {
@@ -86,9 +98,10 @@ public abstract class Path {
     }
     
     /**
+     * get the intersection Node at the specified index in the ArrayList
      * 
-     * @param index
-     * @return 
+     * @param index int value of the desired position in the intersections collection 
+     * @return the Node at the desired spot in the collection
      */
     public Node getIntNode(int index)
     {
@@ -96,13 +109,15 @@ public abstract class Path {
     }
     
     /**
+     * Get the String representation of an Path object, including all of the
+     * current values of the object's data fields in an organized manner.
      * 
-     * @return 
+     * @return String representation of a Path object 
      */
     @Override
     public String toString()
     {
-        String pathString = (name + "/n" + "Path: ");
+        String pathString = "";
         for(Node node : nodes) {
             pathString += node.toString();
         }

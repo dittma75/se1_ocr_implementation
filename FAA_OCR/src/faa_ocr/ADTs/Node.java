@@ -6,12 +6,11 @@
  * Comment: Node ADT
  * @author: Greg Richards
  * @version: 2014.11.20
- * 
  */
 
 package faa_ocr.ADTs;
 
-/*
+/**
  * Class Node represents a single point in a single Path for which we have
  * calculated its latitude and longitude coordinates based on the location of 
  * its respective pixel on the airport diagram .pdf file that was used as input
@@ -21,8 +20,9 @@ public class Node {
     private final float longitude;
     private final float latitude;
     
-    /*
+    /**
      * Constructor for the Node class
+     * 
      * @param longi: is a float value that represents the node's degree of longitude
      * @param lat: is a float value that represents the node's degree of latitude 
      */
@@ -32,8 +32,9 @@ public class Node {
         latitude = lat;
     }
     
-    /*
+    /**
      * get the node's degree of longitude
+     * 
      * @return float value that represents the node's degree of longitude 
      */
     public float getLong()
@@ -41,8 +42,9 @@ public class Node {
             return longitude;
     }
     
-    /*
+    /**
      * get the node's degree of latitude 
+     * 
      * @return float value that represents the node's degree of latitude
      */
     public float getLat()
@@ -50,9 +52,10 @@ public class Node {
         return latitude;
     }
     
-    /*
+    /**
      * get a String representation of all the current values of the data fields
      * within the instance of Node.
+     * 
      * @return String representation of the instance
      */
     @Override

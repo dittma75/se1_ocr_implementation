@@ -6,7 +6,6 @@
  * Comment: Airport ADT
  * @author: Greg Richards, Kevin Dittmar
  * @version: 2014.11.20
- * 
  */
 
 package faa_ocr.ADTs;
@@ -76,6 +75,7 @@ public class Airport {
     
     /**
      * Get the file path of the airport diagram PDF file.
+     * 
      * @return the airport diagram file path as a String.
      */
     public String getFilePath()
@@ -85,6 +85,7 @@ public class Airport {
     
     /**
      * Get the name of the airport.
+     * 
      * @return the name of the airport as a String.
      */
     public String getName()
@@ -94,6 +95,7 @@ public class Airport {
     
     /**
      * Set the name of the airport to be the given String.
+     * 
      * @param name is the String representation of the Airport's name.
      */
     public void setName(String name)
@@ -103,6 +105,7 @@ public class Airport {
     
     /**
      * Get the name of the location of the airport.
+     * 
      * @return the location of the airport as a String.
      */
     public String getLocation()
@@ -112,6 +115,7 @@ public class Airport {
     
     /**
      * Set the location of the airport based on the given location.
+     * 
      * @param location is the String representation of the airport location.
      */
     public void setLocation(String location)
@@ -121,6 +125,7 @@ public class Airport {
     
     /**
      * Get the abbreviation for the airport.
+     * 
      * @return the abbreviation of the airport as a String.
      */
     public String getAbbreviation()
@@ -130,6 +135,7 @@ public class Airport {
     
     /**
      * Set the abbreviation of the airport.
+     * 
      * @param abbreviation is the airport abbreviation as a String.
      */
     public void setAbbreviation(String abbreviation)
@@ -140,6 +146,7 @@ public class Airport {
     /**
      * Get the value that represents that variation from compass north and
      * true north.
+     * 
      * @return the variation from true north.
      */
     public float getVariation()
@@ -149,6 +156,7 @@ public class Airport {
     
     /**
      * Set the variation from true north.
+     * 
      * @param variation is the variation from true north represented as a
      * float.
      */
@@ -158,6 +166,7 @@ public class Airport {
     }
     /*
      * Get a Path object located at a specified index number
+    
      * @param the int index value of the Path you wish to retrieve
      * @return the Path object at index i
      */
@@ -168,6 +177,7 @@ public class Airport {
     
     /**
      * get the number of Path objects in this Airport
+     * 
      * @return the integer value of how many Paths are in the collection paths 
      */
     public int numPaths()
@@ -177,6 +187,7 @@ public class Airport {
     
     /*
      * Add a Path object to the collection paths in the instance of Airport
+    
      * @param the Path object to be added to the collection
      */
     public void addPath(Path path)
@@ -186,7 +197,8 @@ public class Airport {
     
     /**
      * Get the String representation of an Airport object, including all of the
-     * current values of the object's data fields in an organized labeled fashion.
+     * current values of the object's data fields in an organized manner.
+     * 
      * @return the String representation of the airport.
      */
     @Override
@@ -206,6 +218,7 @@ public class Airport {
     
     /**
      * Gets the conversion factor between pixel length and longitude.
+     * 
      * @param file_path the path to the airport diagram PDF.
      * @return the number of pixels in one unit of longitude (may be a half
      * degree or a whole degree).
@@ -266,6 +279,7 @@ public class Airport {
     
     /**
      * Try to find the longitude scale and report the success of the attempt.
+     * 
      * @param current is the point to start searching from.
      * @param diagram_width_end is the end of the diagram when approaching
      * from the left.
@@ -326,6 +340,7 @@ public class Airport {
     
     /**
      * Try to find the latitude scale and report the success of the attempt.
+     * 
      * @param current is the point to start searching from.
      * @param diagram_height_end is the end of the diagram when approaching
      * from the top.
@@ -387,6 +402,7 @@ public class Airport {
     /**
      * Determine whether this airport diagram uses half minutes or whole
      * minutes for measurements.
+     * 
      * @param diagram_text is the text representation of the diagram.
      * @return true if the measurement is half minutes and false if it is
      * whole minutes.
@@ -399,6 +415,7 @@ public class Airport {
     
     /**
      * Convert a y-coordinate into a latitude coordinate.
+     * 
      * @param y is the y-coordinate of the diagram.
      * @return the latitude coordinate that corresponds to the pixel at the
      * given y-coordinate.
@@ -410,6 +427,7 @@ public class Airport {
     
     /**
      * Convert the x-coordinate into a longitude coordinate.
+     * 
      * @param x is the x-coordinate of the diagram.
      * @return the longitude coordinate that corresponds to the pixel at the
      * given x-coordinate.
@@ -421,6 +439,7 @@ public class Airport {
     
     /**
      * Get the latitude of the topmost latitude marker on the diagram.
+     * 
      * @param diagram_text is the String representation of the diagram.
      * @return the base latitude to use for coordinate conversion.
      */
@@ -434,6 +453,7 @@ public class Airport {
     
     /**
      * Get the longitude of the leftmost longitude marker on the diagram.
+     * 
      * @param diagram_text is the String representation of the diagram.
      * @return the base longitude to use for coordinate conversion.
      */

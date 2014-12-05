@@ -1,15 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Purpose: Software Engineering I: FAA OCR Project 
+ * Status: Complete and thoroughly tested
+ * Last update: 12/02/14
+ * Submitted:
+ * Comment: AirportToXML
+ * @author: Greg Richards
+ * @version: 2014.11.20
  */
 package faa_ocr.xml_parser;
 import faa_ocr.ADTs.*;
 import java.io.*;
 
 /**
- *
- * @author g_ric_000
+ * 
  */
 public class AirportToXML {
     private String xml_string;
@@ -35,9 +38,10 @@ public class AirportToXML {
         return writeToFile(airport.getFilePath());
     }
     
-    /*
+    /**
      * take all of the Path objects and separate them by if they are an instance
      * of Runway or Taxiway and send them to their respective XML conversion
+     * @param 
      */
     private void sortPaths(Airport airport)
     {
@@ -106,9 +110,15 @@ public class AirportToXML {
         xml_string += "</coordinates>\n";
     }
     
-    /*
-     *
-     * @param
+    /**
+     * Take all of the information stored in an instance of Taxiway that we pass
+     * as a parameter and add it to the String we will be writing to the .xml
+     * file we are to create.  taxiwayToXml(Taxiway taxiway) will be called only by 
+     * sortPaths(Airport airport) and will organize all of the information into
+     * organized and labeled XML formatted lines.
+     * 
+     * @param taxiway instance of Taxiway that we are currently converting to
+     * .xml format
      */
     private void taxiwayToXml(Taxiway taxiway)
     {
