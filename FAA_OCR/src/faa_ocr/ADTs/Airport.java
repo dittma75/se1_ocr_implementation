@@ -420,7 +420,7 @@ public class Airport {
      * @return the latitude coordinate that corresponds to the pixel at the
      * given y-coordinate.
      */
-    private float latitudeConversion(int y)
+    public float latitudeConversion(int y)
     {
         return BASE_LATITUDE + (y - y_margin) / pixels_per_unit_lat;
     }
@@ -432,7 +432,7 @@ public class Airport {
      * @return the longitude coordinate that corresponds to the pixel at the
      * given x-coordinate.
      */
-    private float longitudeConversion(int x)
+    public float longitudeConversion(int x)
     {
         return BASE_LONGITUDE + (x - x_margin) / pixels_per_unit_lat;
     }

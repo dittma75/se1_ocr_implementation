@@ -1,6 +1,6 @@
 package faa_ocr.image_parser;
 
-import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.*;
 import faa_ocr.ADTs.Slope;
 import java.awt.image.BufferedImage;
 
@@ -236,12 +236,22 @@ public class RunwayDiagramParser
 	private void addToAirport(Point midpoint, Slope slope)
 	{
 		Point end_point = traverseSlope(midpoint, slope);
-		
+		int x1 = midpoint.getX();
+                int y1 = midpoint.getY();
+                
+                int x2 = end_point.getX();
+                int y2 = end_point.getY();
+                
 		//Translate the midpoint and end_point from x/y to lat/long
-		
-		//Add points to airport object.
-		
-		
+                float x1Long = airport.longitudeConversion(x1);
+                float y1Long = airport.latitudeConversion(y1);
+                Node startNode = new Node(x1Long, y1Long);
+                
+                float x2Long = airport.longitudeConversion(x2);
+                float y2Long = airport.latitudeConversion(y2);
+                Node endNode = new Node(x2Long, y2Long);
+                
+		//Add points to existing Runway instance in airport object.
 	}
 	
 	
