@@ -14,11 +14,11 @@ public class RunwayDiagramParser
 {
 	private BufferedImage diagram;
 	private Airport airport;
-	
+	private int runways_left;
 
 	public RunwayDiagramParser()
 	{
-		//do nothing
+            //do nothing
 	}
 	
 	/**
@@ -29,9 +29,15 @@ public class RunwayDiagramParser
 	 */
 	public void parseRunways(BufferedImage diagram, Airport airport)
 	{
-		this.diagram = diagram;
-		this.airport = airport;
-		traverseImage();
+            this.diagram = diagram;
+            this.airport = airport;
+            
+            /* Each physical runway represents two runways in the diagram,
+             * one for each direction of traffic.
+             */
+            this.runways_left = airport.getNumberOfRunways() / 2;
+            
+            traverseImage();
 	}
 	
 	/**
@@ -40,30 +46,33 @@ public class RunwayDiagramParser
 	 */
 	private void traverseImage()
 	{
-		for (int y = 0; y < diagram.getHeight(); y++) 
-		{
-            for (int x = 0; x < diagram.getWidth(); x++) 
+            for (int y = 0; y < diagram.getHeight(); y++) 
             {
-                Point pixel = new Point(x,y);
-                if (pixel.isBlack(diagram))
+                for (int x = 0; x < diagram.getWidth(); x++) 
                 {
-                	if (checkPixel(pixel))
-                	{
-                		//see if the pixel is a runway
-                		checkCorner(pixel);
-                	}
-                	else
-                	{
-                		//skip pixel
-                	}
-                }
-                else
-                {
-                	//skip pixel
+                    Point pixel = new Point(x,y);
+                    if (pixel.isBlack(diagram))
+                    {
+                            if (checkPixel(pixel))
+                            {
+                                    //see if the pixel is a runway
+                                    checkCorner(pixel);
+                            }
+                            else
+                            {
+                                    //skip pixel
+                            }
+                    }
+                    else
+                    {
+                            //skip pixel
+                    }
                 }
             }
-		}
-		System.out.println("Size of diagram: " + diagram.getHeight() + " " + diagram.getWidth());
+            System.out.println("Size of diagram: " + 
+                               diagram.getHeight() + " " + 
+                               diagram.getWidth()
+            );
 	}
 	
 	
@@ -115,32 +124,33 @@ public class RunwayDiagramParser
 	 */
 	private void checkCorner(Point pixel)
 	{
-		int x = pixel.getX();
-        int y = pixel.getY();
+            int x = pixel.getX();
+            int y = pixel.getY();
 		
-        Point bottom_left = new Point(x - 1, y + 1);
-        Point bottom = new Point(x, y + 1);
-        Point bottom_right = new Point(x + 1, y + 1);
-        Point right = new Point(x + 1, y);
-        
-        //Check to see if pixels around the initial point are black
-        boolean bottom_left_black = bottom_left.isBlack(diagram);
-        boolean bottom_black = bottom.isBlack(diagram);
-        boolean bottom_right_black = bottom_right.isBlack(diagram);
-        boolean right_black = right.isBlack(diagram);
-        
-        //3 pixels must be black so we know it is a runway
-        /* check r+br+b, bl+b+br, r+br+b+bl */
-        if(bottom_right_black && bottom_black && bottom_left_black ||
-        		right_black && bottom_right_black && bottom_black ||
-        		right_black && bottom_right_black && bottom_black && bottom_left_black)
-        {
-        	findSlope(pixel);
-        }
-        else
-        {
-        	//do nothing
-        }  
+            Point bottom_left = new Point(x - 1, y + 1);
+            Point bottom = new Point(x, y + 1);
+            Point bottom_right = new Point(x + 1, y + 1);
+            Point right = new Point(x + 1, y);
+
+            //Check to see if pixels around the initial point are black
+            boolean bottom_left_black = bottom_left.isBlack(diagram);
+            boolean bottom_black = bottom.isBlack(diagram);
+            boolean bottom_right_black = bottom_right.isBlack(diagram);
+            boolean right_black = right.isBlack(diagram);
+
+            //3 pixels must be black so we know it is a runway
+            /* check r+br+b, bl+b+br, r+br+b+bl */
+            if(bottom_right_black && bottom_black && bottom_left_black ||
+               right_black && bottom_right_black && bottom_black ||
+               right_black && bottom_right_black && bottom_black && 
+               bottom_left_black)
+            {
+                    findSlope(pixel);
+            }
+            else
+            {
+                    //do nothing
+            }  
 	}
 
             

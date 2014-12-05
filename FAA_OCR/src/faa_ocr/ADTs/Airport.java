@@ -28,6 +28,7 @@ public class Airport {
     private String abbreviation;
     private float variation;
     private ArrayList<Path> paths;
+    private int number_of_runways;
     
     //Y-coordinate to latitude conversion factor.
     private int pixels_per_unit_lat;
@@ -61,6 +62,9 @@ public class Airport {
     public Airport (String pdf_file_path)
     {
         this.pdf_file_path = pdf_file_path;
+        
+        //Keep track of the number of Paths that are runway.
+        this.number_of_runways = 0;
         
         /* Set the scales for pixel coordinates to latitude and longitude
          * coordinates as well as the necessary offsets from the upper left
@@ -192,7 +196,21 @@ public class Airport {
      */
     public void addPath(Path path)
     {
+        //If this Path is a Runway, add to the counter;
+        if (path instanceof Runway)
+        {
+            number_of_runways++;
+        }
         paths.add(path);
+    }
+    
+    /**
+     * Gets the number of runways in this airport.
+     * @return the number of runways in the airport diagram.
+     */
+    public int getNumberOfRunways()
+    {
+        return number_of_runways;
     }
     
     /**
