@@ -419,7 +419,12 @@ public class Airport {
         return BASE_LONGITUDE + (x - x_margin) / pixels_per_unit_lat;
     }
     
-    private float findBaseLatitude()
+    /**
+     * Get the latitude of the topmost latitude marker on the diagram.
+     * @param diagram_text is the String representation of the diagram.
+     * @return the base latitude to use for coordinate conversion.
+     */
+    private float findBaseLatitude(String diagram_text)
     {
        //Find all numbers in the format \d+(degree) *\d+'[NS]
        //Find the largest number if there were Ns, smallest if there were Ss
@@ -427,7 +432,12 @@ public class Airport {
        return 0.0f;
     }
     
-    private float findBaseLongitude()
+    /**
+     * Get the longitude of the leftmost longitude marker on the diagram.
+     * @param diagram_text is the String representation of the diagram.
+     * @return the base longitude to use for coordinate conversion.
+     */
+    private float findBaseLongitude(String diagram_text)
     {
        //Find all numbers in the format \d+(degree) *\d+'[WE]
        //Find the largest number if there were Ws, smallest if there were Es
