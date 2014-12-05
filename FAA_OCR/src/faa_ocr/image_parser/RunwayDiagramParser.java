@@ -329,9 +329,14 @@ public class RunwayDiagramParser
                 Point curr_point = initial_point;
                 
                 boolean lastBlack = false;
-                while(lastBlack == false) {
-                    // to get the next point, we must add the slope to the current point 
-                   Point next_point = new Point(curr_point.getX() + slopeX, curr_point.getY() + slopeY); 
+                while(lastBlack == false)
+                {
+                   //To get the next point, add the slope to the current point.
+                   Point next_point = new Point(
+                           curr_point.getX() + slopeX, 
+                           curr_point.getY() + slopeY
+                   );
+                   
                    if(next_point.isBlack(diagram)) {
                        curr_point = next_point; 
                    } else {
