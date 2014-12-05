@@ -45,8 +45,8 @@ public class AirportToXML {
      */
     private void sortPaths(Airport airport)
     {
-        for(int i = 0; i < airport.numPaths(); i++) {
-            Path currPath = airport.getPath(i);
+        for(int i = 0; i < airport.numRunways(); i++) {
+            Path currPath = airport.getRunway(i);
             xml_string += "<path>" + "\n";
             if(currPath instanceof Runway) {
                 runwayToXml((Runway)currPath);

@@ -32,10 +32,7 @@ public class RunwayDiagramParser
             this.diagram = diagram;
             this.airport = airport;
             
-            /* Each physical runway represents two runways in the diagram,
-             * one for each direction of traffic.
-             */
-            this.runways_left = airport.getNumberOfRunways() / 2;
+            this.runways_left = airport.getNumberOfRunways();
             
             traverseImage();
 	}
@@ -235,6 +232,7 @@ public class RunwayDiagramParser
             Slope slope = new Slope(slope_y, slope_x);
             slope.invertSlope();
             addToAirport(runway_start, slope);
+            
 	}
 	
 	
@@ -243,7 +241,7 @@ public class RunwayDiagramParser
 	 * @param midpoint of the current runway
 	 * @param slope of the current runway
 	 */
-	private void addToAirport(Point midpoint, Slope slope)
+	private boolean addToAirport(Point midpoint, Slope slope)
 	{
 		Point end_point = traverseSlope(midpoint, slope);
 		int x1 = midpoint.getX();
@@ -252,17 +250,54 @@ public class RunwayDiagramParser
                 int x2 = end_point.getX();
                 int y2 = end_point.getY();
                 
-		//Translate the midpoint and end_point from x/y to lat/long
-                float x1Long = airport.longitudeConversion(x1);
-                float y1Long = airport.latitudeConversion(y1);
-                Node startNode = new Node(x1Long, y1Long);
+                double runwayLength = findLength(x1, x2, y1, y2);
                 
-                float x2Long = airport.longitudeConversion(x2);
-                float y2Long = airport.latitudeConversion(y2);
-                Node endNode = new Node(x2Long, y2Long);
+                if(runwayLength > 100) {
+                    //Translate the midpoint and end_point from x/y to lat/long
+                    float x1Long = airport.longitudeConversion(x1);
+                    float y1Long = airport.latitudeConversion(y1);
+                    Node startNode = new Node(x1Long, y1Long);
+
+                    float x2Long = airport.longitudeConversion(x2);
+                    float y2Long = airport.latitudeConversion(y2);
+                    Node endNode = new Node(x2Long, y2Long);
+
+                    /* Add points to existing Runway instance in airport
+                     * object.  Each physical runway is two runways, and they
+                     * are stored consecutively in pairs.  Hence, we add
+                     * the start and end nodes to the next two runways, since
+                     * they represent the same physical runway.
+                     */
+                    for (int i = 0; i < 2; i++)
+                    {
+                        Runway runway = airport.getRunway(
+                                airport.getNumberOfRunways() - runways_left
+                        );
+                        runway.addPathNode(startNode);
+                        runway.addPathNode(endNode);
+                    }
+                    return true;
+                }
+                //This line isn't long enough to be a runway.
+                else 
+                {
+                    return false;
+                }
                 
-		//Add points to existing Runway instance in airport object.
+                
 	}
+        
+        /**
+         * find the length in pixels of the runway
+         * 
+         * @param 
+         * @param
+         * @param
+         * @param
+         */
+        private double findLength(int x1, int y1, int x2, int y2) {
+            return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+        }
 	
 	
 	

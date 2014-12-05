@@ -27,8 +27,9 @@ public class Airport {
     private String location;
     private String abbreviation;
     private float variation;
-    private ArrayList<Path> paths;
-    private int number_of_runways;
+    private ArrayList<Runway> runways;
+    //Not used because we didn't get to them.
+    private ArrayList<Taxiway> taxiways;
     
     //Y-coordinate to latitude conversion factor.
     private int pixels_per_unit_lat;
@@ -62,9 +63,6 @@ public class Airport {
     public Airport (String pdf_file_path)
     {
         this.pdf_file_path = pdf_file_path;
-        
-        //Keep track of the number of Paths that are runway.
-        this.number_of_runways = 0;
         
         /* Set the scales for pixel coordinates to latitude and longitude
          * coordinates as well as the necessary offsets from the upper left
@@ -169,24 +167,25 @@ public class Airport {
         this.variation = variation;
     }
     /*
-     * Get a Path object located at a specified index number
+     * Get a Runway object located at a specified index number
     
-     * @param the int index value of the Path you wish to retrieve
-     * @return the Path object at index i
+     * @param the int index value of the Runway you wish to retrieve
+     * @return the Runway object at index i
      */
-    public Path getPath(int i)
+    public Runway getRunway(int i)
     {
-        return paths.get(i);
+        return runways.get(i);
     }
     
     /**
-     * get the number of Path objects in this Airport
+     * get the number of Runway objects in this Airport
      * 
-     * @return the integer value of how many Paths are in the collection paths 
+     * @return the integer value of how many Runways are in the collection
+     * runways.
      */
-    public int numPaths()
+    public int numRunways()
     {
-        return paths.size();
+        return runways.size();
     }
     
     /*
@@ -194,14 +193,9 @@ public class Airport {
     
      * @param the Path object to be added to the collection
      */
-    public void addPath(Path path)
+    public void addRunway(Runway runway)
     {
-        //If this Path is a Runway, add to the counter;
-        if (path instanceof Runway)
-        {
-            number_of_runways++;
-        }
-        paths.add(path);
+        runways.add(runway);
     }
     
     /**
@@ -210,7 +204,7 @@ public class Airport {
      */
     public int getNumberOfRunways()
     {
-        return number_of_runways;
+        return runways.size();
     }
     
     /**
@@ -228,8 +222,8 @@ public class Airport {
                         + "Location: " + location + "\n"
                         + "Abbreviation: " + abbreviation + "\n"
                         + "Variation: " + variation + "\n";
-        for(int i = 0; i < numPaths(); i++) {
-            airportString += "Path: " + getPath(i).toString() + "\n";
+        for(int i = 0; i < numRunways(); i++) {
+            airportString += "Path: " + getRunway(i).toString() + "\n";
         }
         return airportString;
     }

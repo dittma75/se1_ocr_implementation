@@ -10,7 +10,8 @@
 package faa_ocr.ADTs;
 
 /**
- *
+ * THis is a class for Taxiways that is out of scope because we will not be
+ * able to implement it in time.
  * @author g_ric_000
  */
 public class Taxiway extends Path

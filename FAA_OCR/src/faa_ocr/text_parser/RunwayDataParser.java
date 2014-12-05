@@ -101,7 +101,7 @@ public class RunwayDataParser extends DataParser
          */
         for (int i = 0; i < runways.size(); i++)
         {
-            airport.addPath(
+            airport.addRunway(
                 new Runway(
                     elevations.get(i),
                     headings.get(i),
