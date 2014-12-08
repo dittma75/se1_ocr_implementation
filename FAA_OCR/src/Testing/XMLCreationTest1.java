@@ -3,7 +3,7 @@
  * XML format properly and the new .xml file is created and saved properly with
  * the correct file path.  This particular test will make sure it handles all 
  * of the possible combinations of Taxiways regarding the number of 
- * intersections a Taxiway can have (ie. none, 1, many). This will also test 
+ * intersections a Taxiway can have (ie. none, 1, 2, many). This will also test 
  * the possibility that any given Runway will have an intersection and a
  * displacement threshold, an intersection an no displacement threshold, and a 
  * displacement threshold with no intersections.
