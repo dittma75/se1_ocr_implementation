@@ -1,7 +1,7 @@
 package faa_ocr.image_parser;
 
 import faa_ocr.ADTs.*;
-import faa_ocr.ADTs.Slope;
+
 import java.awt.image.BufferedImage;
 
 
