@@ -18,8 +18,8 @@ public class Taxiway extends Path
 {
 
     /**
-     *
-     * @param name
+     * constructor for the Taxiway class
+     * @param name the String value representing the name of the Taxiway
      */
     public Taxiway(String name)
     {

@@ -199,12 +199,34 @@ public class Airport {
     }
     
     /**
-     * Gets the number of runways in this airport.
-     * @return the number of runways in the airport diagram.
+     * get the number of Taxiway objects in the collection 
+     * 
+     * @return int value representing the size of the taxiways collection 
      */
-    public int getNumberOfRunways()
+    public int numTaxiways()
     {
-        return runways.size();
+        return taxiways.size();
+    }
+    
+    /**
+     * get a taxiway object at a specified position in the collection 
+     * 
+     * @param index int value representing the desired position in the collection
+     * @return Taxiway object at the specified position in taxiways 
+     */
+    public Taxiway getTaxiway(int index)
+    {
+        return taxiways.get(index);
+    }
+    
+    /**
+     * add a taxiway object to the collection 
+     * 
+     * @param taxiway Taxiway object we are adding to the collection
+     */
+    public void addTaxiway(Taxiway taxiway)
+    {
+        taxiways.add(taxiway);
     }
     
     /**

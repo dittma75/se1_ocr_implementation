@@ -28,8 +28,8 @@ public class Node {
      */
     public Node(float longi, float lat)
     {
-        longitude = longi;
-        latitude = lat;
+        longitude = longi; //-180 degrees to 180 degrees
+        latitude = lat; //-90 degrees to 90 degrees
     }
     
     /**

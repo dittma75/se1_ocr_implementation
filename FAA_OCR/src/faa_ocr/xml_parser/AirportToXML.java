@@ -12,7 +12,10 @@ import faa_ocr.ADTs.*;
 import java.io.*;
 
 /**
- * 
+ * The AirportToXML class takes an Airport object and takes all of the
+ * information inside it to create an XML formatted representation of that
+ * object.  That representation is then written to a .xml file with the same
+ * header as the .pdf file that was used as the initial input for the program.
  */
 public class AirportToXML {
     private String xml_string;
@@ -33,36 +36,14 @@ public class AirportToXML {
             "<name>" + airport.getName() + "</name>\n" +
             "<variation>" + airport.getVariation() + "</variation>\n";
         
-        sortPaths(airport); // take the loop from sortPaths and put it here to send each Path to be redirected individually
+        for(int i = 0; i < airport.numRunways(); i++) {
+            runwayToXml(airport.getRunway(i));
+        }
+        for(int i = 0; i < airport.numTaxiways(); i++) {
+            taxiwayToXml(airport.getTaxiway(i));
+        }
         xml_string += "</airport>";
         return writeToFile(airport.getFilePath());
-    }
-    
-    /**
-     * take all of the Path objects and separate them by if they are an instance
-     * of Runway or Taxiway and send them to their respective XML conversion
-     * @param 
-     */
-    private void sortPaths(Airport airport)
-    {
-        for(int i = 0; i < airport.numRunways(); i++) {
-            Path currPath = airport.getRunway(i);
-            xml_string += "<path>" + "\n";
-            if(currPath instanceof Runway) {
-                runwayToXml((Runway)currPath);
-                //we know that currPath is an instance of Runway so cast it 
-                //as one when we pass it to runwayToXml(Runway runway)
-            } else if(currPath instanceof Taxiway) {
-                taxiwayToXml((Taxiway)currPath);
-                //we know that currPath is an instance of Taxiway so cast it
-                //as one when we pass it to taxiwayToXml(Taxiway taxiway)
-            } else {
-                //do nothing
-                //in the future there may be a need for a
-                //different extension of Path
-            }
-        xml_string += "</path>\n";
-        }  
     }
     
     /*
@@ -77,8 +58,7 @@ public class AirportToXML {
      */
     private void runwayToXml(Runway runway)
     {
-        xml_string += "<path_name>" + runway.getName() + "</path_name>\n";
-        xml_string += "<path_type>" + "runway" + "</path_type>\n";
+        xml_string += "<runway>\n";
         xml_string += "<heading>" + runway.getHeading() + "</heading>\n";
         xml_string += "<elevation>" + runway.getElevation() + "</elevation>\n";
         xml_string += "<coordinates>\n";
@@ -108,6 +88,7 @@ public class AirportToXML {
             }
         }
         xml_string += "</coordinates>\n";
+        xml_string += "</runway>\n";
     }
     
     /**
@@ -122,8 +103,8 @@ public class AirportToXML {
      */
     private void taxiwayToXml(Taxiway taxiway)
     {
+        xml_string += "<taxiway>\n";
         xml_string += "<path_name>" + taxiway.getName() + "</path_name>\n";
-        xml_string += "<path_type>" + "taxiway" + "</path_type>\n";
         xml_string += "<coordinates>\n";
         for(int i = 0; i < taxiway.getNumPathNodes(); i++) {
             Node currNode = taxiway.getPathNode(i);
@@ -140,6 +121,7 @@ public class AirportToXML {
             xml_string += "</intersection>\n";
         }
         xml_string += "</coordinates>\n";
+        xml_string += "</taxiway>\n";
     }
     
     private String writeToFile(String filePath)
