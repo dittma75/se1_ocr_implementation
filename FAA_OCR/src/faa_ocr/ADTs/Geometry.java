@@ -112,6 +112,21 @@ public class Geometry {
                 && lineSegmentTouchesOrCrossesLine(b, a);
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Check if x is right end of l
      * @param x an x-coordinate of one endpoint
