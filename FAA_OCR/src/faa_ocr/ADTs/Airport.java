@@ -10,8 +10,8 @@
 
 package faa_ocr.ADTs;
 import faa_ocr.image_parser.PDFToImage;
-import faa_ocr.image_parser.Point;
 import faa_ocr.text_parser.PDFToText;
+
 import java.awt.image.BufferedImage;
 import java.util.*;
 

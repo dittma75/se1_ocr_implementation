@@ -60,7 +60,6 @@ public class AirportController
 	 * Create an airport and gather all information from the PDF
 	 * @param path
 	 */
-	//only classes in same package can call getInformationFromPDF
 	private void getInformationFromPDF(String path)
 	{
 		//create a new airport with Sting path to PDF
@@ -71,6 +70,9 @@ public class AirportController
 		
 		//get visual data from PDF
 		pdf_to_image.parseVisualData(airport);
+		
+		//Check runways and taxiways for intersections
+//TODO: Find intersections here
 		
 		//turn Airport into an XML and save path to XML
 		String path_to_xml = xml_parser.convertToXml(airport);
