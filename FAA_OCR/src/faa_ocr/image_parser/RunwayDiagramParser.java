@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * 
  * @author Joe Kvedaras
- *
+ * @author Kevin Dittmar
  */
 public class RunwayDiagramParser 
 {
@@ -32,7 +32,7 @@ public class RunwayDiagramParser
             this.diagram = diagram;
             this.airport = airport;
             
-            this.runways_left = airport.getNumberOfRunways();
+            this.runways_left = airport.numRunways();
             
             traverseImage();
 	}
@@ -271,7 +271,7 @@ public class RunwayDiagramParser
                     for (int i = 0; i < 2; i++)
                     {
                         Runway runway = airport.getRunway(
-                                airport.getNumberOfRunways() - runways_left
+                                airport.numRunways() - runways_left
                         );
                         runway.addPathNode(startNode);
                         runway.addPathNode(endNode);

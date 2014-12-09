@@ -88,13 +88,13 @@ public class PDFToText
      * diagram_pdf_path.
      * @param diagram_pdf_path is the path to the airport diagram PDF.
      */
-    private String getDiagramText(String diagram_pdf_path)
+    public static String getDiagramText(String diagram_pdf_path)
     {
         Scanner scanner = new Scanner(getTextPath(diagram_pdf_path));
         String diagram_text = "";
         while (scanner.hasNextLine())
         {
-            diagram_text += scanner.nextLine();
+            diagram_text += scanner.nextLine() + "\n";
         }
         scanner.close();
         return diagram_text;
@@ -105,7 +105,7 @@ public class PDFToText
      * diagram's PDF file's path.
      * @param diagram_pdf_path is the path of the airport diagram PDF.
      */
-    private String getTextPath(String diagram_pdf_path)
+    private static String getTextPath(String diagram_pdf_path)
     {
         /*The txt file has the same name as the PDF file and is stored in the
          *same directory, but the extension is .txt instead of .pdf.
@@ -119,7 +119,7 @@ public class PDFToText
      * @param file_name name of airport diagram PDF file.
      * @return text representation of airport diagram.
      */
-    public static String getTextPDFBox(String file_name)
+    static String getTextPDFBox(String file_name)
     {
         PDFParser parser;
         String parsed_text = "";

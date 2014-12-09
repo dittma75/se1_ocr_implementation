@@ -11,9 +11,10 @@
 package faa_ocr.ADTs;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
-
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The Airport class is an abstract data type that represents the entire Airport
@@ -69,7 +70,7 @@ public class Airport {
          * corner of the diagram.
          */
         findPixelConversionScales();
-        String diagram_text = PDFToText.getTextPDFBox(pdf_file_path);
+        String diagram_text = PDFToText.getDiagramText(pdf_file_path);
         USES_HALF_MINUTES = containsHalfMinutes(diagram_text);
         BASE_LATITUDE = findBaseLatitude(diagram_text);
         BASE_LONGITUDE = findBaseLongitude(diagram_text);
@@ -472,30 +473,152 @@ public class Airport {
     }
     
     /**
-     * Get the latitude of the topmost latitude marker on the diagram.
-     * 
-     * @param diagram_text is the String representation of the diagram.
-     * @return the base latitude to use for coordinate conversion.
-     */
-    private float findBaseLatitude(String diagram_text)
-    {
-       //Find all numbers in the format \d+(degree) *\d+'[NS]
-       //Find the largest number if there were Ns, smallest if there were Ss
-       //return that.
-       return 0.0f;
-    }
-    
-    /**
-     * Get the longitude of the leftmost longitude marker on the diagram.
-     * 
+     * Get the longitude of the topmost longitude marker on the diagram.
+     * For Western scales, it will be the smallest number.  For Eastern
+     * scales, it will be the largest number.
      * @param diagram_text is the String representation of the diagram.
      * @return the base longitude to use for coordinate conversion.
      */
     private float findBaseLongitude(String diagram_text)
     {
-       //Find all numbers in the format \d+(degree) *\d+'[WE]
-       //Find the largest number if there were Ws, smallest if there were Es
-       //return that.
-       return 0.0f;
+       Scanner scanner = new Scanner(diagram_text);
+       int degrees = -1;
+       int minutes = -1;
+       String direction = "";
+       Pattern long_pattern = Pattern.compile("(\\d+?) (\\d+?)'([WE]?)");
+       while (scanner.hasNextLine())
+       {
+           Matcher long_matcher = long_pattern.matcher(scanner.nextLine());
+           if (long_matcher.find())
+           {
+               int new_degrees = Integer.parseInt(long_matcher.group(1));
+               int new_minutes = Integer.parseInt(long_matcher.group(2));
+               
+               if (direction.isEmpty())
+               {
+                   direction = long_matcher.group(3);
+               }
+               //The longitude scale is in the Western hemisphere.
+               else if (direction.equals("W"))
+               {
+                  /* If the degrees number that we have hasn't been set,
+                   * is larger than the number we found,
+                   * or is the same as the number we found, but the new
+                   * minutes value is less than the value that we have, then
+                   * replace the old degree value and minutes value.
+                   */
+                  if (degrees < 0 ||
+                      new_degrees < degrees ||
+                     (new_degrees == degrees && new_minutes < minutes)
+                     )
+                  {
+                      degrees = new_degrees;
+                      minutes = new_minutes;
+                  }
+               }
+               //The longitude scale is in the Eastern hemisphere.
+               else if (direction.equals("E"))
+               {
+                   /* If the degrees number that we have hasn't been set,
+                   * is smaller than the number we found,
+                   * or is the same as the number we found, but the new
+                   * minutes value is greater than the value that we have,
+                   * then replace the old degree value and minutes value.
+                   */
+                  if (degrees < 0 ||
+                      new_degrees > degrees ||
+                     (new_degrees == degrees && new_minutes > minutes)
+                     )
+                  {
+                      degrees = new_degrees;
+                      minutes = new_minutes;
+                  }
+               }
+           }
+       }
+       
+       float base_longitude = (float) (degrees + (minutes / 60));
+       
+       //Western longitudes are negative in numeric coordinates
+       if (direction.equals("W"))
+       {
+           base_longitude *= -1;
+       }
+       return base_longitude;
+    }
+    
+    /**
+     * Get the latitude of the topmost latitude marker on the diagram.
+     * For Northern scales, it will be the smallest number.  For Southern
+     * scales, it will be the largest number.
+     * @param diagram_text is the String representation of the diagram.
+     * @return the base latitude to use for coordinate conversion.
+     */
+    private float findBaseLatitude(String diagram_text)
+    {
+       Scanner scanner = new Scanner(diagram_text);
+       int degrees = -1;
+       int minutes = -1;
+       String direction = "";
+       Pattern lat_pattern = Pattern.compile("(\\d+?) (\\d+?)'([NS]?)");
+       while (scanner.hasNextLine())
+       {
+           Matcher lat_matcher = lat_pattern.matcher(scanner.nextLine());
+           if (lat_matcher.find())
+           {
+               int new_degrees = Integer.parseInt(lat_matcher.group(1));
+               int new_minutes = Integer.parseInt(lat_matcher.group(2));
+               
+               if (direction.isEmpty())
+               {
+                   direction = lat_matcher.group(3);
+               }
+               //The latitude scale is in the Southern hemisphere.
+               else if (direction.equals("S"))
+               {
+                  /* If the degrees number that we have hasn't been set,
+                   * is larger than the number we found,
+                   * or is the same as the number we found, but the new
+                   * minutes value is less than the value that we have, then
+                   * replace the old degree value and minutes value.
+                   */
+                  if (degrees < 0 ||
+                      new_degrees < degrees ||
+                     (new_degrees == degrees && new_minutes < minutes)
+                     )
+                  {
+                      degrees = new_degrees;
+                      minutes = new_minutes;
+                  }
+               }
+               //The latitude scale is in the Northern hemisphere.
+               else if (direction.equals("N"))
+               {
+                   /* If the degrees number that we have hasn't been set,
+                   * is smaller than the number we found,
+                   * or is the same as the number we found, but the new
+                   * minutes value is greater than the value that we have,
+                   * then replace the old degree value and minutes value.
+                   */
+                  if (degrees < 0 ||
+                      new_degrees > degrees ||
+                     (new_degrees == degrees && new_minutes > minutes)
+                     )
+                  {
+                      degrees = new_degrees;
+                      minutes = new_minutes;
+                  }
+               }
+           }
+       }
+       
+       float base_latitude = (float) (degrees + (minutes / 60));
+       
+       //Southern latitudes are negative in numeric coordinates
+       if (direction.equals("S"))
+       {
+           base_latitude *= -1;
+       }
+       return base_latitude;
     }
 } //end Airport

@@ -23,8 +23,12 @@ public class LineFormatter
      */
     String getFormattedString(String raw_data)
     {
-        //Replace multiple newlines with one newline.
-        String formatted_data = raw_data.replaceAll("\n+", "\n");
+        //Remove all Windows-style newlines
+        String formatted_data = raw_data.replaceAll("\r\n", "");
+        
+        //Remove all Unix-style newlines
+        formatted_data = raw_data.replaceAll("\n", "");
+        
         //Replace multiple spaces with one space.
         formatted_data = formatted_data.replaceAll(" +", " ");
         return formatted_data;

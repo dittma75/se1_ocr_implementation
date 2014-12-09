@@ -49,8 +49,8 @@ public class XMLCreationTest1 {
         //add the runway to the airport
         airport.addRunway(runway1);
         
-        //make another Runway object whos end is the first runways start and 
-        //whos start is the first runways end.
+        //make another Runway object whose end is the first runway's start and 
+        //whose start is the first runway's end.
         // runway = new Runway(elevation, heading, name);
         Runway runway2 = new Runway(100, (float)2346.5, "R2");
         // node = new Node(longitude, latitude);
