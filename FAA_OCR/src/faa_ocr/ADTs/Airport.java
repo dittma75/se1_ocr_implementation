@@ -27,9 +27,9 @@ public class Airport {
     private String location;
     private String abbreviation;
     private float variation;
-    private ArrayList<Runway> runways;
+    private ArrayList<Runway> runways = new ArrayList<Runway>();
     //Not used because we didn't get to them.
-    private ArrayList<Taxiway> taxiways;
+    private ArrayList<Taxiway> taxiways = new ArrayList<Taxiway>();
     
     //Y-coordinate to latitude conversion factor.
     private int pixels_per_unit_lat;
