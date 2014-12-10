@@ -38,6 +38,8 @@ public class ImageParsingTest {
 	  //TODO: left_point and right_point need to change after each iteration of while
         //right now, they do not move and is an infinite loop
 	  //TODO: Program starts to find slope of single pixels. Example at 15,639 I believe
+	    //TODO:For ACY, the slope is getting thrown off by the bottom pixel of the first runway
+	    	//this will make our traverse runway method go off the runway real quick
 	    
 	    
 	    

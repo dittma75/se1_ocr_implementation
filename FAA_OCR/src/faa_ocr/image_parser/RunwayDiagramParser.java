@@ -42,7 +42,7 @@ public class RunwayDiagramParser
 	 * find edges of that black square
 	 */
 	private void traverseImage()
-	{
+	{//171, 536 is first runway
             for (int y = 171; y < diagram.getHeight(); y++) 
             {
                 for (int x = 536; x < diagram.getWidth(); x++) 
@@ -137,10 +137,10 @@ public class RunwayDiagramParser
 
             //3 pixels must be black so we know it is a runway
             /* check r+br+b, bl+b+br, r+br+b+bl */
-            if(bottom_right_black && bottom_black && bottom_left_black ||
-               right_black && bottom_right_black && bottom_black ||
-               right_black && bottom_right_black && bottom_black && 
-               bottom_left_black)
+            if((bottom_right_black && bottom_black && bottom_left_black) ||
+               (right_black && bottom_right_black && bottom_black) ||
+               (right_black && bottom_right_black && bottom_black && 
+               bottom_left_black))
             {
                     findSlope(pixel);
             }
@@ -205,6 +205,10 @@ public class RunwayDiagramParser
                     
                     width_found = true;
                 }
+                else
+                {
+                	left_point = end_of_width;
+                }
                 
                 /* The next point on the right traversal path may be the end
                  * of the width of the runway.
@@ -219,6 +223,12 @@ public class RunwayDiagramParser
                     
                     width_found = true;
                 }
+                else
+                {
+                	right_point = end_of_width;
+                }
+                
+                
             }
             
             /* The width of the runway is now a line segment from the
@@ -230,8 +240,8 @@ public class RunwayDiagramParser
              * the y components that we have, and the y component is the
              * difference between the x components that we have.
              */
-            int slope_x = -1 *(end_of_width.getY() - initial_point.getY());
-            int slope_y = end_of_width.getX() - initial_point.getX();
+            int slope_x = end_of_width.getX() - initial_point.getX();
+            int slope_y = end_of_width.getY() - initial_point.getY();
             Slope slope = new Slope(slope_y, slope_x);
             slope.invertSlope();
             
@@ -254,7 +264,7 @@ public class RunwayDiagramParser
                 int x2 = end_point.getX();
                 int y2 = end_point.getY();
                 
-                double runwayLength = findLength(x1, x2, y1, y2);
+                double runwayLength = findLength(x1, y1, x2, y2);
                 
                 if(runwayLength > 100) {
                     //Translate the midpoint and end_point from x/y to lat/long
@@ -299,7 +309,8 @@ public class RunwayDiagramParser
          * @param
          * @param
          */
-        private double findLength(int x1, int y1, int x2, int y2) {
+        private double findLength(int x1, int y1, int x2, int y2) 
+        {
             return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
         }
 	
@@ -403,5 +414,5 @@ public class RunwayDiagramParser
                    }
                 }
                 return curr_point;
-        }
+	}
 }
