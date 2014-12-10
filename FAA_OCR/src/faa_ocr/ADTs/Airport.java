@@ -167,7 +167,8 @@ public class Airport {
     {
         this.variation = variation;
     }
-    /*
+    
+    /**
      * Get a Runway object located at a specified index number
     
      * @param the int index value of the Runway you wish to retrieve
@@ -189,7 +190,7 @@ public class Airport {
         return runways.size();
     }
     
-    /*
+    /**
      * Add a Path object to the collection paths in the instance of Airport
     
      * @param the Path object to be added to the collection
@@ -544,6 +545,8 @@ public class Airport {
        {
            base_longitude *= -1;
        }
+       
+       scanner.close();
        return base_longitude;
     }
     
@@ -619,6 +622,7 @@ public class Airport {
        {
            base_latitude *= -1;
        }
+       scanner.close();
        return base_latitude;
     }
 } //end Airport

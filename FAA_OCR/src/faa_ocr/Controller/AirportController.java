@@ -4,6 +4,7 @@ package faa_ocr.Controller;
 import java.io.File;
 
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.Runway;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
@@ -72,7 +73,7 @@ public class AirportController
 		pdf_to_image.parseVisualData(airport);
 		
 		//Check runways and taxiways for intersections
-//TODO: Find intersections here
+		findIntersections(airport);
 		
 		//turn Airport into an XML and save path to XML
 		String path_to_xml = xml_parser.convertToXml(airport);
@@ -98,6 +99,68 @@ public class AirportController
 		System.out.println("Path to XML: " + path_to_xml);
 		System.out.println("Path to KML: " + path_to_kml);
 		System.out.println();
+	}
+	
+	/**
+	 * Find all intersections between runways and runways, runways and taxiways,
+	 * taxiways and taxiways.
+	 * @param airport
+	 */
+	private void findIntersections(Airport airport)
+	{
+		
+		int num_runways = airport.numRunways();
+		int num_taxiways = airport.numTaxiways();
+		
+		
+		/*
+		 * Loop through every combination of runways and runways seeing if there is
+		 * an intersection. We increase both loops by 2 because runways are
+		 * stored in pairs. If we find an intersection, we will add that intersection
+		 * to the matching pair.
+		 */
+		for (int ii = 0; ii < num_runways; ii = ii + 2)
+		{
+			for (int kk = ii + 2; kk < num_runways; kk = kk + 2)
+			{
+				//Check to see if two runways are intersecting
+				findIntersections(airport.getRunway(ii), airport.getRunway(kk));
+			}
+		}
+		
+		
+		/*
+		 * Loop through every combination of runway and taxiway seeing if there is
+		 * an intersection. We increase the runway look by 2 because runways are stored
+		 * in pairs. If we find an intersection, we will add that intersection to the
+		 * matching pair
+		 */
+		for (int jj = 0; jj < num_runways; jj = jj + 2)
+		{
+			for (int tt = 0; tt < num_runways; tt++)
+			{
+				//do nothing for now
+			}
+		}
+		
+		
+		
+		/*
+		 * Loop through every combination of taxiway and taxiway seeing if there
+		 * is an intersection between them.
+		 */
+		for (int pp = 0; pp < num_taxiways; pp++)
+		{
+			for (int yy = pp + 1; yy < num_taxiways; yy++)
+			{
+				//do nothing for now
+			}
+		}
+	}
+	
+	private void findIntersections(Runway one, Runway two)
+	{
+		
 	}
 	
 }
