@@ -8,7 +8,7 @@
  * displacement threshold, an intersection an no displacement threshold, and a 
  * displacement threshold with no intersections.
  */
-package Testing;
+package faa_ocr.testing;
 import faa_ocr.ADTs.*;
 import faa_ocr.xml_parser.*;
 

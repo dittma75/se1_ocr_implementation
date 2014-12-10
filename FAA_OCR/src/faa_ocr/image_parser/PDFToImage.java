@@ -69,22 +69,36 @@ public class PDFToImage
      */
     public void parseVisualData(Airport airport)
     {
-        //create buffered image with the pdf file
-        BufferedImage airport_image;
-        try 
-        {
-            airport_image = ImageIO.read(new File(airport.getFilePath()));
+    	
+    	
+    	BufferedImage airport_image = PDFToImage.makeImage("res/ACY/00669AD.pdf");
+    	
+      //get runway data from image
+      new RunwayDiagramParser().parseRunways(airport_image, airport);
 
-            //get runway data from image
-            new RunwayDiagramParser().parseRunways(airport_image, airport);
-
-            //get taxiway date from image
-            new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
-        }
-        catch (IOException e) 
-        {
-                System.err.println("Error when making PDF an image");
-                e.printStackTrace();
-        }
+      //get taxiway date from image
+      new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
+    	
+    	
+    	
+    	
+    	
+//        //create buffered image with the pdf file
+//        BufferedImage airport_image;
+//        try 
+//        {
+//            airport_image = ImageIO.read(new File(airport.getFilePath()));
+//
+//            //get runway data from image
+//            new RunwayDiagramParser().parseRunways(airport_image, airport);
+//
+//            //get taxiway date from image
+//            new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
+//        }
+//        catch (IOException e) 
+//        {
+//                System.err.println("Error when making PDF an image");
+//                e.printStackTrace();
+//        }
     }
 }

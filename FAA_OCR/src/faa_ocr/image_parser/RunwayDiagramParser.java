@@ -30,8 +30,7 @@ public class RunwayDiagramParser
 	public void parseRunways(BufferedImage diagram, Airport airport)
 	{
             this.diagram = diagram;
-            this.airport = airport;
-            
+            this.airport = airport;    
             this.runways_left = airport.numRunways();
             
             traverseImage();
