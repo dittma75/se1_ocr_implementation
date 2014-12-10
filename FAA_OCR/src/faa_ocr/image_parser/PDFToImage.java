@@ -57,21 +57,16 @@ public class PDFToImage
         return diagram_image;
     }
     
-    /* Main method for testing */
-    public static void main(String[] args)
-    {
-            BufferedImage airport_image = PDFToImage.makeImage("res/ACY/00669AD.pdf");
-    }
+
 
     /**
      * Get visual data from Airport
      * @param airport	from which we extract data from
      */
-    public void parseVisualData(Airport airport)
+    public static void parseVisualData(Airport airport)
     {
-    	
-    	
-    	BufferedImage airport_image = PDFToImage.makeImage("res/ACY/00669AD.pdf");
+  
+      BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
     	
       //get runway data from image
       new RunwayDiagramParser().parseRunways(airport_image, airport);
