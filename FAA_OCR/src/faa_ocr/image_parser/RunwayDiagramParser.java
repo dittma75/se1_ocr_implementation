@@ -31,7 +31,8 @@ public class RunwayDiagramParser
 	{
             this.diagram = diagram;
             this.airport = airport;    
-            this.runways_left = airport.numRunways();
+//TODO:Commented out for testing
+//            this.runways_left = airport.numRunways();
             
             traverseImage();
 	}
@@ -42,9 +43,9 @@ public class RunwayDiagramParser
 	 */
 	private void traverseImage()
 	{
-            for (int y = 0; y < diagram.getHeight(); y++) 
+            for (int y = 171; y < diagram.getHeight(); y++) 
             {
-                for (int x = 0; x < diagram.getWidth(); x++) 
+                for (int x = 536; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -184,6 +185,9 @@ public class RunwayDiagramParser
             Point end_of_width = initial_point;
             
             boolean width_found = false;
+
+//TODO: left_point and right_point need to change after each iteration of while
+            //right now, they do not move and is an infinite loop
             
             //Until the width is found, keep traversing.
             while (!width_found)
@@ -230,6 +234,7 @@ public class RunwayDiagramParser
             int slope_y = end_of_width.getX() - initial_point.getX();
             Slope slope = new Slope(slope_y, slope_x);
             slope.invertSlope();
+            
             addToAirport(runway_start, slope);
             
 	}
