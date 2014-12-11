@@ -1,8 +1,6 @@
 package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 /**
  * The AirportDataParser extracts airport-specific information from the
  * airport diagram and puts it in the appropriate fields of an Airport object.

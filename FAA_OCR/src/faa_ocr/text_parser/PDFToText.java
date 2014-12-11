@@ -88,6 +88,7 @@ public class PDFToText
      * Get the raw text of the airport diagram PDF whose file path is
      * diagram_pdf_path.
      * @param diagram_pdf_path is the path to the airport diagram PDF.
+     * @return String representation of diagram
      */
     public static String getDiagramText(String diagram_pdf_path)
     {
@@ -166,7 +167,7 @@ public class PDFToText
                 )
             );
         } 
-        catch (Exception e) 
+        catch (IOException e) 
         {
             System.err.println(
                 "An exception occured in parsing the PDF Document." + 

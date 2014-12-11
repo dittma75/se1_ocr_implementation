@@ -28,9 +28,9 @@ public class Airport {
     private String location;
     private String abbreviation;
     private float variation;
-    private ArrayList<Runway> runways = new ArrayList<Runway>();
+    private final ArrayList<Runway> runways;
     //Not used because we didn't get to them.
-    private ArrayList<Taxiway> taxiways = new ArrayList<Taxiway>();
+    private final ArrayList<Taxiway> taxiways;
     
     //Y-coordinate to latitude conversion factor.
     private int pixels_per_unit_lat;
@@ -63,6 +63,8 @@ public class Airport {
     
     public Airport (String pdf_file_path)
     {
+        this.runways = new ArrayList<Runway>();
+        this.taxiways = new ArrayList<Taxiway>();
         this.pdf_file_path = pdf_file_path;
         
         /* Set the scales for pixel coordinates to latitude and longitude
@@ -170,8 +172,7 @@ public class Airport {
     
     /**
      * Get a Runway object located at a specified index number
-    
-     * @param the int index value of the Runway you wish to retrieve
+     * @param i int index value of the Runway to be retrieved
      * @return the Runway object at index i
      */
     public Runway getRunway(int i)
@@ -193,7 +194,7 @@ public class Airport {
     /**
      * Add a Path object to the collection paths in the instance of Airport
     
-     * @param the Path object to be added to the collection
+     * @param runway the Path object to be added to the collection
      */
     public void addRunway(Runway runway)
     {
@@ -327,7 +328,8 @@ public class Airport {
     
     /**
      * Try to find the longitude scale and report the success of the attempt.
-     * 
+     *
+     * @param diagram is the image representation of the airport diagram.
      * @param current is the point to start searching from.
      * @param diagram_width_end is the end of the diagram when approaching
      * from the left.
@@ -398,6 +400,7 @@ public class Airport {
     /**
      * Try to find the latitude scale and report the success of the attempt.
      * 
+     * @param diagram is the image representation of the airport diagram.
      * @param current is the point to start searching from.
      * @param diagram_height_end is the end of the diagram when approaching
      * from the top.

@@ -46,10 +46,9 @@ public class Point
 
 	/**
 	 * Find the midpoint between 2, x-y coordinates
-	 * 
-	 * @param one
-	 * @param two
-	 * @return midpoint of two parameters.
+	 * @param point_two is the second point to be used to find the
+         * midpoint.
+	 * @return midpoint of this point and the point passed as an argument.
 	 */
 	public Point findMidpoint(Point point_two) 
 	{
@@ -78,6 +77,12 @@ public class Point
 	}
 	
 	
+        /**
+         * Test for equality between a Point and a given object.
+         * @param object is the Object to test for equivalence.
+         * @return true if the Object is a Point and has the same x and y
+         * values, false otherwise.
+         */
 	public boolean equals(Object object) 
 	{
 		// Can't be equal if the object isn't a point.

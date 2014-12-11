@@ -182,7 +182,7 @@ public class RunwayDataParser extends DataParser
         String pdf_text = PDFToText.getTextPDFBox(file_name);
         
         Scanner scanner = new Scanner(pdf_text);
-        String next_line = "";
+        String next_line;
         ArrayList<String> valid_headings = new ArrayList<>();
         while (scanner.hasNextLine())
         {
