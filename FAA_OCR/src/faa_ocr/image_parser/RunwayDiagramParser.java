@@ -95,16 +95,20 @@ public class RunwayDiagramParser
             if(left.isBlack(diagram)) 
             {
             	return false;
-            } else if(topLeft.isBlack(diagram)) 
+            } 
+            else if(topLeft.isBlack(diagram)) 
             {
                 return false;
-            } else if(top.isBlack(diagram)) 
+            } 
+            else if(top.isBlack(diagram)) 
             {
                 return false;
-            } else if(topRight.isBlack(diagram)) 
+            } 
+            else if(topRight.isBlack(diagram)) 
             {
                 return false;
-            } else 
+            } 
+            else 
             {
                 //no black pixels were found
             	return true;
@@ -266,7 +270,8 @@ public class RunwayDiagramParser
                 
                 double runwayLength = findLength(x1, y1, x2, y2);
                 
-                if(runwayLength > 100) {
+                if(runwayLength > 100) 
+                {
                     //Translate the midpoint and end_point from x/y to lat/long
                     float x1Long = airport.longitudeConversion(x1);
                     float y1Long = airport.latitudeConversion(y1);
@@ -407,9 +412,11 @@ public class RunwayDiagramParser
                            curr_point.getY() + slopeY
                    );
                    
-                   if(next_point.isBlack(diagram)) {
+                   if(next_point.isBlack(diagram)) 
+                   {
                        curr_point = next_point; 
-                   } else {
+                   } else 
+                   {
                        lastBlack = true;
                    }
                 }

@@ -1,14 +1,15 @@
 package faa_ocr.kml_parser;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+
 import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.Scanner;
 import java.io.IOException;
 
 /**
@@ -38,8 +39,6 @@ public class XMLtoKML
 	{
 		try
 		{
-			Scanner scanner = new Scanner(xml_file);
-
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
