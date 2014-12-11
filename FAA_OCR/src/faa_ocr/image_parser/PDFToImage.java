@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFImageWriter;
 
 
 /**
@@ -28,25 +29,41 @@ public class PDFToImage
     public static BufferedImage makeImage(String file_path)
     {
         /*Information about getting an image from a PDF in PDFBox from:
-         *http://stackoverflow.com/questions/21059403/text-is-missing-when-\
-         *converting-pdf-file-into-image-in-java-using-pdfbox
+         *http://pdfbox.apache.org/docs/1.8.3/javadocs/org/apache/pdfbox/util/\
+         *PDFImageWriter.html
          */
         BufferedImage diagram_image = null;
+        File image_file = new File(file_path.replaceAll("\\.pdf", "1\\.jpg"));
         try
         {
-            File diagram_file = new File(file_path);
-            if (diagram_file.exists())
+            if (!image_file.exists())
             {
-                //The document will only be one page, so get the first page.
-                PDDocument doc = PDDocument.load(diagram_file);
-                PDPage page;
-                page = (PDPage)doc.getDocumentCatalog().getAllPages().get(0);
-                diagram_image = page.convertToImage();
-//                System.out.println("printing image");
-//                File test = new File("written_image.png");
-//                ImageIO.write(diagram_image, "png", test);
-                doc.close();
+                File diagram_file = new File(file_path);
+                String image_path_prefix = file_path.replaceAll("\\.pdf", "");
+                if (diagram_file.exists())
+                {
+                    //Turn the PDF into a JPEG image.
+                    PDDocument doc = PDDocument.load(diagram_file);
+                    PDFImageWriter pdf_image_writer = new PDFImageWriter();
+                    /*Write an image version of the document in JPEG format
+                     *that includes just the first page with the prefix given
+                     *by image_path_prefix.
+                     */
+                    pdf_image_writer.writeImage(doc,
+                                                "jpg",
+                                                "", 
+                                                1, 
+                                                1,
+                                                image_path_prefix);
+                    doc.close();
+                    /*Set up the new image file.  PDFBox appends the page
+                     *number, which is 1, and the prefix doesn't include the
+                     *extension.
+                     */
+                    image_file = new File(image_path_prefix + "1.jpg");
+                }
             }
+            diagram_image = ImageIO.read(image_file);
         }
         catch (IOException ex)
         {

@@ -2,6 +2,7 @@ package faa_ocr.text_parser;
 import faa_ocr.ADTs.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import static java.lang.Runtime.getRuntime;
 import java.util.Scanner;
@@ -90,13 +91,24 @@ public class PDFToText
      */
     public static String getDiagramText(String diagram_pdf_path)
     {
-        Scanner scanner = new Scanner(getTextPath(diagram_pdf_path));
+        File diagram_file = new File(getTextPath(diagram_pdf_path));
+        Scanner scanner;
         String diagram_text = "";
-        while (scanner.hasNextLine())
+        try
         {
-            diagram_text += scanner.nextLine() + "\n";
+            scanner = new Scanner(diagram_file);
+            while (scanner.hasNextLine())
+            {
+                diagram_text += scanner.nextLine() + "\n";
+            }
+            scanner.close();
         }
-        scanner.close();
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(PDFToText.class.getName()).log(
+                    Level.SEVERE, null, ex
+            );
+        }
         return diagram_text;
     }
     
@@ -110,7 +122,7 @@ public class PDFToText
         /*The txt file has the same name as the PDF file and is stored in the
          *same directory, but the extension is .txt instead of .pdf.
          */
-        return diagram_pdf_path.replace("\\.pdf", "\\.txt");
+        return diagram_pdf_path.replace("pdf", "txt");
     }
     
     //TODO:  DOCUMENT USAGE OF PDFBOX.
@@ -119,7 +131,7 @@ public class PDFToText
      * @param file_name name of airport diagram PDF file.
      * @return text representation of airport diagram.
      */
-    static String getTextPDFBox(String file_name)
+    public static String getTextPDFBox(String file_name)
     {
         PDFParser parser;
         String parsed_text = "";
@@ -161,6 +173,7 @@ public class PDFToText
                 e.getMessage()
             );
         }
-        return parsed_text;
+        LineFormatter lf = new LineFormatter();
+        return lf.getFormattedString(parsed_text);
     }
 }

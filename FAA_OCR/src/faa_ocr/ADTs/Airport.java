@@ -70,7 +70,7 @@ public class Airport {
          * corner of the diagram.
          */
         findPixelConversionScales();
-        String diagram_text = PDFToText.getDiagramText(pdf_file_path);
+        String diagram_text = PDFToText.getTextPDFBox(pdf_file_path);
         USES_HALF_MINUTES = containsHalfMinutes(diagram_text);
         BASE_LATITUDE = findBaseLatitude(diagram_text);
         BASE_LONGITUDE = findBaseLongitude(diagram_text);
@@ -288,10 +288,16 @@ public class Airport {
         int end_height = diagram.getHeight() - y_margin - 1;
         
         //Try to find the longitude scale at the top of the diagram.
-        if (!findLongitudeScale(new Point(x_margin, y_margin), end_width))
+        if (!findLongitudeScale(
+                diagram,
+                new Point(x_margin, y_margin),
+                end_width))
         {
             //Try to find the longitude scale at the bottom of the diagram.
-            if (!findLongitudeScale(new Point(x_margin, end_height),end_width))
+            if (!findLongitudeScale(
+                    diagram,
+                    new Point(x_margin, end_height),
+                    end_width))
             {
                 //We failed to find a usable scale.
                 System.err.println("Error:  Longitude could not be found.");
@@ -300,10 +306,16 @@ public class Airport {
         }
         
         //Try to find the latitude scale on the left side of the diagram.
-        if (!findLatitudeScale(new Point(x_margin, y_margin), end_height))
+        if (!findLatitudeScale(
+                diagram,
+                new Point(x_margin, y_margin),
+                end_height))
         {
             //Try to find the latitude scale on the right side of the diagram.
-            if (!findLatitudeScale(new Point(end_width, y_margin), end_height))
+            if (!findLatitudeScale(
+                    diagram,
+                    new Point(end_width, y_margin),
+                    end_height))
             {
                 //We failed to find a usable scale.
                 System.err.println("Error:  Latitude could not be found.");
@@ -322,7 +334,9 @@ public class Airport {
      * @return true if a valid scale is found before the end of the diagram
      * and false otherwise.
      */
-    private boolean findLongitudeScale(Point current, int diagram_width_end)
+    private boolean findLongitudeScale(BufferedImage diagram, 
+                                       Point current, 
+                                       int diagram_width_end)
     {
         int black_pixels_found = 0;
         
@@ -339,6 +353,13 @@ public class Airport {
         //We found the scale if we find two black pixels when searching.
         while (black_pixels_found < 2)
         {
+            if (current.isBlack(diagram))
+            {
+                System.out.println("width: " + diagram.getWidth() +
+                                   "height: " + diagram.getHeight());
+                System.out.println(current.getX() + ", " + current.getY());
+                black_pixels_found++;
+            }
             /* We found the start of a full unit's marker on the grid, so add
              * to the counter
              */
@@ -383,7 +404,9 @@ public class Airport {
      * @return true if a valid scale is found before the end of the diagram
      * and false otherwise.
      */
-    private boolean findLatitudeScale(Point current, int diagram_height_end)
+    private boolean findLatitudeScale(BufferedImage diagram,
+                                      Point current, 
+                                      int diagram_height_end)
     {
         int black_pixels_found = 0;
         
@@ -400,6 +423,10 @@ public class Airport {
         //We have found the scale if we find two black pixels.
         while (black_pixels_found < 2)
         {
+            if (current.isBlack(diagram))
+            {
+                black_pixels_found++;
+            }
             /* We found the start of a full unit's marker on the grid, so add
              * to the counter.
              */

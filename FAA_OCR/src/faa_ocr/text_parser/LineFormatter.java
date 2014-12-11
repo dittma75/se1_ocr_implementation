@@ -22,15 +22,12 @@ public class LineFormatter
      * @return the formatted String.
      */
     String getFormattedString(String raw_data)
-    {
-        //Remove all Windows-style newlines
-        String formatted_data = raw_data.replaceAll("\r\n", "");
-        
-        //Remove all Unix-style newlines
-        formatted_data = raw_data.replaceAll("\n", "");
+    {   
+        //Remove all Windows-style and Unix-style newlines
+        //String formatted_data = raw_data.replaceAll("[\r]\n", "");
         
         //Replace multiple spaces with one space.
-        formatted_data = formatted_data.replaceAll(" +", " ");
+        String formatted_data = raw_data.replaceAll(" +", " ");
         return formatted_data;
     }
 }
