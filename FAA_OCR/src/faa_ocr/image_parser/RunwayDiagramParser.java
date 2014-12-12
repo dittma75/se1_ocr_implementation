@@ -262,24 +262,22 @@ public class RunwayDiagramParser
 	private boolean addToAirport(Point midpoint, Slope slope)
 	{
 		Point end_point = traverseSlope(midpoint, slope);
-		int x1 = midpoint.getX();
-                int y1 = midpoint.getY();
                 
-                int x2 = end_point.getX();
-                int y2 = end_point.getY();
-                
-                double runwayLength = findLength(x1, y1, x2, y2);
+                double runwayLength = findLength(midpoint.getX(),
+                                                 midpoint.getY(),
+                                                 end_point.getX(),
+                                                 end_point.getY());
                 
                 if(runwayLength > 100) 
                 {
                     //Translate the midpoint and end_point from x/y to lat/long
-                    float x1Long = airport.longitudeConversion(x1);
-                    float y1Long = airport.latitudeConversion(y1);
-                    Node startNode = new Node(x1Long, y1Long);
+                    float mid_long = airport.longitudeConversion(midpoint);
+                    float mid_lat = airport.latitudeConversion(midpoint);
+                    Node startNode = new Node(mid_long, mid_lat);
 
-                    float x2Long = airport.longitudeConversion(x2);
-                    float y2Long = airport.latitudeConversion(y2);
-                    Node endNode = new Node(x2Long, y2Long);
+                    float end_long = airport.longitudeConversion(end_point);
+                    float end_lat = airport.latitudeConversion(end_point);
+                    Node endNode = new Node(end_long, end_lat);
 
                     /* Add points to existing Runway instance in airport
                      * object.  Each physical runway is two runways, and they

@@ -283,23 +283,10 @@ public class Airport {
     {
         BufferedImage diagram = PDFToImage.makeImage(this.pdf_file_path);
         
-        /* The longer side has a margin of 61 pixels, and the shorter side
-         * has a margin of 25 pixels for all airport diagrams.  In other
-         * words, the first whitespace pixel of the actual diagram is at
-         * (25, 61) if the diagram is portrait and (61, 25) if landscape.
-        */
-        //landscape
-        if (diagram.getWidth() > diagram.getHeight())
-        {
-            x_margin = 61;
-            y_margin = 25;
-        }
-        //portrait
-        else
-        {
-            x_margin = 25;
-            y_margin = 61;
-        }
+        /* The left margin is 25 pixels; the right margin is 61 pixels
+         */
+        x_margin = 25;
+        y_margin = 61;
         
         //The right end of the diagram.
         int end_width = diagram.getWidth() - x_margin - 1;
@@ -308,37 +295,37 @@ public class Airport {
         int end_height = diagram.getHeight() - y_margin - 1;
         
         //Try to find the longitude scale at the top of the diagram.
-        if (!findLongitudeScale(
+        if (!findHorizontalScale(
                 diagram,
                 new Point(x_margin, y_margin),
                 end_width))
         {
             //Try to find the longitude scale at the bottom of the diagram.
-            if (!findLongitudeScale(
+            if (!findHorizontalScale(
                     diagram,
                     new Point(x_margin, end_height),
                     end_width))
             {
                 //We failed to find a usable scale.
-                System.err.println("Error:  Longitude could not be found.");
+                System.err.println("Error:  Horizontal scale not be found.");
                 System.exit(1);
             }
         }
         
         //Try to find the latitude scale on the left side of the diagram.
-        if (!findLatitudeScale(
+        if (!findVerticalScale(
                 diagram,
                 new Point(x_margin, y_margin),
                 end_height))
         {
             //Try to find the latitude scale on the right side of the diagram.
-            if (!findLatitudeScale(
+            if (!findVerticalScale(
                     diagram,
                     new Point(end_width, y_margin),
                     end_height))
             {
                 //We failed to find a usable scale.
-                System.err.println("Error:  Latitude could not be found.");
+                System.err.println("Error:  Vertical scale not be found.");
                 System.exit(1);
             }
         }
@@ -355,7 +342,7 @@ public class Airport {
      * @return true if a valid scale is found before the end of the diagram
      * and false otherwise.
      */
-    private boolean findLongitudeScale(BufferedImage diagram, 
+    private boolean findHorizontalScale(BufferedImage diagram, 
                                        Point current, 
                                        int diagram_width_end)
     {
@@ -408,11 +395,27 @@ public class Airport {
             }
         }
         
-        //Set the offset from the left side of the diagram to our unit marker.
-        this.longitude_offset = grid_offset;
-        
-        //Set the pixels-to-longitude conversion factor
-        this.pixels_per_unit_long = unit_in_pixels;
+        //If the diagram is rotated, then we just found the latitude scale
+        if (DIAGRAM_IS_ROTATED)
+        {
+            /* Set the offset from the left side of the diagram to our
+             * latitude unit marker.
+             */
+            this.latitude_offset = grid_offset;
+            
+            //Set the pixels-to-latitude conversion factor.
+            this.pixels_per_unit_lat = unit_in_pixels;
+        }
+        else
+        {
+            /* Set the offset from the left side of the diagram to our
+             * longitude unit marker.
+             */
+            this.longitude_offset = grid_offset;
+            
+            //Set the pixels-to-longitude conversion factor.
+            this.pixels_per_unit_long = unit_in_pixels;
+        }
         
         //We found our scale information.
         return true;
@@ -428,7 +431,7 @@ public class Airport {
      * @return true if a valid scale is found before the end of the diagram
      * and false otherwise.
      */
-    private boolean findLatitudeScale(BufferedImage diagram,
+    private boolean findVerticalScale(BufferedImage diagram,
                                       Point current, 
                                       int diagram_height_end)
     {
@@ -480,11 +483,27 @@ public class Airport {
             }
         }
         
-        //Set the offset from the top of the diagram to our unit marker.
-        this.latitude_offset = grid_offset;
-        
-        //Set the pixels-to-latitude conversion factor.
-        this.pixels_per_unit_lat = unit_in_pixels;
+        //If the diagram is rotated, then we just found the longitude scale
+        if (DIAGRAM_IS_ROTATED)
+        {
+            /* Set the offset from the left side of the diagram to our
+             * longitude unit marker.
+             */
+            this.longitude_offset = grid_offset;
+            
+            //Set the pixels-to-longitude conversion factor.
+            this.pixels_per_unit_long = unit_in_pixels;
+        }
+        else
+        {
+            /* Set the offset from the left side of the diagram to our
+             * latitude unit marker.
+             */
+            this.latitude_offset = grid_offset;
+            
+            //Set the pixels-to-longitude conversion factor.
+            this.pixels_per_unit_lat = unit_in_pixels;
+        }
         
         //We found our scale information.
         return true;
@@ -507,25 +526,51 @@ public class Airport {
     /**
      * Convert a y-coordinate into a latitude coordinate.
      * 
-     * @param y is the y-coordinate of the diagram.
+     * @param point is the point in the diagram whose latitude needed.
      * @return the latitude coordinate that corresponds to the pixel at the
-     * given y-coordinate.
+     * given point.
      */
-    public float latitudeConversion(int y)
+    public float latitudeConversion(Point point)
     {
-        return BASE_LATITUDE + (y - y_margin) / pixels_per_unit_lat;
+        /* If the diagram is rotated, x values should be used, and latitude
+         * decreases.
+         */
+        if (DIAGRAM_IS_ROTATED)
+        {
+            return BASE_LATITUDE -
+                   ((point.getX() - x_margin) / pixels_per_unit_lat);
+        }
+        //Otherwise y values should be used, and latitude decreases.
+        else
+        {
+            return BASE_LATITUDE -
+                   ((point.getY() - y_margin) / pixels_per_unit_lat);
+        }
     }
     
     /**
      * Convert the x-coordinate into a longitude coordinate.
      * 
-     * @param x is the x-coordinate of the diagram.
+     * @param point is the point in the diagram whose longitude are needed.
      * @return the longitude coordinate that corresponds to the pixel at the
-     * given x-coordinate.
+     * given point.
      */
-    public float longitudeConversion(int x)
+    public float longitudeConversion(Point point)
     {
-        return BASE_LONGITUDE + (x - x_margin) / pixels_per_unit_lat;
+        /* If the diagram is rotated, then the y values should be used, and
+         * longitude decreases
+         */
+        if (DIAGRAM_IS_ROTATED)
+        {
+            return BASE_LONGITUDE -
+                   ((point.getY() - y_margin) / pixels_per_unit_lat);
+        }
+        //Otherwise, x values should be used, and longitude increases.
+        else
+        {
+            return BASE_LONGITUDE +
+                   ((point.getX() - x_margin) / pixels_per_unit_lat);
+        }
     }
     
     /**
