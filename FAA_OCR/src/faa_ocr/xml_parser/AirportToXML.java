@@ -37,10 +37,14 @@ public class AirportToXML {
             "<variation>" + airport.getVariation() + "</variation>\n";
         
         for(int i = 0; i < airport.numRunways(); i++) {
+            xml_string += "<path>\n";
             runwayToXml(airport.getRunway(i));
+            xml_string += "</path>\n";
         }
         for(int i = 0; i < airport.numTaxiways(); i++) {
+            xml_string += "<path>\n";
             taxiwayToXml(airport.getTaxiway(i));
+            xml_string += "</path>\n";
         }
         xml_string += "</airport>";
         return writeToFile(airport.getFilePath());
@@ -58,7 +62,8 @@ public class AirportToXML {
      */
     private void runwayToXml(Runway runway)
     {
-        xml_string += "<runway>\n";
+        xml_string += "<path_type>runway</path>\n";
+        xml_string += "<path_name>" + runway.getName() + "</path_name>\n";
         xml_string += "<heading>" + runway.getHeading() + "</heading>\n";
         xml_string += "<elevation>" + runway.getElevation() + "</elevation>\n";
         xml_string += "<coordinates>\n";
@@ -103,7 +108,7 @@ public class AirportToXML {
      */
     private void taxiwayToXml(Taxiway taxiway)
     {
-        xml_string += "<taxiway>\n";
+        xml_string += "<path_type>taxiway</path_type>\n";
         xml_string += "<path_name>" + taxiway.getName() + "</path_name>\n";
         xml_string += "<coordinates>\n";
         for(int i = 0; i < taxiway.getNumPathNodes(); i++) {
