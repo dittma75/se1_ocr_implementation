@@ -29,7 +29,7 @@ public class Airport {
     private String abbreviation;
     private float variation;
     private final ArrayList<Runway> runways;
-    //Not used because we didn't get to them.
+   //Not used because we didn't get to them.
     private final ArrayList<Taxiway> taxiways;
     
     //Y-coordinate to latitude conversion factor.
@@ -64,7 +64,7 @@ public class Airport {
      */
     private final boolean DIAGRAM_IS_ROTATED;
     
-    public Airport (String pdf_file_path, boolean rotated)
+    public Airport (String pdf_file_path)//, boolean rotated)
     {
         DIAGRAM_IS_ROTATED = rotated;
         this.runways = new ArrayList<Runway>();

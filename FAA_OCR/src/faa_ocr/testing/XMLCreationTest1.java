@@ -22,7 +22,7 @@ public class XMLCreationTest1 {
     
     public static void main(String args[])
     {
-        Airport airport = new Airport("ATL_Airport.pdf", false);
+        Airport airport = new Airport("ATL_Airport.pdf");//, false);
         //give values to all data fields
         airport.setName("Atlanta Airport");
         airport.setLocation("Atlanta, Georgia");
