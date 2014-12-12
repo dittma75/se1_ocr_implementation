@@ -86,8 +86,9 @@ public class Point
 	public boolean equals(Object object) 
 	{
 		// Can't be equal if the object isn't a point.
-		if (!(object instanceof Point)) {
-			return false;
+		if (!(object instanceof Point)) 
+                {
+                    return false;
 		}
 
 		// Cast the object as a point, since it is an instance of Point.

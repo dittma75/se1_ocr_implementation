@@ -22,12 +22,12 @@ public class XMLCreationTest1 {
     
     public static void main(String args[])
     {
-        Airport airport = new Airport("ATL_Airport.pdf");
+        Airport airport = new Airport("ATL_Airport.pdf", false);
         //give values to all data fields
         airport.setName("Atlanta Airport");
         airport.setLocation("Atlanta, Georgia");
         airport.setAbbreviation("ATL");
-        airport.setVariation((float).07);
+        airport.setVariation(.07f);
         
         //create a runway and fill it with completely made up numbers and names
         //this is strictly a visual test so the values are arbitrary

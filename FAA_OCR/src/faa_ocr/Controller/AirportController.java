@@ -64,7 +64,7 @@ public class AirportController
 	private void getInformationFromPDF(String path)
 	{
 		//create a new airport with Sting path to PDF
-		Airport airport = new Airport(path);
+		Airport airport = new Airport(path, false);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);

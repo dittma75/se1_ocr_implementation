@@ -52,17 +52,21 @@ public class Airport {
     private int x_margin;
     private int y_margin;
     
-    //True if half minutes are used; false if whole minutes are used.
-    private final boolean USES_HALF_MINUTES;
-    
     //The latitude that coordinates will be based on for this airport.
     private final float BASE_LATITUDE;
     
     //The latitude that coordinates will be based on for this airport.
     private final float BASE_LONGITUDE;
     
-    public Airport (String pdf_file_path)
+    /* True if the diagram is a rotated landscape diagram instead of a
+     * portrait diagram.  This is important because rotation affects how
+     * the longitude scale should be calculated.
+     */
+    private final boolean DIAGRAM_IS_ROTATED;
+    
+    public Airport (String pdf_file_path, boolean rotated)
     {
+        DIAGRAM_IS_ROTATED = rotated;
         this.runways = new ArrayList<Runway>();
         this.taxiways = new ArrayList<Taxiway>();
         this.pdf_file_path = pdf_file_path;
@@ -72,8 +76,17 @@ public class Airport {
          * corner of the diagram.
          */
         findPixelConversionScales();
-        String diagram_text = PDFToText.getTextPDFBox(pdf_file_path);
-        USES_HALF_MINUTES = containsHalfMinutes(diagram_text);
+        String diagram_text = PDFToText.getDiagramText(pdf_file_path);
+        
+        /* If we use half minutes, a unit of latitude and longitude is
+         * twice the number of pixels that we found.
+         */
+        if (usesHalfMinutes(diagram_text))
+        {
+            pixels_per_unit_lat *= 2;
+            pixels_per_unit_long *= 2;
+        }
+        
         BASE_LATITUDE = findBaseLatitude(diagram_text);
         BASE_LONGITUDE = findBaseLongitude(diagram_text);
     }
@@ -246,7 +259,13 @@ public class Airport {
                         + "Name: " + name + "\n"
                         + "Location: " + location + "\n"
                         + "Abbreviation: " + abbreviation + "\n"
-                        + "Variation: " + variation + "\n";
+                        + "Variation: " + variation + "\n"
+                        + "Base longitude: " + BASE_LONGITUDE + "\n"
+                        + "Base latitude: " + BASE_LATITUDE + "\n"
+                        + "Longitude scale: " + pixels_per_unit_long + "\n"
+                        + "Latitude scale: " + pixels_per_unit_lat + "\n"
+                        + "Longitude offset: " + longitude_offset + "\n"
+                        + "Latitude offset: " + latitude_offset + "\n";
         for(int i = 0; i < numRunways(); i++) {
             airportString += "Path: " + getRunway(i).toString() + "\n";
         }
@@ -352,13 +371,13 @@ public class Airport {
          */
         int grid_offset = 0;
         
+        int timeout_width = 180;
+        
         //We found the scale if we find two black pixels when searching.
         while (black_pixels_found < 2)
         {
             if (current.isBlack(diagram))
             {
-                System.out.println("width: " + diagram.getWidth() +
-                                   "height: " + diagram.getHeight());
                 System.out.println(current.getX() + ", " + current.getY());
                 black_pixels_found++;
             }
@@ -378,10 +397,12 @@ public class Airport {
             }
             //Advance to the next pixel to the right.
             current = new Point(current.getX() + 1, current.getY());
-            /* If we are still looking for the end of the unit at the end of
+            /* If we don't find the start of the grid unit before the timeout
+             * or we are still looking for the end of the unit at the end of
              * the diagram, then we failed to find the scale.
              */
-            if (current.getX() >= diagram_width_end)
+            if ((black_pixels_found < 1 && current.getX() > timeout_width) ||
+                (current.getX() >= diagram_width_end))
             {
                 return false;
             }
@@ -423,6 +444,8 @@ public class Airport {
          */
         int grid_offset = 0;
         
+        //Don't look for the start of the scale past 300 pixels down.
+        int timeout_height = 300;
         //We have found the scale if we find two black pixels.
         while (black_pixels_found < 2)
         {
@@ -446,10 +469,12 @@ public class Airport {
             }
             //Advance to the next pixel downward.
             current = new Point(current.getX(), current.getY() + 1);
-            /* If we are still looking for the end of the unit at the end of
+            /* If we look for the start of the grid unit for too long or we
+             * are still looking for the end of the unit at the end of
              * the diagram, then we failed to find the scale.
              */
-            if (current.getY() >= diagram_height_end)
+            if ((black_pixels_found < 1 && current.getY() > timeout_height) ||
+                (current.getY() >= diagram_height_end))
             {
                 return false;
             }
@@ -473,7 +498,7 @@ public class Airport {
      * @return true if the measurement is half minutes and false if it is
      * whole minutes.
      */
-    private boolean containsHalfMinutes(String diagram_text)
+    private boolean usesHalfMinutes(String diagram_text)
     {
         //Look for a minute measurement with a ".5" component.
         return diagram_text.contains(".*\\.5\\'[NSWE].*");
@@ -516,7 +541,17 @@ public class Airport {
        int degrees = -1;
        int minutes = -1;
        String direction = "";
-       Pattern long_pattern = Pattern.compile("(\\d+?) (\\d+?)'([WE]?)");
+       
+       /* Longitude regular expression:
+        * (\\d+) matches the number of degrees, which could be any number of
+        * digits from 1 to 3.
+        * (\\d\\d) matches the number of minutes, which is always two digits.
+        * ([WE]) matches the direction, which is either West or East.
+        */
+       Pattern long_pattern = Pattern.compile(
+            "(\\d{1,3}) *(\\d\\d) *' *([WE])"
+       );
+       
        while (scanner.hasNextLine())
        {
            Matcher long_matcher = long_pattern.matcher(scanner.nextLine());
@@ -529,32 +564,17 @@ public class Airport {
                {
                    direction = long_matcher.group(3);
                }
-               //The longitude scale is in the Western hemisphere.
-               else if (direction.equals("W"))
+               /* The longitude scale is in the Western hemisphere, or
+                * it is in the Eastern hemisphere and the diagram is rotated.
+                */
+               if ((direction.equals("W") && !DIAGRAM_IS_ROTATED) ||
+                   (direction.equals("E") && DIAGRAM_IS_ROTATED))
                {
                   /* If the degrees number that we have hasn't been set,
                    * is larger than the number we found,
                    * or is the same as the number we found, but the new
                    * minutes value is less than the value that we have, then
                    * replace the old degree value and minutes value.
-                   */
-                  if (degrees < 0 ||
-                      new_degrees < degrees ||
-                     (new_degrees == degrees && new_minutes < minutes)
-                     )
-                  {
-                      degrees = new_degrees;
-                      minutes = new_minutes;
-                  }
-               }
-               //The longitude scale is in the Eastern hemisphere.
-               else if (direction.equals("E"))
-               {
-                   /* If the degrees number that we have hasn't been set,
-                   * is smaller than the number we found,
-                   * or is the same as the number we found, but the new
-                   * minutes value is greater than the value that we have,
-                   * then replace the old degree value and minutes value.
                    */
                   if (degrees < 0 ||
                       new_degrees > degrees ||
@@ -565,18 +585,61 @@ public class Airport {
                       minutes = new_minutes;
                   }
                }
+               /*The longitude scale is in the Eastern hemisphere, or it is
+                *in the Western hemisphere and the diagram is rotated.
+                */
+               else if ((direction.equals("E") && !DIAGRAM_IS_ROTATED) ||
+                        (direction.equals("W") && DIAGRAM_IS_ROTATED))
+               {
+                   /* If the degrees number that we have hasn't been set,
+                   * is smaller than the number we found,
+                   * or is the same as the number we found, but the new
+                   * minutes value is greater than the value that we have,
+                   * then replace the old degree value and minutes value.
+                   */
+                  if (degrees < 0 ||
+                      new_degrees < degrees ||
+                     (new_degrees == degrees && new_minutes < minutes)
+                     )
+                  {
+                      degrees = new_degrees;
+                      minutes = new_minutes;
+                  }
+               }
            }
        }
+       float base_longitude = (float) (degrees + ((float)minutes / 60.0f));
        
-       float base_longitude = (float) (degrees + (minutes / 60));
+       /* If the diagram is rotated, then the longitude offset should be
+        * subtracted.
+        */
+       if (DIAGRAM_IS_ROTATED)
+       {
+            base_longitude -=
+                (float)longitude_offset / (float)pixels_per_unit_long / 60.0f;
+       }
+       
+       /* If the diagram is not rotated, then the longitude offset should be
+        * added.
+        */
+       else
+       {
+            base_longitude +=
+                (float)longitude_offset / (float)pixels_per_unit_long / 60.0f;
+       }
+       
        
        //Western longitudes are negative in numeric coordinates
        if (direction.equals("W"))
        {
            base_longitude *= -1;
        }
-       
        scanner.close();
+       
+       /* The leftmost longitude marker isn't the left side of the diagram, so
+        * we need to subtract the offset between the left side of the diagram\
+        * and the first marker.
+        */
        return base_longitude;
     }
     
@@ -593,7 +656,17 @@ public class Airport {
        int degrees = -1;
        int minutes = -1;
        String direction = "";
-       Pattern lat_pattern = Pattern.compile("(\\d+?) (\\d+?)'([NS]?)");
+       
+       /* Latitude regular expression:
+        * (\\d+) matches the number of degrees, which could be any number of
+        * digits from 1 to 3.
+        * (\\d\\d) matches the number of minutes, which is always two digits.
+        * ([NS]) matches the direction, which is either North or South.
+        */
+       Pattern lat_pattern = Pattern.compile(
+            "(\\d{1,3}) *(\\d\\d) *' *([NS])"
+       );
+       
        while (scanner.hasNextLine())
        {
            Matcher lat_matcher = lat_pattern.matcher(scanner.nextLine());
@@ -607,7 +680,7 @@ public class Airport {
                    direction = lat_matcher.group(3);
                }
                //The latitude scale is in the Southern hemisphere.
-               else if (direction.equals("S"))
+               if (direction.equals("S"))
                {
                   /* If the degrees number that we have hasn't been set,
                    * is larger than the number we found,
@@ -645,14 +718,19 @@ public class Airport {
            }
        }
        
-       float base_latitude = (float) (degrees + (minutes / 60));
-       
+       float base_latitude = (float) (degrees + ((float)minutes / 60.0f));
+       base_latitude += ((float)latitude_offset / pixels_per_unit_lat / 60);
        //Southern latitudes are negative in numeric coordinates
        if (direction.equals("S"))
        {
            base_latitude *= -1;
        }
        scanner.close();
+       
+       /* The topmost latitude marker isn't the top of the diagram, so we
+        * need to subtract the offset between the top of the diagram and the
+        * first marker.
+        */
        return base_latitude;
     }
 } //end Airport

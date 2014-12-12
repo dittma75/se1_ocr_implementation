@@ -12,7 +12,7 @@ public class AirportDataParser extends DataParser
      * followed by a string of digits, a decimal point, another string of
      * digits, and N,S,W, or E, which stand for the direction of the variation.
      */
-    private final String VARIATION_PATTERN = "VAR (\\d+\\.\\d+) [NSWE]";
+    private final String VARIATION_PATTERN = "VAR (\\d+\\.\\d+ [NSWE])";
     
     /* The pattern for the airport abbreviation, which is three characters in
      * parentheses after the string "INTL"
@@ -68,7 +68,16 @@ public class AirportDataParser extends DataParser
                 if (!var.equals(""))
                 {
                     found_variation = true;
-                    airport.setVariation(Float.parseFloat(var));
+                    
+                    float var_amount = Float.parseFloat(
+                        var.replaceAll("[WE]", "")
+                    );
+                    
+                    if (var.contains("W"))
+                    {
+                        var_amount *= -1;
+                    }
+                    airport.setVariation(var_amount);
                 }
             }
             
