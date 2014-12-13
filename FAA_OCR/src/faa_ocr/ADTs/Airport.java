@@ -64,7 +64,7 @@ public class Airport {
      */
     private final boolean DIAGRAM_IS_ROTATED;
     
-    public Airport (String pdf_file_path)//, boolean rotated)
+    public Airport (String pdf_file_path, boolean rotated)//, boolean rotated)
     {
         DIAGRAM_IS_ROTATED = rotated;
         this.runways = new ArrayList<Runway>();

@@ -26,7 +26,7 @@ public class ImageParsingTest {
 		System.out.println(airport_image.getWidth());
 		
 		//make airport with ACY
-//		Airport airport = new Airport(acy_pdf_path);
+//		Airport airport = new Airport(acy_pdf_path,false);
 		Airport airport = null;
 		
 		
