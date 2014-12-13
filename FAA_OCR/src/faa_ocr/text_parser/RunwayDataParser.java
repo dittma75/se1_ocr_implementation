@@ -18,17 +18,17 @@ public class RunwayDataParser extends DataParser
      *This elevation pattern works for Atlanta, but it needs tweaking for
      *the rest of the cases.
      */
-    private final String ELEV_PATTERN = ".*\\b[A-Za-z]*(\\d{1,4}?)\\b.*";
+    private final String ELEV_PATTERN = ".*\\b[A-Za-z]*(\\d{1,4})\\b.*";
     
     /*Headings always follow the pattern of a four significant digit number
      *with accuracy to the tenths place.
      */
-    private final String HEADING_PATTERN = "(\\d\\d\\d\\.\\d?)";
+    private final String HEADING_PATTERN = "(\\d\\d\\d\\.\\d)";
     
-    /*Runways always follow the pattern of a two digits and an optional
-     *letter.
+    /* Runways always follow the pattern of one or two digits and an optional
+     * letter.
      */
-    private final String RUNWAY_PATTERN = "(\\d\\d[LCR]?)";
+    private final String RUNWAY_PATTERN = " (\\d{1,2}[LCR]*)";
     
     /**
      * No initialization is necessary for the constructor.
@@ -72,6 +72,7 @@ public class RunwayDataParser extends DataParser
             
             //Check this line for runways.
             String runway = searchForItem(RUNWAY_PATTERN, current_line);
+            runway = correctRunway(runway);
             if (valid_runways.contains(runway) &&
                 !runways.contains(runway))
             {
@@ -145,8 +146,8 @@ public class RunwayDataParser extends DataParser
                 //We found a line with at least one runway pair.
                 if (!runway_pairs_string.equals(""))
                 {
-                    /* Remove all spaces from the String to ensure proper
-                     * String comparison.
+                    /* Remove all spaces and padding zeros from the String to
+                     * ensure proper String comparison.
                      */
                     runway_pairs_string = 
                         runway_pairs_string.replaceAll(" ", "");
@@ -235,5 +236,27 @@ public class RunwayDataParser extends DataParser
         }
         scanner.close();
         return valid_headings;
+    }
+    
+    /**
+     * Fix disparity between the runway names near the runways on the diagram
+     * and the names given in the listing on the diagram.
+     * @param runway is the runway to correct.
+     * @return is the corrected runway name.
+     */
+    private String correctRunway(String runway)
+    {
+        /* If the runway has one digit and one letter, pad with a zero.
+         * This is necessary because all one-digit runways are padded with
+         * a zero in the listing, but not in the actual diagrams.
+         */
+        if (runway.length() < 3 && runway.matches("\\d[LRC]*"))
+        {
+            return "0" + runway;
+        }
+        else
+        {
+            return runway;
+        }
     }
 }

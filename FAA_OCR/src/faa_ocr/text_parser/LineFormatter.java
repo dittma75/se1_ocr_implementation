@@ -26,8 +26,14 @@ public class LineFormatter
         //Remove all Windows-style and Unix-style newlines
         //String formatted_data = raw_data.replaceAll("[\r]\n", "");
         
+        /* Add a newline after each end-parenthesis to make parsing
+         * parenthesized data easier.
+         */
+        String formatted_data = raw_data.replaceAll("\\)", ")\n");
+        
         //Replace multiple spaces with one space.
-        String formatted_data = raw_data.replaceAll(" +", " ");
+        formatted_data = formatted_data.replaceAll(" +", " ");
+        
         return formatted_data;
     }
 }

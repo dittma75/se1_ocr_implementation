@@ -103,7 +103,7 @@ public class PDFToText
             scanner = new Scanner(diagram_file);
             while (scanner.hasNextLine())
             {
-                diagram_text += scanner.nextLine() + "\n";
+                diagram_text += scanner.nextLine() + "\n ";
             }
             scanner.close();
         }
@@ -115,7 +115,6 @@ public class PDFToText
         }
         
         LineFormatter lf = new LineFormatter();
-        
         return lf.getFormattedString(diagram_text);
     }
     
