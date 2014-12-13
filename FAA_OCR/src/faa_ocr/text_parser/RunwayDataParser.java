@@ -18,7 +18,7 @@ public class RunwayDataParser extends DataParser
      *This elevation pattern works for Atlanta, but it needs tweaking for
      *the rest of the cases.
      */
-    private final String ELEV_PATTERN = ".*\\b[A-Za-z]*(\\d{3,4}?)\\b.*";
+    private final String ELEV_PATTERN = ".*\\b[A-Za-z]*(\\d{1,4}?)\\b.*";
     
     /*Headings always follow the pattern of a four significant digit number
      *with accuracy to the tenths place.
@@ -51,11 +51,11 @@ public class RunwayDataParser extends DataParser
     {
         
         ArrayList<String> valid_runways = makeListOfRunways(
-                airport.getFilePath()
+                PDFToText.getTextPath(airport.getFilePath())
         );
 
         ArrayList<String> valid_headings = makeListOfProperHeadings(
-                airport.getFilePath()
+                PDFToText.getTextPath(airport.getFilePath())
         );
 
         ArrayList<String> runways = new ArrayList<>();
@@ -72,7 +72,8 @@ public class RunwayDataParser extends DataParser
             
             //Check this line for runways.
             String runway = searchForItem(RUNWAY_PATTERN, current_line);
-            if (valid_runways.contains(runway))
+            if (valid_runways.contains(runway) &&
+                !runways.contains(runway))
             {
                 runways.add(runway);
             }
@@ -129,28 +130,57 @@ public class RunwayDataParser extends DataParser
             while (scanner.hasNextLine())
             {
                 next_line = scanner.nextLine();
-                next_line = " " + next_line;
                 
-                /*The runway list pattern looks for "RWY", which comes
-                 *before each runway pairing on the list of runways that is
-                 *included on every airport diagram.  Runways are named with
-                 *digits and an optional letter (L for left, R for right, and
-                 *C for center).
+                /* This pattern looks for runway pairs.  They usually come
+                 * in single pairs, but sometimes they come in a comma
+                 * delimited list of pairs.  The first capturing group will
+                 * be the list that is wanted, so searchForItem() still
+                 * works.
                  */
-                String runway_pair = searchForItem(
-                        " RWY ([0-9]+[RLC]*-[0-9]+[RLC]?)",
+                String runway_pairs_string = searchForItem(
+                        "R *W *Y *(( *\\d\\d[RCL]*-\\d\\d[RCL]*,*)*)",
                         next_line
                 );
-
-                if (!runway_pair.equals(""))
+                
+                //We found a line with at least one runway pair.
+                if (!runway_pairs_string.equals(""))
                 {
-                    /*This will always be a set of two runways separated by a
-                     *minus sign, so split on the "-" character.
+                    /* Remove all spaces from the String to ensure proper
+                     * String comparison.
                      */
-                    String rwy_set[] = runway_pair.split("-");
+                    runway_pairs_string = 
+                        runway_pairs_string.replaceAll(" ", "");
                     
-                    runways.add(rwy_set[0]);
-                    runways.add(rwy_set[1]);
+                    String runway_pairs[];
+                    //We found multiple pairs of runways delimited by commas
+                    if (runway_pairs_string.contains(","))
+                    {
+                        runway_pairs = runway_pairs_string.split(",");
+                    }
+                    /* Otherwise, there is just one pair.  An array is used
+                     * so that it is possible to iterate over the list
+                     * in a more general way.
+                     */
+                    else
+                    {
+                        runway_pairs = new String[1];
+                        runway_pairs[0] = runway_pairs_string;
+                    }
+                    for (String runway_pair : runway_pairs)
+                    {
+                        /* This will always be a set of two runways separated
+                         * by a minus sign, so split on the "-" character.
+                         */
+                        String[] rwy_set = runway_pair.split("-");
+                        for (String runway : rwy_set)
+                        {
+                            //Add the runway to the list if it's not there.
+                            if (!runways.contains(runway))
+                            {
+                                runways.add(runway);
+                            }
+                        }
+                    }
                 }
             }
             scanner.close();

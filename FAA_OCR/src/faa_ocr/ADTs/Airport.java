@@ -64,7 +64,7 @@ public class Airport {
      */
     private final boolean DIAGRAM_IS_ROTATED;
     
-    public Airport (String pdf_file_path)//, boolean rotated)
+    public Airport (String pdf_file_path, boolean rotated)
     {
         DIAGRAM_IS_ROTATED = rotated;
         this.runways = new ArrayList<Runway>();
@@ -365,7 +365,6 @@ public class Airport {
         {
             if (current.isBlack(diagram))
             {
-                System.out.println(current.getX() + ", " + current.getY());
                 black_pixels_found++;
             }
             /* We found the start of a full unit's marker on the grid, so add
@@ -594,7 +593,7 @@ public class Airport {
         * ([WE]) matches the direction, which is either West or East.
         */
        Pattern long_pattern = Pattern.compile(
-            "(\\d{1,3}) *(\\d\\d) *' *([WE])"
+            "(\\d{1,3}) *(\\d\\d)[ \\.\\d]*' *([WE])"
        );
        
        while (scanner.hasNextLine())
@@ -709,7 +708,7 @@ public class Airport {
         * ([NS]) matches the direction, which is either North or South.
         */
        Pattern lat_pattern = Pattern.compile(
-            "(\\d{1,3}) *(\\d\\d) *' *([NS])"
+            "(\\d{1,3}) *(\\d\\d)[ \\.\\d]*' *([NS])"
        );
        
        while (scanner.hasNextLine())

@@ -17,12 +17,12 @@ public class AirportDataParser extends DataParser
     /* The pattern for the airport abbreviation, which is three characters in
      * parentheses after the string "INTL"
      */
-    private final String ABBREVIATION_PATTERN = ".*INTL\\((...)\\)";
+    private final String ABBREVIATION_PATTERN = ".*INTL *\\((...)\\)";
  
     /* The pattern for the name, which comes before the abbreviation code
      * and always includes INTL.
      */
-    private final String NAME_PATTERN = "(.*INTL)\\(...\\)";
+    private final String NAME_PATTERN = "(.*INTL *)\\(...\\)";
     
     /*The pattern for the location is "city, state", where city and state are
      *all capital letters.

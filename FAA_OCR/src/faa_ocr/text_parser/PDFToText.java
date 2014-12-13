@@ -42,12 +42,9 @@ public class PDFToText
         
         AirportDataParser airport_parser = new AirportDataParser();
         RunwayDataParser runway_parser = new RunwayDataParser();
-        LineFormatter line_formatter = new LineFormatter();
         
         //Format the diagram text for use in the parsers.
-        String diagram_text = line_formatter.getFormattedString(
-                getDiagramText(diagram_path)
-        );
+        String diagram_text = getDiagramText(diagram_path);
         
         //Parse the diagram for airport-specific information.
         airport_parser.parseAirportData(diagram_text, airport);
@@ -63,12 +60,12 @@ public class PDFToText
      * @param file_path is the file path of the PDF airport diagram that is to
      * be turned into a text file.
      */
-    private void makeTextFile(String file_path)
+    private static void makeTextFile(String file_path)
     {
         try
         {
             //Parse the PDF and turn its text into a plain text .txt file.
-            Process pdftotext = getRuntime().exec("pdftotext " + file_path);
+            Process pdftotext = Runtime.getRuntime().exec("pdftotext " + file_path);
             
             //Wait for pdftotext to terminate.
             pdftotext.waitFor();
@@ -93,6 +90,12 @@ public class PDFToText
     public static String getDiagramText(String diagram_pdf_path)
     {
         File diagram_file = new File(getTextPath(diagram_pdf_path));
+        //If the file hasn't been created, create it.
+        if (!diagram_file.exists())
+        {
+            makeTextFile(diagram_pdf_path);
+            diagram_file = new File(getTextPath(diagram_pdf_path));
+        }
         Scanner scanner;
         String diagram_text = "";
         try
@@ -110,7 +113,10 @@ public class PDFToText
                     Level.SEVERE, null, ex
             );
         }
-        return diagram_text;
+        
+        LineFormatter lf = new LineFormatter();
+        
+        return lf.getFormattedString(diagram_text);
     }
     
     /**
@@ -118,7 +124,7 @@ public class PDFToText
      * diagram's PDF file's path.
      * @param diagram_pdf_path is the path of the airport diagram PDF.
      */
-    private static String getTextPath(String diagram_pdf_path)
+    static String getTextPath(String diagram_pdf_path)
     {
         /*The txt file has the same name as the PDF file and is stored in the
          *same directory, but the extension is .txt instead of .pdf.

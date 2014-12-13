@@ -16,14 +16,15 @@ public class TextParserTest
 {
     public static void main(String[] args)
     {
-        testACYAirport();
+        //testACYAirport();
         testATLAirport();
-        testDFWAirport();
+        //testDFWAirport();
+        //testPHXAirport();
     }
     
     public static void testACYAirport()
     {
-        Airport airport = new Airport("lib/00669AD.pdf", true);
+        Airport airport = new Airport("res/ACY/00669AD.pdf", true);
         PDFToText pdftotext = new PDFToText();
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
@@ -31,7 +32,7 @@ public class TextParserTest
     
     public static void testATLAirport()
     {
-        Airport airport = new Airport("lib/00026AD.pdf", false);
+        Airport airport = new Airport("res/ATL/00026AD.pdf", false);
         PDFToText pdftotext = new PDFToText();
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
@@ -39,7 +40,15 @@ public class TextParserTest
     
     public static void testDFWAirport()
     {
-        Airport airport = new Airport("lib/06039AD.pdf", true);
+        Airport airport = new Airport("res/DFW/06039AD.pdf", true);
+        PDFToText pdftotext = new PDFToText();
+        pdftotext.parseTextData(airport);
+        System.out.println(airport.toString());
+    }
+    
+    public static void testPHXAirport()
+    {
+        Airport airport = new Airport("res/PHX/00322AD.pdf", true);
         PDFToText pdftotext = new PDFToText();
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
