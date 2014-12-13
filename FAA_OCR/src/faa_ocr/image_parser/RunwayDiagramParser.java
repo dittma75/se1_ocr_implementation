@@ -249,7 +249,11 @@ public class RunwayDiagramParser
             Slope slope = new Slope(slope_y, slope_x);
             slope.invertSlope();
             
-            addToAirport(runway_start, slope);
+            //Length of the width of the runway used when we traverse at the rate
+            	//of the slope
+            int width_of_runway = (int) findLength(initial_point, end_of_width);
+            
+            addToAirport(runway_start, slope, width_of_runway);
             
 	}
 	
@@ -259,9 +263,9 @@ public class RunwayDiagramParser
 	 * @param midpoint of the current runway
 	 * @param slope of the current runway
 	 */
-	private boolean addToAirport(Point midpoint, Slope slope)
+	private boolean addToAirport(Point midpoint, Slope slope, int width_of_runway)
 	{
-		Point end_point = traverseSlope(midpoint, slope);
+		Point end_point = traverseSlope(midpoint, slope, width_of_runway);
                 
                 double runwayLength = findLength(midpoint.getX(),
                                                  midpoint.getY(),
@@ -305,16 +309,34 @@ public class RunwayDiagramParser
 	}
         
         /**
-         * find the length in pixels of the runway
+         * Find the length in pixels of two x,y coordinates
          * 
-         * @param 
-         * @param
-         * @param
-         * @param
+         * @param x coordinate for the first point
+         * @param y coordinate for the first point
+         * @param x coordinate for the second point
+         * @param y coordinate for the second point
          */
         private double findLength(int x1, int y1, int x2, int y2) 
         {
             return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+        }
+        
+        /**
+         * Find the length in pixels of two points
+         * 
+         * @param x coordinate for the first point
+         * @param y coordinate for the first point
+         * @param x coordinate for the second point
+         * @param y coordinate for the second point
+         */
+        private double findLength(Point one, Point two) 
+        {
+            int x1 = one.getX();
+            int y1 = one.getY();
+            int x2 = two.getX();
+            int y2 = two.getY();
+        	
+        	return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
         }
 	
 	
@@ -416,6 +438,135 @@ public class RunwayDiagramParser
                    } else 
                    {
                        lastBlack = true;
+                   }
+                }
+                return curr_point;
+	}
+	
+	
+	
+	//Return the wing point from the point given
+	private Point findWing(Point point, int wing_x, int wing_y)
+	{
+		return new Point(point.getX() + wing_x, point.getY() + wing_y);
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Traverse the slope at the rate of the slope. Stop when
+	 * you reach the last black point.
+	 * @param initial_point
+	 * @param slope
+	 * @return last black point
+	 */
+	private Point traverseSlope(Point initial_point, Slope slope, int width_of_runway)
+	{
+                int slopeX = slope.getX();
+                int slopeY = slope.getY();
+                Point curr_point = initial_point;
+                
+                //Find the slope of the width of the runway
+                slope.invertSlope();
+                int slope_width_X = slope.getX();
+                int slope_width_Y = slope.getY();
+                
+                //Find the equation for finding the wings of the point after every traversal
+                Point wing_right;
+                Point wing_left;
+                do{
+                	wing_right = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
+                    wing_left = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
+                } while (findLength(wing_left, wing_right) < width_of_runway);
+//TODO: logic of the above will only happen once. Needs to be changed
+                
+                //We have arbitrary wings for initial midpoint. Now calculate the x and y we need to add/subtract
+                //from the point we are at to find the "wings" of that point
+                int left_wingx = wing_left.getX() - curr_point.getX();
+                int left_wingy = wing_left.getY() - curr_point.getY();
+                int right_wingx = wing_right.getX() - curr_point.getX();
+                int right_wingy = wing_right.getX() - curr_point.getX();
+                
+                Point left_wing = new Point(left_wingx, left_wingy);
+                Point right_wing = new Point(right_wingx, right_wingy);
+                
+                boolean lastBlack = false;
+                while(lastBlack == false)
+                {
+                   //To get the next point, add the slope to the current point.
+                   Point next_point = new Point(
+                           curr_point.getX() + slopeX, 
+                           curr_point.getY() + slopeY
+                   );
+                   
+                   
+                   
+                   
+                   
+ //TODO: I can check the wings first and then the middle point. This will save from duplicating code
+                   if(next_point.isBlack(diagram)) 
+                   {
+                       if(left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                    	   //Both wings are black so we are still in the middle of the runway.
+                    	   //continue forward
+                       {
+                    	   curr_point = next_point;
+                       }
+                       else if (left_wing.isBlack(diagram) && !right_wing.isBlack(diagram))
+                    	   //Left wing is black and the right wing is not.
+                    	   //Correct ourselves to the left so we stay in the middle of the runway
+                       {
+                    	   curr_point = new Point(next_point.getX() - 2, next_point.getY());
+                       }
+                       else if (!left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                    	   //right wing is black and the left wing is not.
+                    	   //Correct ourselves to the right so we stay in the middle of the runway
+                       {
+                    	   curr_point = new Point(next_point.getX() + 2, next_point.getY());
+                       }
+                       else
+                    	   //Both wings are white. We will go forward assuming we are still
+                    	   //in the middle of the runway.
+                       {
+                    	   curr_point = next_point;
+                       }
+                       
+                   } 
+                   else 
+                	   /*
+                	    * The next point is not black. We will check to see if both the wing points
+                	    * are black. If they are, we can assume we are still on the runway. If 1 or the
+                	    * other wing is black, we can still safely assume we are on the runway and
+                	    * we will traverse forward and correct ourselves so we stay in the middle.
+                	    * If all 3 points are are white. We must look around and make a decision if
+                	    * we are at the end of the runway or in white space in the middle of the runway
+                	    * depending on the pixels around us
+                	    */
+                   {
+                	   if(left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                    	   //Both wings are black so we are still in the middle of the runway.
+                    	   //continue forward
+                       {
+                    	   curr_point = next_point;
+                       }
+                	   else if (left_wing.isBlack(diagram) && !right_wing.isBlack(diagram))
+                    	   //Left wing is black and the right wing is not.
+                    	   //Correct ourselves to the left so we stay in the middle of the runway
+                       {
+                    	   curr_point = new Point(next_point.getX() - 2, next_point.getY());
+                       }
+                       else if (!left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                    	   //right wing is black and the left wing is not.
+                    	   //Correct ourselves to the right so we stay in the middle of the runway
+                       {
+                    	   curr_point = new Point(next_point.getX() + 2, next_point.getY());
+                       }
+                       else
+                       {
+//TODO: look around and decide what to do
+                       }
                    }
                 }
                 return curr_point;
