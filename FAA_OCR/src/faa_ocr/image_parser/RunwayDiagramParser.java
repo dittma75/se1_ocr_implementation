@@ -275,7 +275,6 @@ public class RunwayDiagramParser
             addToAirport(midpoint_of_runway, slope, width_of_runway);
             
 	}
-//TODO: Bug was found in traverse slope. If the runway was found while traversing left, it would return the right point	
 	
 	/**
 	 * Traverse the runway at the rate of the slope and add those points to the airport
@@ -571,6 +570,7 @@ public class RunwayDiagramParser
                 	left_wing_calculate = new Point(slope_width_X, slope_width_Y);
                 	right_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
                 }
+                //The slope of X must be negative so flip right_wing and left_wing
                 else
                 {
                 	right_wing_calculate = new Point(slope_width_X, slope_width_Y);
@@ -579,8 +579,7 @@ public class RunwayDiagramParser
 
                 
                 
-                
-                
+
                 boolean lastBlack = false;
                 while(lastBlack == false)
                 {
