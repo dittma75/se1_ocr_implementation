@@ -35,7 +35,21 @@ public class LineFormatter
         formatted_data = formatted_data.replaceAll(" +", " ");
         
         //Condense short lines of numbers to make finding headings easier.
-        formatted_data = formatted_data.replaceAll("([\\d\\.]{1,2})\r\n", "$1");
+        formatted_data = formatted_data.replaceAll("([\\d\\.]{1,2})\r*\n", "$1");
+        
+        //Two ELEVs on one line.
+        formatted_data = formatted_data.replaceAll(
+                "\r*\n(.*)(E *L *E *V *)(.*)(E *L *E *V *)(.*)\r*\n",
+                "$1\n$2\n$3\n$4\n$5\n"
+        );
+        
+        /* Special Atlanta correction.  There's an angle before an ELEV
+         * marker.  MOVE THEM.
+         */
+        formatted_data = formatted_data.replaceAll(
+                "(\\d\\d\\d\\.\\d)( ELEV)",
+                "$1\n$2\n"
+        );
         
         return formatted_data;
     }

@@ -20,7 +20,7 @@ public class RunwayDataParser extends DataParser
      *This elevation pattern works for Atlanta, but it needs tweaking for
      *the rest of the cases.
      */
-    private final String ELEV_PATTERN = "(\\d{2,4})";
+    private final String ELEV_PATTERN = "[^\\d]*([1-9]\\d{0,3})[^.\\d]*";
     
     /*Headings always follow the pattern of a four significant digit number
      *with accuracy to the tenths place.
@@ -120,8 +120,29 @@ public class RunwayDataParser extends DataParser
             String elevation = searchForItem(ELEV_PATTERN, current_line);
             if (!elevation.equals("") && elev_counter > 0)
             {
-                elev_counter--;
-                elevations.add(Integer.parseInt(elevation));
+                int elev = Integer.parseInt(elevation);
+                //There is no base to use, so just add the elevation.
+                if (elevations.isEmpty())
+                {
+                    elev_counter--;
+                    elevations.add(elev);
+                }
+                /* We can see if the new potential elevation is close to our
+                 * previous elevation samples.
+                 */
+                else
+                {
+                    int sample_elev = elevations.get(0);
+                    
+                    /* If the potential elevation is within 100 of previous
+                     * elevations, then add it.
+                     */
+                    if (Math.abs(sample_elev - elev) < 100)
+                    {
+                        elev_counter--;
+                        elevations.add(Integer.parseInt(elevation));
+                    }
+                }
             }
         }
         scanner.close();
