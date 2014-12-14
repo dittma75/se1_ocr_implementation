@@ -20,7 +20,7 @@ public class RunwayDataParser extends DataParser
      *This elevation pattern works for Atlanta, but it needs tweaking for
      *the rest of the cases.
      */
-    private final String ELEV_PATTERN = ".*\\b[A-Za-z]*(\\d{1,4})\\b.*";
+    private final String ELEV_PATTERN = "(\\d{2,4})";
     
     /*Headings always follow the pattern of a four significant digit number
      *with accuracy to the tenths place.
@@ -68,6 +68,12 @@ public class RunwayDataParser extends DataParser
         
         Scanner scanner = new Scanner(formatted_string);
         
+        /* Keep track of how many "ELEV"s were found, which indicate
+         * a runway elevation.
+         */
+        int elev_counter = 0;
+        int field_elev_index = -1;
+        
         while (scanner.hasNextLine())
         {
             String current_line = scanner.nextLine();
@@ -96,14 +102,36 @@ public class RunwayDataParser extends DataParser
                 headings.add(Float.parseFloat(heading));
             }
             
-            String elevation = searchForItem(ELEV_PATTERN, current_line);
-            if (!elevation.equals(""))
+            /* Field elevation may or may not be needed.  It will be
+             * added along with the other elevations, but the index that
+             * it will occupy needs to be saved so it can possibly be
+             * removed later.
+             */
+            if (current_line.matches(".*FIELD *ELEV.*"))
             {
+                field_elev_index = elevations.size();
+            }
+            //Increment the elevation counter if "ELEV" is found in the line.
+            if (current_line.matches(".*E *L *E *V *.*"))
+            {
+                elev_counter++;
+            }
+            
+            String elevation = searchForItem(ELEV_PATTERN, current_line);
+            if (!elevation.equals("") && elev_counter > 0)
+            {
+                elev_counter--;
                 elevations.add(Integer.parseInt(elevation));
             }
         }
         scanner.close();
         
+        //We have too many elevations.  Drop the field elevation.
+        if (elevations.size() > runways.size())
+        {
+            elevations.remove(field_elev_index);
+        }    
+                
         /*At this point, the runway information is in order across the 
          *three lists.  Iterating across all three lists together will get
          *the proper runway data for each runway.
