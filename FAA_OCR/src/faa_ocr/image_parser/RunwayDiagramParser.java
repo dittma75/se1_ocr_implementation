@@ -380,7 +380,28 @@ public class RunwayDiagramParser
         }
 	
 	
-	
+	/**
+	 * Midpoint correction
+	 */
+//TODO: may have to return a point or be void
+        private Point midpointCorrection(Point midpoint)
+        {
+        	Point correctMidpoint;
+        	
+        	Point leftTraversal;
+        	Point rightTraversal;
+        	Point leftTemp;
+        	Point rightTemp;
+        	
+        	while(leftTraversal != leftTemp){
+        		//keep calling traverse left
+        	}
+        	//do same for right
+        	
+        	//find midpoint and return it
+        	
+        	
+        }
 	
 	
 	/**
