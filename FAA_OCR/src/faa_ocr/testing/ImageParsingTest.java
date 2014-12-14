@@ -15,8 +15,8 @@ public class ImageParsingTest {
 	public static void main(String[] args) throws IOException
 	{
 		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD1.jpg";  //ACY
-		String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00026AD1.jpg";  //ATL
-		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/06039AD1.jpg";  //DFW
+		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00026AD1.jpg";  //ATL
+		String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/06039AD1.jpg";  //DFW
 		
 		File image = new File(path);
 		//System.out.println(acy_image.exists());
