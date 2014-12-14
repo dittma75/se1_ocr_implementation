@@ -74,7 +74,7 @@ public class RunwayDataParser extends DataParser
             
             //Check this line for runways.
             ArrayList<String> runways_found;
-            runways_found = searchForRunways(RUNWAY_PATTERN, current_line);
+            runways_found = searchForRunways(current_line);
             
             for (String runway : runways_found)
             {
@@ -220,11 +220,10 @@ public class RunwayDataParser extends DataParser
         String pdf_text = PDFToText.getTextPDFBox(file_name);
         
         Scanner scanner = new Scanner(pdf_text);
-        String next_line;
         ArrayList<String> valid_headings = new ArrayList<>();
         while (scanner.hasNextLine())
         {
-            next_line = scanner.nextLine();
+            String next_line = scanner.nextLine();
             
             /*All headings will have the pattern ###.#°, which is the same as
              *the heading pattern except that the '°' character comes after
@@ -240,6 +239,25 @@ public class RunwayDataParser extends DataParser
                     valid_headings.add(heading);
                 }
             }
+        }
+        
+        if (valid_headings.isEmpty())
+        {
+            pdf_text = PDFToText.getDiagramText(file_name);
+            scanner = new Scanner(pdf_text);
+            while (scanner.hasNextLine())
+            {
+                String next_line = scanner.nextLine();
+                String heading = searchForItem(
+                        HEADING_PATTERN + "[^\\d]*",
+                        next_line
+                );
+                if (!heading.equals("") && !valid_headings.contains(heading))
+                {
+                    valid_headings.add(heading);
+                }
+            }
+            validateHeadings(valid_headings);
         }
         scanner.close();
         return valid_headings;
@@ -267,10 +285,16 @@ public class RunwayDataParser extends DataParser
         }
     }
     
-    private ArrayList<String> searchForRunways(String pattern, String text)
+    /**
+     * Get an ArrayList of runway name Strings from the given text.
+     * @param text is the String to search for runway names.
+     * @return an ArrayList of runway Strings if present in the line of text
+     * or an empty ArrayList if there are none.
+     */
+    private ArrayList<String> searchForRunways(String text)
     {
         //Compile the pattern given.
-        Pattern matcher_pattern = Pattern.compile(pattern);
+        Pattern matcher_pattern = Pattern.compile(RUNWAY_PATTERN);
         
         //Set up the matcher for the pattern.
         Matcher matcher = matcher_pattern.matcher(text);
@@ -284,5 +308,41 @@ public class RunwayDataParser extends DataParser
             runways.add(matcher.group(1));
         }
         return runways;
+    }
+    
+    private void validateHeadings(ArrayList<String> headings)
+    {
+        ArrayList<Boolean> has_associated_heading = new ArrayList<>();
+        
+        //No headings are associated to start.
+        for (int i = 0; i < headings.size(); i++)
+        {
+            has_associated_heading.add(false);
+        }
+        
+        //Valid headings should have a counterpart that varies by 180 degrees.
+        for (int i = 0; i < headings.size(); i++)
+        {
+            int first = Math.round(Float.parseFloat(headings.get(i)));
+            for (int j = i + 1; j < headings.size(); j++)
+            {
+                int second = Math.round(Float.parseFloat(headings.get(j)));
+                if (Math.abs(first - second) == 180)
+                {
+                    has_associated_heading.set(i, Boolean.TRUE);
+                    has_associated_heading.set(j, Boolean.TRUE);
+                    break;
+                }
+            }
+        }
+        
+        //Remove non-validated headings.
+        for (int i = 0; i < headings.size(); i++)
+        {
+            if (!has_associated_heading.get(i))
+            {
+                headings.remove(i);
+            }
+        }
     }
 }
