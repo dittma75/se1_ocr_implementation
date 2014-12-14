@@ -62,7 +62,7 @@ public class AirportToXML {
      */
     private void runwayToXml(Runway runway)
     {
-        xml_string += "\t\t" + "<path_type>runway</path>\n";
+        xml_string += "\t\t" + "<path_type>runway</path_type>\n";
         xml_string += "\t\t" + "<path_name>" + runway.getName() + "</path_name>\n";
         xml_string += "\t\t" + "<heading>" + runway.getHeading() + "</heading>\n";
         xml_string += "\t\t" + "<elevation>" + runway.getElevation() + "</elevation>\n";
