@@ -57,7 +57,7 @@ public class RunwayDataParser extends DataParser
         );
 
         ArrayList<String> valid_headings = makeListOfProperHeadings(
-                PDFToText.getTextPath(airport.getFilePath())
+                airport.getFilePath()
         );
 
         ArrayList<String> runways = new ArrayList<>();

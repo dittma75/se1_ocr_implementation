@@ -34,6 +34,8 @@ public class LineFormatter
         //Replace multiple spaces with one space.
         formatted_data = formatted_data.replaceAll(" +", " ");
         
+        //Condense short lines of numbers to make finding headings easier.
+        formatted_data = formatted_data.replaceAll("([\\d\\.]{1,2})\r\n", "$1");
         return formatted_data;
     }
 }

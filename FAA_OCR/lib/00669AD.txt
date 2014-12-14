@@ -1,124 +1,454 @@
-22
-NE-2, 18 SEP 2014 to 16 OCT 2014
-
-14261
-AIRPORT DIAGRAM
-
-13
-AIRPORT DIAGRAM
-14261
-
-6144X150 A
-
-18 SEP 2014 to 16 OCT 2014
-
-ATIS 125.725 316.15 ATLANTIC CITY TOW ER 120.3 239.0 GND CON 121.9 284.6 CLNC DEL 127.85 353.775
+PA
 D
-ANG ARM /DEARM
-PAD
-
-B
-
-FIELD ELEV 75
-130.4
-
-BAK-12/14
-
-B
-
-C C
-
-ANG RESTRICTED
-AREA
-
-220.4
-
-ELEV 67
 A
-HAZARDO US CARGO AREA
-
+RM
+/D
+EA
+RM
 A
-
-LAHSO
-
-121
-
-B LAHSO
-
-LAHSO 10000 X 150
-
-VAR 12.4 W
-
-3928 'N
-JANUARY 2010 ANNUALRATE O FCHANGE
-0.0 E
-
-AL-669 (FAA)
-
-ATLANTIC CITY INTL(ACY)
-ATLANTIC CITY, NEW JERSEY
-
-ATLANTIC CITY, NEW JERSEY
-ATLANTIC CITY INTL(ACY)
-
-TW R 229
-
-FIRE STATIO N
-
-RW Y 04-22 PCN 62 R/A/W /T S-75,D-175,2S-175,2D-400,2D/2D2-900
-RW Y 13-31 PCN 78 F/A/W /T S-85,D-120,2S-152,2D-350
-
-D D
-
-M N
-
-B
-P L
-
-H L
-TERM INAL
-
-J J
-
-BAK-12/14 B
-
-040.4 A
-
-FBO
-
-ELEV 4 A 61
-
+N
 G
-
-CAUTIO N:BE ALERTTO RUNW AY CRO SSING CLEARANCES.
-
-ANG RESTRICTED
-AREA
-
-READBACK O FALLRUNW AY
-
-HO LDING INSTRUCTIO NS IS REQ UIRED.
-
-7435 'W
-
-ANG FIRESTATION ANG AM /OPS
-
-FAA HANGAR
-US CO ASTGUARD
-7434 'W
-
-NE-2, 18 SEP 2014 to 16 OCT 2014
-
+C
+A
+RG
+O
+ A
+RE
+A
+H
+A
+ZA
+RD
+O
+U
+S
+FB
+O
+A
+N
+G
+ F
+IR
+E 
+ST
+A
+TI
+O
+N
+A
+N
+G
+ A
+M
+/O
+PS
+H
+O
+LD
+IN
+G
+ IN
+ST
+RU
+C
+TI
+O
+N
+S 
+IS
+ R
+EQ
+U
+IR
+ED
+.
+RE
+A
+D
+BA
+C
+K 
+O
+F 
+A
+LL
+ R
+U
+N
+W
+A
+Y 
+C
+RO
+SS
+IN
+G
+ C
+LE
+A
+RA
+N
+C
+ES
+.
+C
+A
+U
+TI
+O
+N
+: B
+E 
+A
+LE
+RT
+ T
+O
+ R
+U
+N
+W
+A
+Y
+0.
+0 
+ E
+A
+N
+N
+U
+A
+L 
+RA
+TE
+ O
+F 
+C
+H
+A
+N
+G
+E
+JA
+N
+U
+A
+RY
+ 2
+01
+0
+AIRPORT DIAGRAM (ACY)AL-669 (FAA)
+B
+B
 K
-
-310.4
-
-ELEV 63
-
-B 31
-
-3927 'N
-ANG ARM /DEARM
-PAD
-
-
+BA
+K-
+12
+/1
+4
+31
+0.
+4 
+31
+63EL
+EV
+C
+O
+A
+ST
+ G
+U
+A
+RD
+U
+S 
+ATLANTIC CITY INTL
+ATLANTIC CITY, NEW JERSEY
+39
+ 28
+’N
+39
+ 27
+’N
+B
+BA
+K-
+12
+/1
+4
+AIRPORT DIAGRAM (ACY)
+22
+9
+TW
+R
+B
+C
+C
+LA
+H
+SO
+LA
+H
+SO
+LA
+H
+SO
+A
+A
+A
+AD
+D
+B
+A
+G
+P
+H
+N
+L
+J
+J
+12
+1
+13
+13
+0.
+4 
+10
+00
+0 
+X 
+15
+0
+H
+A
+N
+G
+A
+R
+FA
+A
+TE
+RM
+IN
+A
+L
+61EL
+EV
+40
+40.
+4 
+614
+4 X
+ 15
+0
+67EL
+EV
+22
+220
+.4 
+ATLANTIC CITY, NEW JERSEY
+ATLANTIC CITY INTL
+D
+A
+RE
+A
+RE
+ST
+RI
+C
+TE
+D
+A
+N
+G
+74
+ 35
+’W
+74
+ 34
+’W
+B
+ 7
+5
+EL
+EV
+FI
+EL
+D
+A
+RE
+A
+RE
+ST
+RI
+C
+TE
+D
+A
+N
+G
+L
+M
+   
+   
+   
+S-
+85
+, D
+-1
+20
+, 2
+S-
+15
+2,
+ 2
+D
+-3
+50
+   
+   
+   
+PC
+N
+ 7
+8 
+F/
+A
+/W
+/T
+RW
+Y 
+13
+-3
+1
+   
+   
+   
+S-
+75
+, D
+-1
+75
+, 2
+S-
+17
+5,
+ 2
+D
+-4
+00
+, 2
+D
+/2
+D
+2-
+90
+0
+   
+   
+   
+PC
+N
+ 6
+2 
+R/
+A
+/W
+/T
+RW
+Y 
+04
+-2
+2
+14261
+14261
+ST
+A
+TI
+O
+N
+FI
+RE
+PA
+D
+A
+RM
+/D
+EA
+RM
+A
+N
+G
+12
+7.
+85
+  3
+53
+.7
+75
+C
+LN
+C
+ D
+EL
+12
+1.
+9 
+ 2
+84
+.6
+G
+N
+D
+ C
+O
+N
+12
+0.
+3 
+ 2
+39
+.0
+A
+TL
+A
+N
+TI
+C
+ C
+IT
+Y 
+TO
+W
+ER
+12
+5.
+72
+5 
+ 3
+16
+.1
+5
+A
+TI
+S
+VAR 
+ 12.4 
+  W
+NE-2, 18 SEP 2014 to 16 OCT 2014
+NE
+-2
+, 1
+8 
+SE
+P 
+20
+14
+ to
+ 1
+6 
+OC
+T 
+20
+14
+18 SEP 2014 to 16 OCT 2014

@@ -178,6 +178,8 @@ public class PDFToText
                 e.getMessage()
             );
         }
+        System.out.println(parsed_text);
+        System.out.flush();
         LineFormatter lf = new LineFormatter();
         return lf.getFormattedString(parsed_text);
     }
