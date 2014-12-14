@@ -46,7 +46,7 @@ public class ImageParsingTest {
 	    
 	    
 	    
-	    
+	    //TODO: DFW: 226, 650 is bad runway. end at 152, 718
 	    
 		
 //TODO: findPixelConversionScales throws exception

@@ -58,7 +58,7 @@ public class RunwayDiagramParser
     //DFW
         //2nd runway: 170,252
         //3rd: 291, 96
-		
+		//problem: 474, 97
             for (int y = 0; y < diagram.getHeight(); y++) 
             {
                 for (int x = 0; x < diagram.getWidth(); x++) 
@@ -117,7 +117,8 @@ public class RunwayDiagramParser
             else if(top.isBlack(diagram)) 
             {
                 return false;
-            } 
+            }
+//TODO: removed because it gives some problems for a couple runways            
             else if(topRight.isBlack(diagram)) 
             {
                 return false;
@@ -295,7 +296,7 @@ public class RunwayDiagramParser
                 	
                 	
 //TODO: For testing only
-                	System.out.println("Found enpoint!");
+                	System.out.println("Found endpoint!");
                 	System.out.println("X: " + end_point.getX());
                 	System.out.println("Y: " + end_point.getY());
 
@@ -567,25 +568,13 @@ public class RunwayDiagramParser
                 }
                 else if(Integer.signum(slopeX) == 1)
                 {
-//                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-//                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-//                    left_wing_calculate = wing_left.subtract(curr_point);
-//                    right_wing_calculate = wing_right.subtract(curr_point);
                 	left_wing_calculate = new Point(slope_width_X, slope_width_Y);
                 	right_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
-//                    left_wing = curr_point.add(left_wing_calculate);
-//                    right_wing = curr_point.add(right_wing_calculate);
                 }
                 else
                 {
-//                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-//                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-//                    right_wing_calculate = wing_left.subtract(curr_point);
-//                    left_wing_calculate = wing_right.subtract(curr_point);
                 	right_wing_calculate = new Point(slope_width_X, slope_width_Y);
                 	left_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
-//                	right_wing = curr_point.add(right_wing_calculate);
-//                    left_wing = curr_point.add(left_wing_calculate);
                 }
 
                 
