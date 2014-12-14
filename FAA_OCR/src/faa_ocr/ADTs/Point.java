@@ -97,4 +97,22 @@ public class Point
 		// If the coordinates are equal, the points are the same.
 		return (point.getX() == x && point.getY() == y);
 	}
+	
+	/**
+	 * Add two points together returning a new Point object
+	 * @param point to add to this point
+	 * @return a new point with the x and y values added together
+	 */
+	public Point add(Point point)
+	{
+		return new Point(this.x + point.getX(), this.y + point.getY());
+	}
+	
+	/**
+	 * Subtract two points together returned a new Point object
+	 */
+	public Point subtract(Point that)
+	{
+		return new Point(this.x - that.getX(), this.y - that.getY());
+	}
 }

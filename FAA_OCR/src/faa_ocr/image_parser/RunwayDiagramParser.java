@@ -463,14 +463,8 @@ public class RunwayDiagramParser
                 }
                 return curr_point;
 	}
-	
-	
-	
-	//Return the wing point from the point given
-	private Point findWing(Point point, int wing_x, int wing_y)
-	{
-		return new Point(point.getX() + wing_x, point.getY() + wing_y);
-	}
+
+
 	
 	/**
 	 * Return the greatest common divisor of two longs
@@ -498,11 +492,10 @@ public class RunwayDiagramParser
                 Point curr_point = initial_point;
                 
                 //Find the slope of the width of the runway
-//                slope.invertSlope();
                 slope.invertSlope();
                 int slope_width_X = slope.getX();
                 int slope_width_Y = slope.getY();
-                //simplify slope with gcd.
+                //simplify slope with gcd. Slope is too big otherwise
                 int gcd = gcd(slope_width_X, slope_width_Y);
                 if (gcd > 0)
                 {
@@ -520,37 +513,40 @@ public class RunwayDiagramParser
                 	{
                 		slope_width_Y ++;
                 	}
-//                	gcd(slope_width_X, slope_width_Y);
                 	slope_width_X = slope_width_X / 2;
                     slope_width_Y = slope_width_Y / 2;
                 }
                 
-                
-                
-                //Find the equation for finding the wings of the point after every traversal
+       
+                /*
+                 * If the slope of the runway is positive, we need to set the left_wing and right_wing normally.
+                 * If the slope is negative, we need to flip them so they work correctly
+                 */
                 Point wing_right;
                 Point wing_left;
-                wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-                wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-//                do{
-//                	wing_right = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-//                    wing_left = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-//                } while (findLength(wing_left, wing_right) > width_of_runway);
-//TODO: logic of the above will only happen once. Needs to be changed
-                
-                //We have arbitrary wings for initial midpoint. Now calculate the x and y we need to add/subtract
-                //from the point we are at to find the "wings" of that point
-                int left_wingx = wing_left.getX() - curr_point.getX();
-                int left_wingy = wing_left.getY() - curr_point.getY();
-                int right_wingx = wing_right.getX() - curr_point.getX();
-                int right_wingy = wing_right.getY() - curr_point.getY();
-                
-                Point left_wing_calculate = new Point(left_wingx, left_wingy);
-                Point right_wing_calculate = new Point(right_wingx, right_wingy);
-                
-                Point left_wing = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-                Point right_wing = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-                
+                Point left_wing;
+                Point right_wing;
+                Point left_wing_calculate;
+                Point right_wing_calculate;
+                if(Integer.signum(slopeX) == 1)
+                {
+                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
+                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
+                    left_wing_calculate = wing_left.subtract(curr_point);
+                    right_wing_calculate = wing_right.subtract(curr_point);
+                    left_wing = curr_point.add(left_wing_calculate);
+                    right_wing = curr_point.add(right_wing_calculate);
+                }
+                else
+                {
+                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
+                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
+                    right_wing_calculate = wing_left.subtract(curr_point);
+                    left_wing_calculate = wing_right.subtract(curr_point);
+                	right_wing = curr_point.add(right_wing_calculate);
+                    left_wing = curr_point.add(left_wing_calculate);
+                }
+
                 
                 boolean lastBlack = false;
                 while(lastBlack == false)
@@ -562,12 +558,10 @@ public class RunwayDiagramParser
                    );
                    
                    //calculate wings for the next point
-                   left_wing = findWing(next_point, left_wingx, left_wingy);
-                   right_wing = findWing(next_point, right_wingx, right_wingy);
+                   left_wing = next_point.add(left_wing_calculate);
+                   right_wing = next_point.add(right_wing_calculate);
                    
-                   
-//TODO: WINGS ARE MESSED UPPPPPP!!!!>!>!>!
-                   
+                                      
                    if(left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
                 	   //Both wings are black so we are still in the middle of the runway.
                 	   //continue forward
