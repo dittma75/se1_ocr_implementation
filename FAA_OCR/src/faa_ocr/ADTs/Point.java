@@ -72,8 +72,8 @@ public class Point
 		final int blue = (pixel_color) & 0xff;
 		
 //TODO: making them equal 0	
-		return (red == 0 && green == 0 && blue == 0);
-//		return (red < 20 && green < 20 && blue < 20);
+//		return (red == 0 && green == 0 && blue == 0);
+		return (red < 100 && green < 100 && blue < 100);
 	}
 	
 	

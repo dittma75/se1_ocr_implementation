@@ -59,9 +59,9 @@ public class RunwayDiagramParser
         //2nd runway: 170,252
         //3rd: 291, 96
 		//problem: 474, 97
-            for (int y = 0; y < diagram.getHeight(); y++) 
+            for (int y = 503; y < diagram.getHeight(); y++) 
             {
-                for (int x = 0; x < diagram.getWidth(); x++) 
+                for (int x = 97; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -153,13 +153,19 @@ public class RunwayDiagramParser
             boolean bottom_black = bottom.isBlack(diagram);
             boolean bottom_right_black = bottom_right.isBlack(diagram);
             boolean right_black = right.isBlack(diagram);
-
+            
+            
+            
+            
+            
+            
+            
             //3 pixels must be black so we know it is a runway
             /* check r+br+b, bl+b+br, r+br+b+bl */
             if((bottom_right_black && bottom_black && bottom_left_black) ||
                (right_black && bottom_right_black && bottom_black) ||
-               (right_black && bottom_right_black && bottom_black && 
-               bottom_left_black))
+               (right_black && bottom_right_black && bottom_black && bottom_left_black ||
+       	   (bottom_right_black && bottom_black)))//TODO: added condition for bottom and bottom right.
             {
                     findSlope(pixel);
             }
@@ -275,7 +281,6 @@ public class RunwayDiagramParser
             addToAirport(midpoint_of_runway, slope, width_of_runway);
             
 	}
-//TODO: Bug was found in traverse slope. If the runway was found while traversing left, it would return the right point	
 	
 	/**
 	 * Traverse the runway at the rate of the slope and add those points to the airport
@@ -291,14 +296,16 @@ public class RunwayDiagramParser
                                                  end_point.getX(),
                                                  end_point.getY());
                 
-                if(runwayLength > 100) 
+                if(runwayLength > 150) 
                 {
                 	
                 	
 //TODO: For testing only
-                	System.out.println("Found endpoint!");
-                	System.out.println("X: " + end_point.getX());
-                	System.out.println("Y: " + end_point.getY());
+                	System.out.println("Runway Found!");
+                	System.out.println("Starting point: " + " X:" + midpoint.getX() + " Y:" + midpoint.getY());
+                	System.out.println("End Point: " + " X:" + end_point.getX() + " Y:" + end_point.getY());
+                	System.out.println("Length: " + runwayLength);
+                	System.out.println();
 
                 	
 //TODO: end testing                	
@@ -373,7 +380,28 @@ public class RunwayDiagramParser
         }
 	
 	
-	
+	/**
+	 * Midpoint correction
+	 */
+//TODO: may have to return a point or be void
+        private Point midpointCorrection(Point midpoint)
+        {
+        	Point correctMidpoint;
+        	
+        	Point leftTraversal;
+        	Point rightTraversal;
+        	Point leftTemp;
+        	Point rightTemp;
+        	
+        	while(leftTraversal != leftTemp){
+        		//keep calling traverse left
+        	}
+        	//do same for right
+        	
+        	//find midpoint and return it
+        	
+        	
+        }
 	
 	
 	/**
@@ -389,24 +417,40 @@ public class RunwayDiagramParser
             Point bottom_left = new Point(point.getX() - 1, point.getY() + 1);
             Point bottom = new Point(point.getX(), point.getY() + 1);
             
-            if (left.isBlack(diagram))
-            {
-                return left;
-            }
-            else if (bottom_left.isBlack(diagram))
-            {
-                return bottom_left;
-            }
-            else if (bottom.isBlack(diagram))
-            {
-                return bottom;
-            }
+            Point right = new Point(point.getX() + 1, point.getY());
+            Point bottom_right = new Point(point.getX() + 1, point.getY() + 1);
             
-            //If no adjacent points were black, return the given point.
+            /*
+             * Need to check the right and bottom right pixel to make sure we are still on the runway.
+             * In some situations, we can follow random black pixels to no mans land
+             */
+            if(right.isBlack(diagram) || bottom_right.isBlack(diagram))
+            {
+            	if (left.isBlack(diagram))
+                {
+                    return left;
+                }
+                else if (bottom.isBlack(diagram))
+                {
+                    return bottom; //TODO: Bottom has higher priority now
+                }
+                else if (bottom_left.isBlack(diagram))
+                {
+                    return bottom_left;
+                }
+
+                
+                //If no adjacent points were black, return the given point.
+                else
+                {
+                    return point;
+                }
+            }
             else
             {
-                return point;
+            	return point;
             }
+            
         }
 		
 	/**
@@ -422,24 +466,39 @@ public class RunwayDiagramParser
             Point bottom_right = new Point(point.getX() + 1, point.getY() + 1);
             Point bottom = new Point(point.getX(), point.getY() + 1);
             
-            if (right.isBlack(diagram))
-            {
-                return right;
-            }
-            else if (bottom_right.isBlack(diagram))
-            {
-                return bottom_right;
-            }
-            else if (bottom.isBlack(diagram))
-            {
-                return bottom;
-            }
+            Point left = new Point(point.getX() - 1, point.getY());
+            Point bottom_left = new Point(point.getX() - 1, point.getY() + 1);
             
-            //If no adjacent points were black, return the given point.
+            /*
+             * Need to check the left and bottom left pixel to make sure we are still on the runway.
+             * In some situations, we can follow random black pixels to no mans land
+             */
+            if(left.isBlack(diagram) || bottom_left.isBlack(diagram) || right.isBlack(diagram)){ //TODO: Does not take runway 61,517 on atlanta.
+            	if (right.isBlack(diagram))
+                {
+                    return right;
+                }
+                else if (bottom.isBlack(diagram))
+                {
+                    return bottom; //TODO: bottom has higher priority now
+                }
+                else if (bottom_right.isBlack(diagram))
+                {
+                    return bottom_right;
+                }
+
+                
+                //If no adjacent points were black, return the given point.
+                else
+                {
+                    return point;
+                }	
+            }
             else
             {
-                return point;
-            }	
+            	return point;
+            }
+            
 	}
 	
 
@@ -562,7 +621,57 @@ public class RunwayDiagramParser
                         }
                         else
                         {
-                        	return curr_point;
+                        	next_point = new Point(next_point.getX() + 1, next_point.getY());
+                        	//Check 2 pixels ahead of the current point to make sure we are at the end of the runway
+                        	if(next_point.isBlack(diagram))
+                        	{
+                        		curr_point = next_point;
+                        	}
+                        	//The next point is still not black so we must be at the end of the runway
+                        	else 
+                        	{
+                        		return curr_point;
+                        	}
+                        	
+                        }
+                	}
+                }
+                //The slope of the runway is undefined so we know it is verticle
+                else if(Integer.signum(slopeX) == 0 && Integer.signum(slopeY) != 0)
+                {
+                	left_wing_calculate = new Point(width_of_runway / 2, 0);
+                	right_wing_calculate = new Point(- width_of_runway / 2, 0);
+                	
+                	boolean lastBlack = false;
+                	while(lastBlack == false)
+                	{
+                		Point next_point = new Point(curr_point.getX(), curr_point.getY() + 1);
+                        //calculate wings for the next point
+                        left_wing = next_point.add(left_wing_calculate);
+                        right_wing = next_point.add(right_wing_calculate);
+                        
+                        if(next_point.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else if(left_wing.isBlack(diagram) || right_wing.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else
+                        {
+                        	
+                        	next_point = new Point(next_point.getX(), next_point.getY() + 1);
+                        	//Check 2 pixels ahead of the current point to make sure we are at the end of the runway
+                        	if(next_point.isBlack(diagram))
+                        	{
+                        		curr_point = next_point;
+                        	}
+                        	//The next point is still not black so we must be at the end of the runway
+                        	else 
+                        	{
+                        		return curr_point;
+                        	}
                         }
                 	}
                 }
@@ -571,6 +680,7 @@ public class RunwayDiagramParser
                 	left_wing_calculate = new Point(slope_width_X, slope_width_Y);
                 	right_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
                 }
+                //The slope of X must be negative so flip right_wing and left_wing
                 else
                 {
                 	right_wing_calculate = new Point(slope_width_X, slope_width_Y);
@@ -579,8 +689,7 @@ public class RunwayDiagramParser
 
                 
                 
-                
-                
+
                 boolean lastBlack = false;
                 while(lastBlack == false)
                 {

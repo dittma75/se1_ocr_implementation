@@ -44,7 +44,8 @@ public class ImageParsingTest {
 	    //TODO:For ACY, the slope is getting thrown off by the bottom pixel of the first runway
 	    	//this will make our traverse runway method go off the runway real quick
 	    
-	    
+	  //TODO: Bug was found in traverse slope. If the runway was found while traversing left, it would return the right point	
+
 	    
 	    //TODO: DFW: 226, 650 is bad runway. end at 152, 718
 	    
