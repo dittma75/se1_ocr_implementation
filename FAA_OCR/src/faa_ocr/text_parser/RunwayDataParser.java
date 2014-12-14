@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * RunwayDataParser extracts all runway data from an airport diagram and puts
@@ -28,7 +30,7 @@ public class RunwayDataParser extends DataParser
     /* Runways always follow the pattern of one or two digits and an optional
      * letter.
      */
-    private final String RUNWAY_PATTERN = " (\\d{1,2}[LCR]*)";
+    private final String RUNWAY_PATTERN = ".(\\d{1,2}[LCR]*)";
     
     /**
      * No initialization is necessary for the constructor.
@@ -71,14 +73,19 @@ public class RunwayDataParser extends DataParser
             String current_line = scanner.nextLine();
             
             //Check this line for runways.
-            String runway = searchForItem(RUNWAY_PATTERN, current_line);
-            runway = correctRunway(runway);
-            if (valid_runways.contains(runway) &&
-                !runways.contains(runway))
+            ArrayList<String> runways_found;
+            runways_found = searchForRunways(RUNWAY_PATTERN, current_line);
+            
+            for (String runway : runways_found)
             {
-                runways.add(runway);
+                runway = correctRunway(runway);
+                if (valid_runways.contains(runway) &&
+                    !runways.contains(runway))
+                {
+                    runways.add(runway);
+                }
             }
-
+            
             /*Check this line for headings  String comparison is used because
              *the headings start as Strings that have a defined format, and
              *Doubles are hard to compare accurately.
@@ -258,5 +265,24 @@ public class RunwayDataParser extends DataParser
         {
             return runway;
         }
+    }
+    
+    private ArrayList<String> searchForRunways(String pattern, String text)
+    {
+        //Compile the pattern given.
+        Pattern matcher_pattern = Pattern.compile(pattern);
+        
+        //Set up the matcher for the pattern.
+        Matcher matcher = matcher_pattern.matcher(text);
+        
+        ArrayList<String> runways = new ArrayList<>();
+        
+        //While there are parts of the string that match the runway pattern...
+        while (matcher.find())
+        {   
+            //Add to the runways list.
+            runways.add(matcher.group(1));
+        }
+        return runways;
     }
 }
