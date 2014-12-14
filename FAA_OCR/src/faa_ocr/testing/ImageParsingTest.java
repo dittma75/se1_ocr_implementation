@@ -14,12 +14,12 @@ public class ImageParsingTest {
 	
 	public static void main(String[] args) throws IOException
 	{
-		String acy_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/written_image.png";
+		String acy_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD1.jpg";
 		File acy_image = new File(acy_path);
 		//System.out.println(acy_image.exists());
 		
 		
-		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF";
+		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD.PDF";
 		
 		BufferedImage airport_image = ImageIO.read(acy_image);
 		System.out.println(airport_image.getHeight());
