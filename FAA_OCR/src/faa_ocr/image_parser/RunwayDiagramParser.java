@@ -52,7 +52,12 @@ public class RunwayDiagramParser
                 diagram.getWidth());
 		
 		
-		
+	//Atlanta
+        //1st runway: 325,140
+        
+    //DFW
+        //2nd runway: 170,252
+        //3rd: 291, 96
 		
             for (int y = 0; y < diagram.getHeight(); y++) 
             {
@@ -536,17 +541,21 @@ public class RunwayDiagramParser
                 if(Integer.signum(slopeX) == 0 && Integer.signum(slopeY) == 0)
                 {
                 	left_wing_calculate = new Point(0, width_of_runway / 2);
-                	right_wing_calculate = new Point(0, width_of_runway / 2 + 1);
+                	right_wing_calculate = new Point(0, - width_of_runway / 2);
                 	
                 	boolean lastBlack = false;
                 	while(lastBlack == false)
                 	{
-                		Point next_point = new Point(curr_point.getX(), curr_point.getY() + 1);
+                		Point next_point = new Point(curr_point.getX() + 1, curr_point.getY());
                         //calculate wings for the next point
                         left_wing = next_point.add(left_wing_calculate);
                         right_wing = next_point.add(right_wing_calculate);
                         
                         if(next_point.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else if(left_wing.isBlack(diagram) || right_wing.isBlack(diagram))
                         {
                         	curr_point = next_point;
                         }
