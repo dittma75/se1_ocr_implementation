@@ -42,10 +42,26 @@ public class RunwayDiagramParser
 	 * find edges of that black square
 	 */
 	private void traverseImage()
-	{//171, 536 is first runway
-            for (int y = 171; y < diagram.getHeight(); y++) 
+	{
+		//ACY Points
+	//114, 357 is first runway
+	//361, 85 is second runway
+	//285, 365 is giving us trouble in ACY.
+        System.out.println("Size of diagram: " + 
+                diagram.getHeight() + " " + 
+                diagram.getWidth());
+		
+		
+	//Atlanta
+        //1st runway: 325,140
+        
+    //DFW
+        //2nd runway: 170,252
+        //3rd: 291, 96
+		//problem: 474, 97
+            for (int y = 0; y < diagram.getHeight(); y++) 
             {
-                for (int x = 536; x < diagram.getWidth(); x++) 
+                for (int x = 0; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -54,6 +70,7 @@ public class RunwayDiagramParser
                             {
                                     //see if the pixel is a runway
                                     checkCorner(pixel);
+                                    //System.out.println("X:" + x + " Y:" + y);
                             }
                             else
                             {
@@ -66,10 +83,7 @@ public class RunwayDiagramParser
                     }
                 }
             }
-            System.out.println("Size of diagram: " + 
-                               diagram.getHeight() + " " + 
-                               diagram.getWidth()
-            );
+
 	}
 	
 	
@@ -103,7 +117,8 @@ public class RunwayDiagramParser
             else if(top.isBlack(diagram)) 
             {
                 return false;
-            } 
+            }
+//TODO: removed because it gives some problems for a couple runways            
             else if(topRight.isBlack(diagram)) 
             {
                 return false;
@@ -190,8 +205,6 @@ public class RunwayDiagramParser
             
             boolean width_found = false;
 
-//TODO: left_point and right_point need to change after each iteration of while
-            //right now, they do not move and is an infinite loop
             
             //Until the width is found, keep traversing.
             while (!width_found)
@@ -208,12 +221,14 @@ public class RunwayDiagramParser
                     runway_start = traverseLeft(traverseLeft(runway_start));
                     
                     width_found = true;
+                    break;
                 }
                 else
                 {
                 	left_point = end_of_width;
                 }
                 
+
                 /* The next point on the right traversal path may be the end
                  * of the width of the runway.
                  */
@@ -226,6 +241,7 @@ public class RunwayDiagramParser
                     runway_start = traverseRight(traverseRight(runway_start));
                     
                     width_found = true;
+                    break;
                 }
                 else
                 {
@@ -249,19 +265,26 @@ public class RunwayDiagramParser
             Slope slope = new Slope(slope_y, slope_x);
             slope.invertSlope();
             
-            addToAirport(runway_start, slope);
+            //Length of the width of the runway used when we traverse at the rate
+            	//of the slope
+            int width_of_runway = (int) findLength(initial_point, end_of_width);
+            
+            
+            Point midpoint_of_runway = initial_point.findMidpoint(end_of_width);
+            
+            addToAirport(midpoint_of_runway, slope, width_of_runway);
             
 	}
-	
+//TODO: Bug was found in traverse slope. If the runway was found while traversing left, it would return the right point	
 	
 	/**
 	 * Traverse the runway at the rate of the slope and add those points to the airport
 	 * @param midpoint of the current runway
 	 * @param slope of the current runway
 	 */
-	private boolean addToAirport(Point midpoint, Slope slope)
+	private boolean addToAirport(Point midpoint, Slope slope, int width_of_runway)
 	{
-		Point end_point = traverseSlope(midpoint, slope);
+		Point end_point = traverseSlope(midpoint, slope, width_of_runway);
                 
                 double runwayLength = findLength(midpoint.getX(),
                                                  midpoint.getY(),
@@ -270,29 +293,43 @@ public class RunwayDiagramParser
                 
                 if(runwayLength > 100) 
                 {
-                    //Translate the midpoint and end_point from x/y to lat/long
-                    float mid_long = airport.longitudeConversion(midpoint);
-                    float mid_lat = airport.latitudeConversion(midpoint);
-                    Node startNode = new Node(mid_long, mid_lat);
+                	
+                	
+//TODO: For testing only
+                	System.out.println("Found endpoint!");
+                	System.out.println("X: " + end_point.getX());
+                	System.out.println("Y: " + end_point.getY());
 
-                    float end_long = airport.longitudeConversion(end_point);
-                    float end_lat = airport.latitudeConversion(end_point);
-                    Node endNode = new Node(end_long, end_lat);
-
-                    /* Add points to existing Runway instance in airport
-                     * object.  Each physical runway is two runways, and they
-                     * are stored consecutively in pairs.  Hence, we add
-                     * the start and end nodes to the next two runways, since
-                     * they represent the same physical runway.
-                     */
-                    for (int i = 0; i < 2; i++)
-                    {
-                        Runway runway = airport.getRunway(
-                                airport.numRunways() - runways_left
-                        );
-                        runway.addPathNode(startNode);
-                        runway.addPathNode(endNode);
-                    }
+                	
+//TODO: end testing                	
+                	
+                	
+                	
+                	
+//TODO:COMMENTED OUT BELOW TO TEST               	
+//                    //Translate the midpoint and end_point from x/y to lat/long
+//                    float mid_long = airport.longitudeConversion(midpoint);
+//                    float mid_lat = airport.latitudeConversion(midpoint);
+//                    Node startNode = new Node(mid_long, mid_lat);
+//
+//                    float end_long = airport.longitudeConversion(end_point);
+//                    float end_lat = airport.latitudeConversion(end_point);
+//                    Node endNode = new Node(end_long, end_lat);
+//
+//                    /* Add points to existing Runway instance in airport
+//                     * object.  Each physical runway is two runways, and they
+//                     * are stored consecutively in pairs.  Hence, we add
+//                     * the start and end nodes to the next two runways, since
+//                     * they represent the same physical runway.
+//                     */
+//                    for (int i = 0; i < 2; i++)
+//                    {
+//                        Runway runway = airport.getRunway(
+//                                airport.numRunways() - runways_left
+//                        );
+//                        runway.addPathNode(startNode);
+//                        runway.addPathNode(endNode);
+//                    }
                     return true;
                 }
                 //This line isn't long enough to be a runway.
@@ -305,16 +342,34 @@ public class RunwayDiagramParser
 	}
         
         /**
-         * find the length in pixels of the runway
+         * Find the length in pixels of two x,y coordinates
          * 
-         * @param 
-         * @param
-         * @param
-         * @param
+         * @param x coordinate for the first point
+         * @param y coordinate for the first point
+         * @param x coordinate for the second point
+         * @param y coordinate for the second point
          */
         private double findLength(int x1, int y1, int x2, int y2) 
         {
             return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+        }
+        
+        /**
+         * Find the length in pixels of two points
+         * 
+         * @param x coordinate for the first point
+         * @param y coordinate for the first point
+         * @param x coordinate for the second point
+         * @param y coordinate for the second point
+         */
+        private double findLength(Point one, Point two) 
+        {
+            int x1 = one.getX();
+            int y1 = one.getY();
+            int x2 = two.getX();
+            int y2 = two.getY();
+        	
+        	return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
         }
 	
 	
@@ -417,6 +472,163 @@ public class RunwayDiagramParser
                    {
                        lastBlack = true;
                    }
+                }
+                return curr_point;
+	}
+
+
+	
+	/**
+	 * Return the greatest common divisor of two longs
+	 */
+	 private static int gcd(int a, int b) {
+	   if (b == 0) 
+		   return a;
+	   else
+		   return gcd(b, a % b);
+	 } 
+	
+	
+	
+	/**
+	 * Traverse the slope at the rate of the slope. Stop when
+	 * you reach the last black point.
+	 * @param initial_point
+	 * @param slope
+	 * @return last black point
+	 */
+	private Point traverseSlope(Point initial_point, Slope slope, int width_of_runway)
+	{
+                int slopeX = slope.getX();
+                int slopeY = slope.getY();
+                Point curr_point = initial_point;
+                
+                //Find the slope of the width of the runway
+                slope.invertSlope();
+                int slope_width_X = slope.getX();
+                int slope_width_Y = slope.getY();
+                //simplify slope with gcd. Slope is too big otherwise
+                int gcd = gcd(slope_width_X, slope_width_Y);
+                if (gcd > 0)
+                {
+                	slope_width_X = slope_width_X / gcd;
+                    slope_width_Y = slope_width_Y / gcd;
+                }
+                else //We have to simplify the slope in every situation because it will be to big otherwise.
+                {
+                	//easiest way to accomplish this is to make both numbers even so we can simplify by 2 no matter what
+                	if(slope_width_X % 2 != 0)
+                	{
+                		slope_width_X ++;
+                	}
+                	if (slope_width_Y % 2 != 0)
+                	{
+                		slope_width_Y ++;
+                	}
+                	slope_width_X = slope_width_X / 2;
+                    slope_width_Y = slope_width_Y / 2;
+                }
+                
+       
+                /*
+                 * If the slope of the runway is positive, we need to set the left_wing and right_wing normally.
+                 * If the slope is negative, we need to flip them so they work correctly
+                 */
+                Point left_wing;
+                Point right_wing;
+                Point left_wing_calculate;
+                Point right_wing_calculate;
+                //The runway is horizontal and will not have a slope.
+                if(Integer.signum(slopeX) == 0 && Integer.signum(slopeY) == 0)
+                {
+                	left_wing_calculate = new Point(0, width_of_runway / 2);
+                	right_wing_calculate = new Point(0, - width_of_runway / 2);
+                	
+                	boolean lastBlack = false;
+                	while(lastBlack == false)
+                	{
+                		Point next_point = new Point(curr_point.getX() + 1, curr_point.getY());
+                        //calculate wings for the next point
+                        left_wing = next_point.add(left_wing_calculate);
+                        right_wing = next_point.add(right_wing_calculate);
+                        
+                        if(next_point.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else if(left_wing.isBlack(diagram) || right_wing.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else
+                        {
+                        	return curr_point;
+                        }
+                	}
+                }
+                else if(Integer.signum(slopeX) == 1)
+                {
+                	left_wing_calculate = new Point(slope_width_X, slope_width_Y);
+                	right_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
+                }
+                else
+                {
+                	right_wing_calculate = new Point(slope_width_X, slope_width_Y);
+                	left_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
+                }
+
+                
+                
+                
+                
+                boolean lastBlack = false;
+                while(lastBlack == false)
+                {
+                   //To get the next point, add the slope to the current point.
+                   Point next_point = new Point(
+                           curr_point.getX() + slopeX, 
+                           curr_point.getY() + slopeY
+                   );
+                   
+                   //calculate wings for the next point
+                   left_wing = next_point.add(left_wing_calculate);
+                   right_wing = next_point.add(right_wing_calculate);
+                   
+                                      
+                   if(left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                	   //Both wings are black so we are still in the middle of the runway.
+                	   //continue forward
+                   {
+                	   curr_point = next_point;
+                   }
+                   else if (left_wing.isBlack(diagram) && !right_wing.isBlack(diagram))
+                	   //Left wing is black and the right wing is not.
+                	   //Correct ourselves to the left so we stay in the middle of the runway
+                   {
+                	   curr_point = new Point(next_point.getX() - 2, next_point.getY());
+                   }
+                   else if (!left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
+                	   //right wing is black and the left wing is not.
+                	   //Correct ourselves to the right so we stay in the middle of the runway
+                   {
+                	   curr_point = new Point(next_point.getX() + 2, next_point.getY());
+                   }
+                   else if (next_point.isBlack(diagram))
+                   {
+                	   //Even though the wings are not black, the next pixel is black so we can
+                	   //continue to traverse the runway
+                	   curr_point = next_point;
+                   }
+                   else
+                   {
+                	   /*
+                	    * The next_point is not black and the wings are not black. We are either
+                	    * at the end of the runway, off the runway, or in white text. Look
+                	    * around at the surrounding pixels to decide what we should do.
+                	    */
+                	   lastBlack = true;
+                   }
+
                 }
                 return curr_point;
 	}

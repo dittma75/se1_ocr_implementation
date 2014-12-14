@@ -14,19 +14,22 @@ public class ImageParsingTest {
 	
 	public static void main(String[] args) throws IOException
 	{
-		String acy_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/written_image.png";
-		File acy_image = new File(acy_path);
+		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD1.jpg";  //ACY
+		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00026AD1.jpg";  //ATL
+		String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/06039AD1.jpg";  //DFW
+		
+		File image = new File(path);
 		//System.out.println(acy_image.exists());
 		
 		
-		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF";
+		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD.PDF";
 		
-		BufferedImage airport_image = ImageIO.read(acy_image);
+		BufferedImage airport_image = ImageIO.read(image);
 		System.out.println(airport_image.getHeight());
 		System.out.println(airport_image.getWidth());
 		
 		//make airport with ACY
-//		Airport airport = new Airport(acy_pdf_path);
+//		Airport airport = new Airport(acy_pdf_path,false);
 		Airport airport = null;
 		
 		
@@ -43,7 +46,7 @@ public class ImageParsingTest {
 	    
 	    
 	    
-	    
+	    //TODO: DFW: 226, 650 is bad runway. end at 152, 718
 	    
 		
 //TODO: findPixelConversionScales throws exception

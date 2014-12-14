@@ -31,7 +31,12 @@ public class Slope
     {
         int temp = y_component;
         y_component = Math.abs(x_component);
-        x_component = -1 * temp;
+        //Multiply new x_component by the sign of previous x_component to
+        //compensate if x was originally negative. We assume signum will not return 0.
+        //and throw off the slope
+        x_component = -1 * temp * Integer.signum(x_component);
+        
+        //TODO: Added multiplying by sign on x_component to compensate to x being negative sometimes.
     }
     
     /**
