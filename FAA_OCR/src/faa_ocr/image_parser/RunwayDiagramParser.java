@@ -46,9 +46,17 @@ public class RunwayDiagramParser
 		//ACY Points
 	//114, 357 is first runway
 	//361, 85 is second runway
-            for (int y = 114; y < diagram.getHeight(); y++) 
+	//285, 365 is giving us trouble in ACY.
+        System.out.println("Size of diagram: " + 
+                diagram.getHeight() + " " + 
+                diagram.getWidth());
+		
+		
+		
+		
+            for (int y = 0; y < diagram.getHeight(); y++) 
             {
-                for (int x = 357; x < diagram.getWidth(); x++) 
+                for (int x = 0; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -57,6 +65,7 @@ public class RunwayDiagramParser
                             {
                                     //see if the pixel is a runway
                                     checkCorner(pixel);
+                                    //System.out.println("X:" + x + " Y:" + y);
                             }
                             else
                             {
@@ -69,10 +78,7 @@ public class RunwayDiagramParser
                     }
                 }
             }
-            System.out.println("Size of diagram: " + 
-                               diagram.getHeight() + " " + 
-                               diagram.getWidth()
-            );
+
 	}
 	
 	
@@ -522,31 +528,60 @@ public class RunwayDiagramParser
                  * If the slope of the runway is positive, we need to set the left_wing and right_wing normally.
                  * If the slope is negative, we need to flip them so they work correctly
                  */
-                Point wing_right;
-                Point wing_left;
                 Point left_wing;
                 Point right_wing;
                 Point left_wing_calculate;
                 Point right_wing_calculate;
-                if(Integer.signum(slopeX) == 1)
+                //The runway is horizontal and will not have a slope.
+                if(Integer.signum(slopeX) == 0 && Integer.signum(slopeY) == 0)
                 {
-                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-                    left_wing_calculate = wing_left.subtract(curr_point);
-                    right_wing_calculate = wing_right.subtract(curr_point);
-                    left_wing = curr_point.add(left_wing_calculate);
-                    right_wing = curr_point.add(right_wing_calculate);
+                	left_wing_calculate = new Point(0, width_of_runway / 2);
+                	right_wing_calculate = new Point(0, width_of_runway / 2 + 1);
+                	
+                	boolean lastBlack = false;
+                	while(lastBlack == false)
+                	{
+                		Point next_point = new Point(curr_point.getX(), curr_point.getY() + 1);
+                        //calculate wings for the next point
+                        left_wing = next_point.add(left_wing_calculate);
+                        right_wing = next_point.add(right_wing_calculate);
+                        
+                        if(next_point.isBlack(diagram))
+                        {
+                        	curr_point = next_point;
+                        }
+                        else
+                        {
+                        	return curr_point;
+                        }
+                	}
+                }
+                else if(Integer.signum(slopeX) == 1)
+                {
+//                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
+//                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
+//                    left_wing_calculate = wing_left.subtract(curr_point);
+//                    right_wing_calculate = wing_right.subtract(curr_point);
+                	left_wing_calculate = new Point(slope_width_X, slope_width_Y);
+                	right_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
+//                    left_wing = curr_point.add(left_wing_calculate);
+//                    right_wing = curr_point.add(right_wing_calculate);
                 }
                 else
                 {
-                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
-                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
-                    right_wing_calculate = wing_left.subtract(curr_point);
-                    left_wing_calculate = wing_right.subtract(curr_point);
-                	right_wing = curr_point.add(right_wing_calculate);
-                    left_wing = curr_point.add(left_wing_calculate);
+//                    wing_left = new Point(curr_point.getX() + slope_width_X, curr_point.getY() + slope_width_Y);
+//                    wing_right = new Point(curr_point.getX() - slope_width_X, curr_point.getY() - slope_width_Y);
+//                    right_wing_calculate = wing_left.subtract(curr_point);
+//                    left_wing_calculate = wing_right.subtract(curr_point);
+                	right_wing_calculate = new Point(slope_width_X, slope_width_Y);
+                	left_wing_calculate = new Point(-slope_width_X, -slope_width_Y);
+//                	right_wing = curr_point.add(right_wing_calculate);
+//                    left_wing = curr_point.add(left_wing_calculate);
                 }
 
+                
+                
+                
                 
                 boolean lastBlack = false;
                 while(lastBlack == false)
