@@ -518,8 +518,16 @@ public class Airport {
      */
     private boolean usesHalfMinutes(String diagram_text)
     {
-        //Look for a minute measurement with a ".5" component.
-        return diagram_text.contains(".*\\.5\\'[NSWE].*");
+        Scanner scanner = new Scanner(diagram_text);
+        while (scanner.hasNextLine())
+        {
+            //Look for a minute measurement with a ".5" component.
+            if (scanner.nextLine().matches(".*\\.5 *'[NSWE].*"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
