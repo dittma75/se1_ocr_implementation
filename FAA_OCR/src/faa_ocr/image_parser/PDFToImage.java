@@ -1,6 +1,7 @@
 package faa_ocr.image_parser;
 
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.DiagramRunway;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -83,7 +84,7 @@ public class PDFToImage
      * Get visual data from Airport
      * @param airport	from which we extract data from
      */
-    public static ArrayList<DiagramRunway> parseVisualData(Airport airport)
+    public ArrayList<DiagramRunway> parseVisualData(Airport airport)
     {
     	ArrayList <DiagramRunway> runways;
   

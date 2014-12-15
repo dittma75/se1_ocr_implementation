@@ -5,11 +5,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.DiagramRunway;
 import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Runway;
 import faa_ocr.ADTs.Slope;
-import faa_ocr.image_parser.DiagramRunway;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
@@ -164,50 +164,53 @@ public class AirportController
 	private boolean addToAirport(Airport airport, ArrayList<DiagramRunway> runways)
 	{             	
 		
-		//Loop through all the runways and find intersections and add to airport!!!!
-		Point midpoint = null;
+		int runways_left = airport.numRunways();
+		findIntersections(runways);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		//TODO: change paramters to be a runway. or move this method all together to controller and only do this
-		//after we find intersections
-		
-		Point end_point = null;//stop compiler from complaining
-		
-		
-                    //Translate the midpoint and end_point from x/y to lat/long
-                    float mid_long = airport.longitudeConversion(midpoint);
-                    float mid_lat = airport.latitudeConversion(midpoint);
-                    Node startNode = new Node(mid_long, mid_lat);
+		for(int kk = 0; kk < runways.size(); kk++)
+		{
+			Point midpoint = runways.get(kk).getStartPoint();
+			Point end_point = runways.get(kk).getEndPoint();
+			ArrayList<Point> intersections = runways.get(kk).returnIntersections();
+			
+			 //Translate the midpoint and end_point from x/y to lat/long
+            float mid_long = airport.longitudeConversion(midpoint);
+            float mid_lat = airport.latitudeConversion(midpoint);
+            Node startNode = new Node(mid_long, mid_lat);
 
-                    float end_long = airport.longitudeConversion(end_point);
-                    float end_lat = airport.latitudeConversion(end_point);
-                    Node endNode = new Node(end_long, end_lat);
+            float end_long = airport.longitudeConversion(end_point);
+            float end_lat = airport.latitudeConversion(end_point);
+            Node endNode = new Node(end_long, end_lat);
 
-                    /* Add points to existing Runway instance in airport
-                     * object.  Each physical runway is two runways, and they
-                     * are stored consecutively in pairs.  Hence, we add
-                     * the start and end nodes to the next two runways, since
-                     * they represent the same physical runway.
-                     */
-                    for (int i = 0; i < 2; i++)
-                    {
-//                        Runway runway = airport.getRunway(
-//                                airport.numRunways() - runways_left
-//                        );
-//                        runway.addPathNode(startNode);
-//                        runway.addPathNode(endNode);
-         //TODO:Import runway from ADT to this package
-                    }
-             
-                    return true; //stop compiler from complaining
+            /* Add points to existing Runway instance in airport
+             * object.  Each physical runway is two runways, and they
+             * are stored consecutively in pairs.  Hence, we add
+             * the start and end nodes to the next two runways, since
+             * they represent the same physical runway.
+             */
+            for (int i = 0; i < 2; i++)
+            {
+                Runway runway = airport.getRunway(
+                        airport.numRunways() - runways_left
+                );
+                runway.addPathNode(startNode);
+                runway.addPathNode(endNode);
+                
+                
+                //Add all intersections to runway
+                for(Point point: intersections)
+                {
+                	float point_long = airport.longitudeConversion(point);
+                	float point_lat = airport.latitudeConversion(point);
+                	Node pointNode = new Node(point_long, point_lat);
+                	runway.addIntNode(pointNode);
+                }
+                
+                runways_left --;
+                
+            }
+		}   
+		return true;
             
 	}
 	

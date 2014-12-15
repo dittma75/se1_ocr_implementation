@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.DiagramRunway;
 import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Slope;

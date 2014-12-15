@@ -1,9 +1,6 @@
-package faa_ocr.image_parser;
+package faa_ocr.ADTs;
 
 import java.util.ArrayList;
-
-import faa_ocr.ADTs.Point;
-import faa_ocr.ADTs.Slope;
 
 public class DiagramRunway {
 	Point start;
@@ -43,6 +40,19 @@ public class DiagramRunway {
 	public Point getIntersection(int index)
 	{
 		return intersections.get(index);
+	}
+	
+	public ArrayList<Point> returnIntersections(){
+		return intersections;
+	}
+	
+	public Point getStartPoint(){
+		return start;
+	}
+	
+	public Point getEndPoint()
+	{
+		return end;
 	}
 	
 }
