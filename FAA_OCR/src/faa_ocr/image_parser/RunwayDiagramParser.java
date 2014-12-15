@@ -1,8 +1,11 @@
 package faa_ocr.image_parser;
 
-import faa_ocr.ADTs.*;
-
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.Point;
+import faa_ocr.ADTs.Slope;
 
 
 /**
@@ -15,10 +18,12 @@ public class RunwayDiagramParser
 	private BufferedImage diagram;
 	private Airport airport;
 	private int runways_left;
+	private ArrayList <Runway> runways;
 
 	public RunwayDiagramParser()
 	{
             //do nothing
+		runways = new ArrayList <Runway>();
 	}
 	
 	/**
@@ -59,9 +64,12 @@ public class RunwayDiagramParser
         //2nd runway: 170,252
         //3rd: 291, 96
 		//problem: 474, 97
-            for (int y = 503; y < diagram.getHeight(); y++) 
+        
+     //PHX
+        //R1: 155,134
+            for (int y = 0; y < diagram.getHeight(); y++) 
             {
-                for (int x = 97; x < diagram.getWidth(); x++) 
+                for (int x = 0; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -83,7 +91,38 @@ public class RunwayDiagramParser
                     }
                 }
             }
+            
+            //Clean up runways we have from the diagram
+            cleanRunways();
 
+	}
+	
+	
+	//clear out duplicate runways
+	//if 2 runways have same end point take longest runway!
+	private void cleanRunways()
+	{
+		for (int i = 0; i < runways.size(); i++)
+		{
+			Runway alpha = runways.get(i);
+			for(int k = i + 1; k < runways.size(); k++)
+			{
+				Runway beta = runways.get(k);
+				if(alpha.end.equals(beta.end)) //if the ends are equal remove shortest runway
+				{
+					if(alpha.length > beta.length){
+						runways.remove(k);
+					}
+					else{
+						runways.remove(i);
+					}
+				}
+			}
+		}
+		
+		for(Runway charlie: runways){
+			charlie.printRunway();
+		}
 	}
 	
 	
@@ -116,12 +155,25 @@ public class RunwayDiagramParser
             } 
             else if(top.isBlack(diagram)) 
             {
-                return false;
+            	Point doubleCheckRight = new Point(topRight.getX() + 1, topRight.getY());
+            	Point right = new Point(x+1, y);
+            	Point bottom_right = new Point(x+1,y+1);
+            	if(!doubleCheckRight.isBlack(diagram) && right.isBlack(diagram) && bottom_right.isBlack(diagram))
+            	{
+            		return true;
+            	}
+            	else
+            	{
+            		return false;
+            	}
             }
-//TODO: removed because it gives some problems for a couple runways            
-            else if(topRight.isBlack(diagram)) 
+//TODO: removed because it gives some problems for a couple runways.
+    //TODO: may have to let it keep the top right corner.... or only keep it if the right pixel on top of the top right is not black.
+            else if(topRight.isBlack(diagram)) //TODO: What if I say is not top is black but the pixel to the right of that one is not black with the pixel
+            									//immediatly to this pixels right and bottom right are black, we can traverse.
             {
-                return false;
+            	return false;
+                
             } 
             else 
             {
@@ -273,12 +325,21 @@ public class RunwayDiagramParser
             
             //Length of the width of the runway used when we traverse at the rate
             	//of the slope
-            int width_of_runway = (int) findLength(initial_point, end_of_width);
+            int width_of_runway = (int) findLength(initial_point, end_of_width) + 1;
             
             
             Point midpoint_of_runway = initial_point.findMidpoint(end_of_width);
             
-            addToAirport(midpoint_of_runway, slope, width_of_runway);
+            if(width_of_runway > 2 && width_of_runway < 20){
+            	addToAirport(midpoint_of_runway, slope, width_of_runway);
+            }
+            else
+            {
+            	//runway was not wide enough
+            }
+            
+//            addToAirport(midpoint_of_runway, slope, width_of_runway);
+            
             
 	}
 	
@@ -301,11 +362,7 @@ public class RunwayDiagramParser
                 	
                 	
 //TODO: For testing only
-                	System.out.println("Runway Found!");
-                	System.out.println("Starting point: " + " X:" + midpoint.getX() + " Y:" + midpoint.getY());
-                	System.out.println("End Point: " + " X:" + end_point.getX() + " Y:" + end_point.getY());
-                	System.out.println("Length: " + runwayLength);
-                	System.out.println();
+                	runways.add(new Runway(midpoint, end_point, slope, runwayLength));
 
                 	
 //TODO: end testing                	
@@ -392,10 +449,10 @@ public class RunwayDiagramParser
         	Point rightTraversal;
         	Point leftTemp;
         	Point rightTemp;
-        	
-        	while(leftTraversal != leftTemp){
+        	return null;
+//        	while(leftTraversal != leftTemp){
         		//keep calling traverse left
-        	}
+ //       	}
         	//do same for right
         	
         	//find midpoint and return it
@@ -478,10 +535,10 @@ public class RunwayDiagramParser
                 {
                     return right;
                 }
-                else if (bottom.isBlack(diagram))
-                {
-                    return bottom; //TODO: bottom has higher priority now
-                }
+//                else if (bottom.isBlack(diagram))
+//                {
+//                    return bottom; //TODO: Commented out for finding verticle runways
+//                }
                 else if (bottom_right.isBlack(diagram))
                 {
                     return bottom_right;
@@ -688,8 +745,6 @@ public class RunwayDiagramParser
                 }
 
                 
-                
-
                 boolean lastBlack = false;
                 while(lastBlack == false)
                 {
@@ -740,5 +795,6 @@ public class RunwayDiagramParser
 
                 }
                 return curr_point;
+
 	}
 }
