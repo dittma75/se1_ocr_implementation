@@ -1,3 +1,4 @@
+
 package faa_ocr.image_parser;
 
 import java.awt.image.BufferedImage;

@@ -17,9 +17,9 @@ public class TextParserTest
     public static void main(String[] args)
     {
         //testACYAirport();
-        testATLAirport();
+        //testATLAirport();
         //testDFWAirport();
-        //testPHXAirport();
+        testPHXAirport();
     }
     
     public static void testACYAirport()

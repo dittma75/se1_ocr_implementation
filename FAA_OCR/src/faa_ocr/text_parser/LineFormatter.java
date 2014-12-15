@@ -51,6 +51,15 @@ public class LineFormatter
                 "$1\n$2\n"
         );
         
+        formatted_data = formatted_data.replaceAll("(E *L *E *V) ", "$1\n");
+        
+        formatted_data = formatted_data.replaceAll(" (\\d+) ", "\n $1 ");
+        
+        //Separate multiple headings on one line
+        formatted_data = formatted_data.replaceAll(
+                "(\\d\\d\\d\\.\\d) (\\d\\d\\d\\.\\d)",
+                "$1\n$2\n"
+        );
         return formatted_data;
     }
 }
