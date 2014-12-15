@@ -9,7 +9,7 @@ import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Runway;
 import faa_ocr.ADTs.Slope;
-import faa_ocr.image_parser.MyRunway;
+import faa_ocr.image_parser.DiagramRunway;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
@@ -50,8 +50,6 @@ public class AirportController
 	private PDFToImage pdf_to_image;
 	private AirportToXML xml_parser;
 	private XMLtoKML kml_parser;
-	private ArrayList <MyRunway> runways;
-	private Airport airport;
 	
 	/**
 	 * Control all behaviors of an airport
@@ -70,6 +68,10 @@ public class AirportController
 	 */
 	private void getInformationFromPDF(String path)
 	{
+		ArrayList <DiagramRunway> runways;
+		Airport airport;
+		
+		
 		//create a new airport with Sting path to PDF
 		airport = new Airport(path, false);
 		
@@ -79,8 +81,8 @@ public class AirportController
 		//get visual data from PDF
 		runways = pdf_to_image.parseVisualData(airport);
 		
-		//Check runways and taxiways for intersections
-		findIntersections(airport);
+		//All all runways to airport and convert x/y to lat/long
+		addToAirport(airport, runways);
 		
 		//turn Airport into an XML and save path to XML
 		String path_to_xml = xml_parser.convertToXml(airport);
@@ -88,8 +90,6 @@ public class AirportController
 		//turn xml file into a kml file.
 		String path_to_kml = kml_parser.writeKML(new File(path_to_xml));
 		
-		//Add all runways to the airport!!!
-		addToAirport();
 		
 		//print out results of transformations
 		printResults(airport, path_to_xml,path_to_kml);
@@ -116,61 +116,43 @@ public class AirportController
 	 * taxiways and taxiways.
 	 * @param airport
 	 */
-	private void findIntersections(Airport airport)
+	private void findIntersections(ArrayList<DiagramRunway> runways)
 	{
-		
-		int num_runways = airport.numRunways();
-		int num_taxiways = airport.numTaxiways();
-		
+		int num_runways = runways.size();
 		
 		/*
 		 * Loop through every combination of runways and runways seeing if there is
-		 * an intersection. We increase both loops by 2 because runways are
-		 * stored in pairs. If we find an intersection, we will add that intersection
-		 * to the matching pair.
+		 * an intersection. If we find an intersection, we will add that intersection
+		 * to the pair of runways.
 		 */
-		for (int ii = 0; ii < num_runways; ii = ii + 2)
+		for (int ii = 0; ii < num_runways; ii = ii + 1)
 		{
-			for (int kk = ii + 2; kk < num_runways; kk = kk + 2)
+			for (int kk = ii + 2; kk < num_runways; kk = kk + 1)
 			{
 				//Check to see if two runways are intersecting
-				findIntersections(airport.getRunway(ii), airport.getRunway(kk));
+				Point intersecting_point;
+				intersecting_point = findIntersections(runways.get(ii), runways.get(kk));
+				if(intersecting_point != null)
+				{
+					//add intersecting point to both runways
+				}
+				else
+				{
+					//intersecting_point was not found
+				}
 			}
 		}
 		
-		
-		/*
-		 * Loop through every combination of runway and taxiway seeing if there is
-		 * an intersection. We increase the runway look by 2 because runways are stored
-		 * in pairs. If we find an intersection, we will add that intersection to the
-		 * matching pair
-		 */
-		for (int jj = 0; jj < num_runways; jj = jj + 2)
-		{
-			for (int tt = 0; tt < num_runways; tt++)
-			{
-				//do nothing for now
-			}
-		}
-		
-		
-		
-		/*
-		 * Loop through every combination of taxiway and taxiway seeing if there
-		 * is an intersection between them.
-		 */
-		for (int pp = 0; pp < num_taxiways; pp++)
-		{
-			for (int yy = pp + 1; yy < num_taxiways; yy++)
-			{
-				//do nothing for now
-			}
-		}
 	}
 	
-	private void findIntersections(Runway one, Runway two)
+	private Point findIntersections(DiagramRunway one, DiagramRunway two)
 	{
 		
+		Point returnPoint = null;
+		//See if two runways intersect
+		
+		
+		return returnPoint;
 	}
 	
 	
@@ -179,11 +161,18 @@ public class AirportController
 	 * @param midpoint of the current runway
 	 * @param slope of the current runway
 	 */
-	private boolean addToAirport()
+	private boolean addToAirport(Airport airport, ArrayList<DiagramRunway> runways)
 	{             	
 		
 		//Loop through all the runways and find intersections and add to airport!!!!
 		Point midpoint = null;
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

@@ -35,12 +35,12 @@ public class RunwayDiagramParser
 	private BufferedImage diagram;
 	private Airport airport;
 //	private int runways_left;
-	private ArrayList <MyRunway> runways;
+	private ArrayList <DiagramRunway> runways;
 
 	public RunwayDiagramParser()
 	{
             //do nothing
-		runways = new ArrayList <MyRunway>();
+		runways = new ArrayList <DiagramRunway>();
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class RunwayDiagramParser
 	 * @param diagram	is the airport diagram image to parse for runways
 	 * @param airport	the airport to which runway path data should be added
 	 */
-	public ArrayList<MyRunway> parseRunways(BufferedImage diagram, Airport airport)
+	public ArrayList<DiagramRunway> parseRunways(BufferedImage diagram, Airport airport)
 	{
             this.diagram = diagram;
             this.airport = airport;    
@@ -102,10 +102,10 @@ public class RunwayDiagramParser
 	{
 		for (int i = 0; i < runways.size(); i++)
 		{
-			MyRunway alpha = runways.get(i);
+			DiagramRunway alpha = runways.get(i);
 			for(int k = i + 1; k < runways.size(); k++)
 			{
-				MyRunway beta = runways.get(k);
+				DiagramRunway beta = runways.get(k);
 				if(alpha.end.equals(beta.end)) //if the ends are equal remove shortest runway
 				{
 					if(alpha.length > beta.length){
@@ -131,7 +131,7 @@ public class RunwayDiagramParser
 			}
 		}
 		
-		for(MyRunway charlie: runways){
+		for(DiagramRunway charlie: runways){
 			charlie.printRunway();
 		}
 	}
@@ -140,7 +140,7 @@ public class RunwayDiagramParser
 	
 	private boolean checkPixelInRunways(Point point)
 	{
-		for(MyRunway runway: runways)
+		for(DiagramRunway runway: runways)
 		{ 
 			if(Math.abs(runway.start.getX() - point.getX()) < runway_start_difference && 
 					Math.abs(runway.start.getY() - point.getY()) < runway_start_difference){
@@ -398,7 +398,7 @@ public class RunwayDiagramParser
 		
 		if (runwayLength > runway_acceptance_length)
 		{
-			runways.add(new MyRunway(midpoint, end_point, slope, runwayLength));
+			runways.add(new DiagramRunway(midpoint, end_point, slope, runwayLength));
 		}
 	}
 	

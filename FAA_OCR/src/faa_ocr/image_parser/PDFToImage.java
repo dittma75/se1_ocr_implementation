@@ -83,9 +83,9 @@ public class PDFToImage
      * Get visual data from Airport
      * @param airport	from which we extract data from
      */
-    public static ArrayList<MyRunway> parseVisualData(Airport airport)
+    public static ArrayList<DiagramRunway> parseVisualData(Airport airport)
     {
-    	ArrayList <MyRunway> runways;
+    	ArrayList <DiagramRunway> runways;
   
       BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
     	
