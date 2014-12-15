@@ -15,6 +15,9 @@ import faa_ocr.ADTs.Slope;
  */
 public class RunwayDiagramParser 
 {
+	int startY = 0;
+	int startX = 0;
+	
 	private BufferedImage diagram;
 	private Airport airport;
 	private int runways_left;
@@ -67,9 +70,9 @@ public class RunwayDiagramParser
         
      //PHX
         //R1: 155,134
-            for (int y = 0; y < diagram.getHeight(); y++) 
+            for (int y = startY; y < diagram.getHeight(); y++) 
             {
-                for (int x = 0; x < diagram.getWidth(); x++) 
+                for (int x = startX; x < diagram.getWidth(); x++) 
                 {
                     Point pixel = new Point(x,y);
                     if (pixel.isBlack(diagram))
@@ -117,6 +120,19 @@ public class RunwayDiagramParser
 						runways.remove(i);
 					}
 				}
+				
+				//both starts are equal
+				if(alpha.start.equals(beta.start)) //if the ends are equal remove shortest runway
+				{
+					if(alpha.length > beta.length){
+						runways.remove(k);
+					}
+					else{
+						runways.remove(i);
+					}
+				}
+				
+				
 			}
 		}
 		
@@ -124,6 +140,23 @@ public class RunwayDiagramParser
 			charlie.printRunway();
 		}
 	}
+	
+	
+	
+	private boolean checkPixelInRunways(Point point)
+	{
+		for(Runway runway: runways)
+		{
+			if(Math.abs(runway.start.getX() - point.getX()) < 4 && 
+					Math.abs(runway.start.getY() - point.getY()) < 4){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
 	
 	
 	/**
@@ -155,10 +188,11 @@ public class RunwayDiagramParser
             } 
             else if(top.isBlack(diagram)) 
             {
-            	Point doubleCheckRight = new Point(topRight.getX() + 1, topRight.getY());
+            	Point doubleCheckRight = new Point(top.getX() + 1, top.getY());
+            	Point doubleCheckTop = new Point(top.getX(), top.getY() + 1);
             	Point right = new Point(x+1, y);
             	Point bottom_right = new Point(x+1,y+1);
-            	if(!doubleCheckRight.isBlack(diagram) && right.isBlack(diagram) && bottom_right.isBlack(diagram))
+            	if(!doubleCheckRight.isBlack(diagram) && right.isBlack(diagram) && bottom_right.isBlack(diagram) && !doubleCheckTop.isBlack(diagram))
             	{
             		return true;
             	}
@@ -172,8 +206,15 @@ public class RunwayDiagramParser
             else if(topRight.isBlack(diagram)) //TODO: What if I say is not top is black but the pixel to the right of that one is not black with the pixel
             									//immediatly to this pixels right and bottom right are black, we can traverse.
             {
-            	return false;
-                
+            	//To handle the one condition on DWR with the horizontal runway not being taken
+            	Point doubleCheckRight = new Point(topRight.getX() + 2, topRight.getY() - 1);
+            	Point doubleCheckTopRight = new Point(topRight.getX() + 1, topRight.getY() - 1);
+                if(!doubleCheckRight.isBlack(diagram) && doubleCheckTopRight.isBlack(diagram)){
+                	return true;
+                }
+                else{
+                	return false;
+                }
             } 
             else 
             {
@@ -362,7 +403,11 @@ public class RunwayDiagramParser
                 	
                 	
 //TODO: For testing only
-                	runways.add(new Runway(midpoint, end_point, slope, runwayLength));
+                	if(!checkPixelInRunways(midpoint))
+                	{
+                		runways.add(new Runway(midpoint, end_point, slope, runwayLength));
+                	}
+                	
 
                 	
 //TODO: end testing                	
@@ -535,10 +580,10 @@ public class RunwayDiagramParser
                 {
                     return right;
                 }
-//                else if (bottom.isBlack(diagram))
-//                {
-//                    return bottom; //TODO: Commented out for finding verticle runways
-//                }
+                else if (bottom.isBlack(diagram))
+                {
+                    return bottom;
+                }
                 else if (bottom_right.isBlack(diagram))
                 {
                     return bottom_right;
@@ -557,42 +602,6 @@ public class RunwayDiagramParser
             }
             
 	}
-	
-
-	/**
-	 * Traverse the slope at the rate of the slope. Stop when
-	 * you reach the last black point.
-	 * @param initial_point
-	 * @param slope
-	 * @return last black point
-	 */
-	private Point traverseSlope(Point initial_point, Slope slope)
-	{
-                int slopeX = slope.getX();
-                int slopeY = slope.getY();
-                Point curr_point = initial_point;
-                
-                boolean lastBlack = false;
-                while(lastBlack == false)
-                {
-                   //To get the next point, add the slope to the current point.
-                   Point next_point = new Point(
-                           curr_point.getX() + slopeX, 
-                           curr_point.getY() + slopeY
-                   );
-                   
-                   if(next_point.isBlack(diagram)) 
-                   {
-                       curr_point = next_point; 
-                   } else 
-                   {
-                       lastBlack = true;
-                   }
-                }
-                return curr_point;
-	}
-
-
 	
 	/**
 	 * Return the greatest common divisor of two longs
@@ -790,11 +799,54 @@ public class RunwayDiagramParser
                 	    * at the end of the runway, off the runway, or in white text. Look
                 	    * around at the surrounding pixels to decide what we should do.
                 	    */
-                	   lastBlack = true;
+                	   //Lets check to see if the next pixel ahead of next_point && next pixel ahead of curr pixel is black,
+                	   //if they both are true, keep traversing
+                	   Point probe_current_point = new Point(curr_point.getX(), curr_point.getY() + 1);
+                	   Point probe_next_point = new Point(next_point.getX(), curr_point.getY() + 1);
+                	   if(probe_current_point.isBlack(diagram) && probe_next_point.isBlack(diagram))
+                	   {
+                		   curr_point = next_point;
+                	   }
+                	   else
+                	   {
+//                		   Point left_of_curr = new Point(curr_point.getX() - 1, curr_point.getY());
+//                		   Point left_bot_of_curr = new Point(curr_point.getX() - 1, curr_point.getY() + 1);
+//                		   Point bot_of_curr = new Point(curr_point.getX(), curr_point.getY() + 1);
+//                		   Point right_bot_of_curr = new Point(curr_point.getX() + 1, curr_point.getY() + 1);
+//                		   Point right_of_curr = new Point(curr_point.getX() + 1, curr_point.getY());
+//                		   
+//                		   if(left_bot_of_curr.isBlack(diagram) && bot_of_curr.isBlack(diagram) && right_bot_of_curr.isBlack(diagram))
+//                		   {
+//                			   curr_point = bot_of_curr;
+//                		   }
+//                		   else if (right_of_curr.isBlack(diagram) && right_bot_of_curr.isBlack(diagram) && bot_of_curr.isBlack(diagram))
+//                		   {
+//                			   curr_point = right_bot_of_curr;
+//                		   }
+//                		   else if(left_of_curr.isBlack(diagram) && left_bot_of_curr.isBlack(diagram) && bot_of_curr.isBlack(diagram))
+//                		   {
+//                			   curr_point = left_bot_of_curr;
+//                		   }
+//
+//                		   else
+//                		   {
+//                			   lastBlack = true;
+//                		   }
+                		   
+                		   lastBlack = true;
+                		   
+                	   }
+                	   
                    }
 
                 }
                 return curr_point;
 
 	}
+	
+	
+
+	
+	
+	
 }
