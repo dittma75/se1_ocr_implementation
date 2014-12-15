@@ -115,4 +115,16 @@ public class Point
 	{
 		return new Point(this.x - that.getX(), this.y - that.getY());
 	}
+	
+	/**
+	 * Return a new Point with adjusted values for x and y
+	 * @param x_adjustment
+	 * @param y_adjustment
+	 * @return new Point with the adjusted values
+	 */
+	public Point adjustPoint(int x_adjustment, int y_adjustment)
+	{
+		return new Point(this.x + x_adjustment, this.y + y_adjustment);
+	}
+	
 }
