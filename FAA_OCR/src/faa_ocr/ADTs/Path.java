@@ -117,13 +117,13 @@ public abstract class Path {
     @Override
     public String toString()
     {
-        String pathString = "";
+        String pathString = "Name: " + name + "\n";
         for(Node node : nodes) {
             pathString += node.toString();
         }
         pathString += "Intersections: ";
         if(intersections.isEmpty()){
-            pathString += "This path does not have any intersections.";
+            pathString += "This path does not have any intersections.\n";
         } else {
             for(Node node : intersections) {
             System.out.println(node.toString());

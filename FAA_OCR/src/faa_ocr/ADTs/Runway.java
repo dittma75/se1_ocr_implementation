@@ -97,9 +97,9 @@ public class Runway extends Path
     public String toString()
     {
         String runwayString = "Path Type: Runway\n";
+        runwayString += super.toString();
         runwayString += "Elevation: " + elevation + "\n"
                         + "Heading: " + heading + "\n";
-        runwayString += super.toString();
         if(this.hasThreshold()) {
             runwayString += this.getThreshold().toString();
         } else {
