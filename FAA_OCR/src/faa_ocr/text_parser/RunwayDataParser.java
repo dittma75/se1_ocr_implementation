@@ -133,11 +133,26 @@ public class RunwayDataParser extends DataParser
                 else
                 {
                     int sample_elev = elevations.get(0);
+                    int acceptable_range;
                     
-                    /* If the potential elevation is within 100 of previous
-                     * elevations, then add it.
+                    //Pick an acceptable range based on the sample elevation.
+                    if (sample_elev > 200)
+                    {
+                        acceptable_range = 100;
+                    }
+                    else if (sample_elev > 100)
+                    {
+                        acceptable_range = 50;
+                    }
+                    else
+                    {
+                        acceptable_range = 20;
+                    }
+                    
+                    /* If the potential elevation is within an acceptable
+                     * range of previous elevations, then add it.
                      */
-                    if (Math.abs(sample_elev - elev) < 100)
+                    if (Math.abs(sample_elev - elev) < acceptable_range)
                     {
                         elev_counter--;
                         elevations.add(Integer.parseInt(elevation));
@@ -359,6 +374,12 @@ public class RunwayDataParser extends DataParser
         return runways;
     }
     
+    /**
+     * Validate the headings found by checking to see if each one has
+     * a counterpart in the list that differs from it by 180 degrees.
+     * @param headings the non-validated headings list
+     * Post:  All invalid headings are removed from the list.
+     */
     private void validateHeadings(ArrayList<String> headings)
     {
         ArrayList<Boolean> has_associated_heading = new ArrayList<>();
@@ -372,11 +393,13 @@ public class RunwayDataParser extends DataParser
         //Valid headings should have a counterpart that varies by 180 degrees.
         for (int i = 0; i < headings.size(); i++)
         {
-            int first = Math.round(Float.parseFloat(headings.get(i)));
+            float first = Float.parseFloat(headings.get(i));
             for (int j = i + 1; j < headings.size(); j++)
             {
-                int second = Math.round(Float.parseFloat(headings.get(j)));
-                if (Math.abs(first - second) == 180)
+                float second = Float.parseFloat(headings.get(j));
+                float difference = Math.abs(first - second);
+                
+                if (difference > 179 && difference < 181)
                 {
                     has_associated_heading.set(i, Boolean.TRUE);
                     has_associated_heading.set(j, Boolean.TRUE);
@@ -388,9 +411,18 @@ public class RunwayDataParser extends DataParser
         //Remove non-validated headings.
         for (int i = 0; i < headings.size(); i++)
         {
+            /* If the heading isn't associated, remove it and its
+             * corresponding association marker.
+             */
             if (!has_associated_heading.get(i))
             {
                 headings.remove(i);
+                has_associated_heading.remove(i);
+                
+                /* Since we are removing corresponding parts of the
+                 * ArrayList, the loop counter has to be decremented.
+                 */
+                i--;
             }
         }
     }

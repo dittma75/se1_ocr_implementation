@@ -393,14 +393,14 @@ public class RunwayDiagramParser
         	Point leftTemp;
         	Point rightTemp;
         	
-        	while(leftTraversal != leftTemp){
+//        	while(leftTraversal != leftTemp){
         		//keep calling traverse left
-        	}
+//        	}
         	//do same for right
         	
         	//find midpoint and return it
         	
-        	
+        	return null;
         }
 	
 	
