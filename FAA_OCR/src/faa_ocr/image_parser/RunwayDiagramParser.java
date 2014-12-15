@@ -189,7 +189,7 @@ public class RunwayDiagramParser
             else if(top.isBlack(diagram)) 
             {
             	Point doubleCheckRight = new Point(top.getX() + 1, top.getY());
-            	Point doubleCheckTop = new Point(top.getX(), top.getY() + 1);
+            	Point doubleCheckTop = new Point(top.getX(), top.getY() - 1);
             	Point right = new Point(x+1, y);
             	Point bottom_right = new Point(x+1,y+1);
             	if(!doubleCheckRight.isBlack(diagram) && right.isBlack(diagram) && bottom_right.isBlack(diagram) && !doubleCheckTop.isBlack(diagram))
@@ -303,7 +303,13 @@ public class RunwayDiagramParser
             Point end_of_width = initial_point;
             
             boolean width_found = false;
-
+            
+            //Variables used to detect verticle runway
+            int rightCounter = 0;
+//            int rightPixelX = right_point.getX();
+//            int rightPixelY = right_point.getY();
+            
+            
             
             //Until the width is found, keep traversing.
             while (!width_found)
@@ -317,7 +323,7 @@ public class RunwayDiagramParser
                     /* Our starting place should two pixels to the left of
                      * our starting place, which was the upper right corner.
                      */
-                    runway_start = traverseLeft(traverseLeft(runway_start));
+//                    runway_start = traverseLeft(traverseLeft(runway_start));
                     
                     width_found = true;
                     break;
@@ -337,14 +343,34 @@ public class RunwayDiagramParser
                     /* Our starting place should two pixels to the right of
                      * our starting place, which was the upper left corner.
                      */
-                    runway_start = traverseRight(traverseRight(runway_start));
+//                    runway_start = traverseRight(traverseRight(runway_start));
+//TODO: These runway_start variables are not even used!!!!! remove after everything works                    
+                    
+                    
                     
                     width_found = true;
                     break;
                 }
                 else
                 {
-                	right_point = end_of_width;
+                	if(end_of_width.getX() - right_point.getX() == 1 && (end_of_width.getY() == right_point.getY()) )
+                	{
+                		rightCounter++;
+                		right_point = end_of_width;
+                	}
+                	else
+                	{
+                		if(rightCounter > 3 && rightCounter < 10 && end_of_width.getY() - right_point.getY() == 1){ //runway must be verticle
+                			width_found = true;
+                			end_of_width = right_point;
+                			break;
+                		}
+                		else{
+                			rightCounter = 0;
+                			right_point = end_of_width;
+                		}
+                	}
+                	//right_point = end_of_width;
                 }
                 
                 
