@@ -16,20 +16,15 @@ public class ImageParsingTest {
 	{
 		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD1.jpg";  //ACY
 		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ATL/00026AD1.jpg";  //ATL
-		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/DFW/06039AD1.jpg";  //DFW
-		
-		
-		String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/PHX/00322AD1.jpg";  //PHX
+		String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/DFW/06039AD1.jpg";  //DFW
+		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/PHX/00322AD1.jpg";  //PHX
 		
 		File image = new File(path);
-		//System.out.println(acy_image.exists());
 		
 		
 		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD.PDF";
 		
 		BufferedImage airport_image = ImageIO.read(image);
-//		System.out.println(airport_image.getHeight());
-//		System.out.println(airport_image.getWidth());
 		
 		//make airport with ACY
 //		Airport airport = new Airport(acy_pdf_path,false);
