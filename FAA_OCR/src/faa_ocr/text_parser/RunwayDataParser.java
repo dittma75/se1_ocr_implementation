@@ -16,14 +16,16 @@ import java.util.regex.Pattern;
  */
 public class RunwayDataParser extends DataParser
 {
-    /******************************TEMPORARY**********************************
-     *This elevation pattern works for Atlanta, but it needs tweaking for
-     *the rest of the cases.
+    /* Elevations are always a non-zero number that is followed by at most
+     * three more digits.  In some cases (New Orleans for example), the
+     * elevation is a single digit number.  There shouldn't be any digits
+     * before or after the elevation, and there shouldn't be a period after
+     * the elevation.
      */
     private final String ELEV_PATTERN = "[^\\d]*([1-9]\\d{0,3})[^.\\d]*";
     
-    /*Headings always follow the pattern of a four significant digit number
-     *with accuracy to the tenths place.
+    /* Headings always follow the pattern of a four significant digit number
+     * with accuracy to the tenths place.
      */
     private final String HEADING_PATTERN = "(\\d\\d\\d\\.\\d)";
     
@@ -112,7 +114,7 @@ public class RunwayDataParser extends DataParser
                 field_elev_index = elevations.size();
             }
             //Increment the elevation counter if "ELEV" is found in the line.
-            if (current_line.matches(".*E *L *E *V *.*"))
+            if (current_line.matches(".*E.*L.*E.*V.*"))
             {
                 elev_counter++;
             }
