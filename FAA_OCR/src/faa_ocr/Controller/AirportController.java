@@ -2,9 +2,14 @@ package faa_ocr.Controller;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
+import faa_ocr.ADTs.Node;
+import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Runway;
+import faa_ocr.ADTs.Slope;
+import faa_ocr.image_parser.MyRunway;
 import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
@@ -45,6 +50,8 @@ public class AirportController
 	private PDFToImage pdf_to_image;
 	private AirportToXML xml_parser;
 	private XMLtoKML kml_parser;
+	private ArrayList <MyRunway> runways;
+	private Airport airport;
 	
 	/**
 	 * Control all behaviors of an airport
@@ -64,13 +71,13 @@ public class AirportController
 	private void getInformationFromPDF(String path)
 	{
 		//create a new airport with Sting path to PDF
-		Airport airport = new Airport(path, false);
+		airport = new Airport(path, false);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);
 		
 		//get visual data from PDF
-		pdf_to_image.parseVisualData(airport);
+		runways = pdf_to_image.parseVisualData(airport);
 		
 		//Check runways and taxiways for intersections
 		findIntersections(airport);
@@ -80,6 +87,9 @@ public class AirportController
 		
 		//turn xml file into a kml file.
 		String path_to_kml = kml_parser.writeKML(new File(path_to_xml));
+		
+		//Add all runways to the airport!!!
+		addToAirport();
 		
 		//print out results of transformations
 		printResults(airport, path_to_xml,path_to_kml);
@@ -161,6 +171,55 @@ public class AirportController
 	private void findIntersections(Runway one, Runway two)
 	{
 		
+	}
+	
+	
+	/**
+	 * Traverse the runway at the rate of the slope and add those points to the airport
+	 * @param midpoint of the current runway
+	 * @param slope of the current runway
+	 */
+	private boolean addToAirport()
+	{             	
+		
+		//Loop through all the runways and find intersections and add to airport!!!!
+		Point midpoint = null;
+		
+		
+		
+		//TODO: change paramters to be a runway. or move this method all together to controller and only do this
+		//after we find intersections
+		
+		Point end_point = null;//stop compiler from complaining
+		
+		
+                    //Translate the midpoint and end_point from x/y to lat/long
+                    float mid_long = airport.longitudeConversion(midpoint);
+                    float mid_lat = airport.latitudeConversion(midpoint);
+                    Node startNode = new Node(mid_long, mid_lat);
+
+                    float end_long = airport.longitudeConversion(end_point);
+                    float end_lat = airport.latitudeConversion(end_point);
+                    Node endNode = new Node(end_long, end_lat);
+
+                    /* Add points to existing Runway instance in airport
+                     * object.  Each physical runway is two runways, and they
+                     * are stored consecutively in pairs.  Hence, we add
+                     * the start and end nodes to the next two runways, since
+                     * they represent the same physical runway.
+                     */
+                    for (int i = 0; i < 2; i++)
+                    {
+//                        Runway runway = airport.getRunway(
+//                                airport.numRunways() - runways_left
+//                        );
+//                        runway.addPathNode(startNode);
+//                        runway.addPathNode(endNode);
+         //TODO:Import runway from ADT to this package
+                    }
+             
+                    return true; //stop compiler from complaining
+            
 	}
 	
 }

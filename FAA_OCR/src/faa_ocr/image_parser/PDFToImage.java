@@ -1,12 +1,16 @@
 package faa_ocr.image_parser;
 
 import faa_ocr.ADTs.Airport;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFImageWriter;
 
@@ -79,19 +83,20 @@ public class PDFToImage
      * Get visual data from Airport
      * @param airport	from which we extract data from
      */
-    public static void parseVisualData(Airport airport)
+    public static ArrayList<MyRunway> parseVisualData(Airport airport)
     {
+    	ArrayList <MyRunway> runways;
   
       BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
     	
       //get runway data from image
-      new RunwayDiagramParser().parseRunways(airport_image, airport);
+      runways = new RunwayDiagramParser().parseRunways(airport_image, airport);
 
       //get taxiway date from image
       new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
     	
     	
-    	
+    	return runways;
     	
     	
 //        //create buffered image with the pdf file

@@ -34,13 +34,13 @@ public class RunwayDiagramParser
 	
 	private BufferedImage diagram;
 	private Airport airport;
-	private int runways_left;
-	private ArrayList <Runway> runways;
+//	private int runways_left;
+	private ArrayList <MyRunway> runways;
 
 	public RunwayDiagramParser()
 	{
             //do nothing
-		runways = new ArrayList <Runway>();
+		runways = new ArrayList <MyRunway>();
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class RunwayDiagramParser
 	 * @param diagram	is the airport diagram image to parse for runways
 	 * @param airport	the airport to which runway path data should be added
 	 */
-	public void parseRunways(BufferedImage diagram, Airport airport)
+	public ArrayList<MyRunway> parseRunways(BufferedImage diagram, Airport airport)
 	{
             this.diagram = diagram;
             this.airport = airport;    
@@ -57,6 +57,7 @@ public class RunwayDiagramParser
 //            this.runways_left = airport.numRunways();
             
             traverseImage();
+            return runways;
 	}
 	
 	/**
@@ -101,10 +102,10 @@ public class RunwayDiagramParser
 	{
 		for (int i = 0; i < runways.size(); i++)
 		{
-			Runway alpha = runways.get(i);
+			MyRunway alpha = runways.get(i);
 			for(int k = i + 1; k < runways.size(); k++)
 			{
-				Runway beta = runways.get(k);
+				MyRunway beta = runways.get(k);
 				if(alpha.end.equals(beta.end)) //if the ends are equal remove shortest runway
 				{
 					if(alpha.length > beta.length){
@@ -130,7 +131,7 @@ public class RunwayDiagramParser
 			}
 		}
 		
-		for(Runway charlie: runways){
+		for(MyRunway charlie: runways){
 			charlie.printRunway();
 		}
 	}
@@ -139,7 +140,7 @@ public class RunwayDiagramParser
 	
 	private boolean checkPixelInRunways(Point point)
 	{
-		for(Runway runway: runways)
+		for(MyRunway runway: runways)
 		{ 
 			if(Math.abs(runway.start.getX() - point.getX()) < runway_start_difference && 
 					Math.abs(runway.start.getY() - point.getY()) < runway_start_difference){
@@ -397,56 +398,10 @@ public class RunwayDiagramParser
 		
 		if (runwayLength > runway_acceptance_length)
 		{
-			runways.add(new Runway(midpoint, end_point, slope, runwayLength));
+			runways.add(new MyRunway(midpoint, end_point, slope, runwayLength));
 		}
 	}
 	
-	
-	
-	
-	
-	/**
-	 * Traverse the runway at the rate of the slope and add those points to the airport
-	 * @param midpoint of the current runway
-	 * @param slope of the current runway
-	 */
-	private boolean addToAirport(Point midpoint, Slope slope, int width_of_runway)
-	{             	
-		
-		//TODO: change paramters to be a runway. or move this method all together to controller and only do this
-		//after we find intersections
-		
-		Point end_point = null;//stop compiler from complaining
-		
-		
-                    //Translate the midpoint and end_point from x/y to lat/long
-                    float mid_long = airport.longitudeConversion(midpoint);
-                    float mid_lat = airport.latitudeConversion(midpoint);
-                    Node startNode = new Node(mid_long, mid_lat);
-
-                    float end_long = airport.longitudeConversion(end_point);
-                    float end_lat = airport.latitudeConversion(end_point);
-                    Node endNode = new Node(end_long, end_lat);
-
-                    /* Add points to existing Runway instance in airport
-                     * object.  Each physical runway is two runways, and they
-                     * are stored consecutively in pairs.  Hence, we add
-                     * the start and end nodes to the next two runways, since
-                     * they represent the same physical runway.
-                     */
-                    for (int i = 0; i < 2; i++)
-                    {
-//                        Runway runway = airport.getRunway(
-//                                airport.numRunways() - runways_left
-//                        );
-//                        runway.addPathNode(startNode);
-//                        runway.addPathNode(endNode);
-         //TODO:Import runway from ADT to this package
-                    }
-             
-                    return true; //stop compiler from complaining
-            
-	}
         
         /**
          * Find the length in pixels of two x,y coordinates
