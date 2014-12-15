@@ -107,9 +107,9 @@ public class RunwayDiagramParser
 			for(int k = i + 1; k < runways.size(); k++)
 			{
 				DiagramRunway beta = runways.get(k);
-				if(alpha.end.equals(beta.end)) //if the ends are equal remove shortest runway
+				if(alpha.getEndPoint().equals(beta.getEndPoint())) //if the ends are equal remove shortest runway
 				{
-					if(alpha.length > beta.length){
+					if(alpha.getLength() > beta.getLength()){
 						runways.remove(k);
 					}
 					else{
@@ -118,9 +118,9 @@ public class RunwayDiagramParser
 				}
 				
 				//both starts are equal
-				if(alpha.start.equals(beta.start)) //if the starts are equal remove shortest runway
+				if(alpha.getStartPoint().equals(beta.getStartPoint())) //if the starts are equal remove shortest runway
 				{
-					if(alpha.length > beta.length){
+					if(alpha.getLength() > beta.getLength()){
 						runways.remove(k);
 					}
 					else{
@@ -143,8 +143,8 @@ public class RunwayDiagramParser
 	{
 		for(DiagramRunway runway: runways)
 		{ 
-			if(Math.abs(runway.start.getX() - point.getX()) < runway_start_difference && 
-					Math.abs(runway.start.getY() - point.getY()) < runway_start_difference){
+			if(Math.abs(runway.getStartPoint().getX() - point.getX()) < runway_start_difference && 
+					Math.abs(runway.getStartPoint().getY() - point.getY()) < runway_start_difference){
 				return true;
 			}
 		}

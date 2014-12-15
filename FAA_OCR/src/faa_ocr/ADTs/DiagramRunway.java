@@ -55,4 +55,9 @@ public class DiagramRunway {
 		return end;
 	}
 	
+	public double getLength()
+	{
+		return length;
+	}
+	
 }
