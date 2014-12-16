@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
 import faa_ocr.ADTs.DiagramRunway;
-import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Slope;
 
@@ -34,7 +33,7 @@ public class RunwayDiagramParser
 	
 	
 	private BufferedImage diagram;
-	private Airport airport;
+//	private Airport airport;
 //	private int runways_left;
 	private ArrayList <DiagramRunway> runways;
 
@@ -53,7 +52,7 @@ public class RunwayDiagramParser
 	public ArrayList<DiagramRunway> parseRunways(BufferedImage diagram, Airport airport)
 	{
             this.diagram = diagram;
-            this.airport = airport;    
+//            this.airport = airport;    
 //TODO:Commented out for testing
 //            this.runways_left = airport.numRunways();
             
