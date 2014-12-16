@@ -127,6 +127,7 @@ public class PDFToText
         /*The txt file has the same name as the PDF file and is stored in the
          *same directory, but the extension is .txt instead of .pdf.
          */
+    	diagram_pdf_path = diagram_pdf_path.replace("PDF", "txt");
         return diagram_pdf_path.replace("pdf", "txt");
     }
     

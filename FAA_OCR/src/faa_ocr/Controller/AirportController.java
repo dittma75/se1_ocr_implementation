@@ -43,7 +43,7 @@ public class AirportController
 			}
 		}
 		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ATL/00026AD.PDF");
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF");
 	}
 	
 	
@@ -74,7 +74,8 @@ public class AirportController
 		
 		
 		//create a new airport with Sting path to PDF
-		airport = new Airport(path, true);
+//TODO: add parameter for rotations!!!!!		
+		airport = new Airport(path, false);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);

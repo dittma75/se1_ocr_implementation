@@ -37,7 +37,7 @@ public class PDFToImage
          *PDFImageWriter.html
          */
         BufferedImage diagram_image = null;
-        File image_file = new File(file_path.replaceAll("\\.pdf", "1\\.jpg"));
+        File image_file = new File(file_path.replaceAll("\\.pdf|\\.PDF", "1\\.jpg"));
         try
         {
             if (!image_file.exists())
@@ -75,17 +75,6 @@ public class PDFToImage
                 Level.SEVERE, null, ex
             );
         }
-        
-//TODO: added to test the program for each specific pdf
-        String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ATL/00026AD1.jpg";
-        File image = new File(path);
-        try {
-			BufferedImage airport_image = ImageIO.read(image);
-			return airport_image;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
         return diagram_image;
     }
