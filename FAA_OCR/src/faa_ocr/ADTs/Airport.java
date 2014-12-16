@@ -33,24 +33,24 @@ public class Airport {
     private final ArrayList<Taxiway> taxiways;
     
     //Y-coordinate to latitude conversion factor.
-    private int pixels_per_unit_lat;
+    private float pixels_per_unit_lat;
     
     //X-coordinate to longitude conversion factor.
-    private int pixels_per_unit_long;
+    private float pixels_per_unit_long;
     
     //Offset from top of diagram to first unit marker.
-    private int latitude_offset;
+    private float latitude_offset;
     
     //Offset from left side of diagram to first unit marker.
-    private int longitude_offset;
+    private float longitude_offset;
     
     /* The margins are the distance from edge of the diagram to the
      * first whitespace pixel of the diagram.  The x_margin is the
      * length of the left and right margins in pixels, and the y_margin
      * is the length of the top and bottom margins in pixels.
      */
-    private int x_margin;
-    private int y_margin;
+    private float x_margin;
+    private float y_margin;
     
     //The latitude that coordinates will be based on for this airport.
     private final float BASE_LATITUDE;
@@ -289,10 +289,10 @@ public class Airport {
         y_margin = 61;
         
         //The right end of the diagram.
-        int end_width = diagram.getWidth() - x_margin - 1;
+        int end_width = (int) (diagram.getWidth() - x_margin - 1);
         
         //The bottom end of the diagram.
-        int end_height = diagram.getHeight() - y_margin - 1;
+        int end_height = (int) (diagram.getHeight() - y_margin - 1);
         
         //Try to find the longitude scale at the top of the diagram.
         if (!findHorizontalScale(
