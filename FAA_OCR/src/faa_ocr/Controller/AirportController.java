@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
 import faa_ocr.ADTs.DiagramRunway;
-import faa_ocr.ADTs.LineSegment;
 import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Runway;
@@ -35,7 +34,7 @@ public class AirportController
 			{
 				//are we going to pass airports around 1 at a time as we see that the path is valid?
 				// or are we going to check everything, then call all the airports?
-				airport_controller.getInformationFromPDF(arg);
+				airport_controller.getInformationFromPDF(arg, true);//TODO: place holder for rotation parameter
 			}
 			else
 			{
@@ -43,7 +42,7 @@ public class AirportController
 			}
 		}
 		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF");
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF", true);
 	}
 	
 	
@@ -67,15 +66,14 @@ public class AirportController
 	 * Create an airport and gather all information from the PDF
 	 * @param path
 	 */
-	private void getInformationFromPDF(String path)
+	private void getInformationFromPDF(String path, boolean rotated)
 	{
 		ArrayList <DiagramRunway> runways;
 		Airport airport;
 		
 		
 		//create a new airport with Sting path to PDF
-//TODO: add parameter for rotations!!!!!		
-		airport = new Airport(path, true);
+		airport = new Airport(path, rotated);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);
@@ -246,7 +244,6 @@ public class AirportController
 			ArrayList<Point> intersections = runways.get(kk).returnIntersections();
 			
 			 //Translate the midpoint and end_point from x/y to lat/long
-//TODO: changed floats to doubles			
             float mid_long = airport.longitudeConversion(midpoint);
             float mid_lat = airport.latitudeConversion(midpoint);
             Node startNode = new Node(mid_long, mid_lat);
@@ -254,7 +251,6 @@ public class AirportController
             float end_long = airport.longitudeConversion(end_point);
             float end_lat = airport.latitudeConversion(end_point);
             Node endNode = new Node(end_long, end_lat);
-//TODO: end changes            
 
             /* Add points to existing Runway instance in airport
              * object.  Each physical runway is two runways, and they
@@ -274,7 +270,6 @@ public class AirportController
                 //Add all intersections to runway
                 for(Point point: intersections)
                 {
-                //DOUBLE FROM FLOAT	
                 	float point_long = airport.longitudeConversion(point);
                 	float point_lat = airport.latitudeConversion(point);
                 	Node pointNode = new Node(point_long,point_lat);
