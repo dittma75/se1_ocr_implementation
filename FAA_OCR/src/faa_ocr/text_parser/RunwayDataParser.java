@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * RunwayDataParser extracts all runway data from an airport diagram and puts
- * each datum in the proper field in the Airport object.
+ * RunwayDataParser extracts all runway_number data from an airport diagram and puts
+ each datum in the proper field in the Airport object.
  * @author Kevin Dittmar
  */
 public class RunwayDataParser extends DataParser
@@ -44,12 +44,12 @@ public class RunwayDataParser extends DataParser
     
     /**
      * Parse the formatted text version of the airport diagram and extract all
-     * runway data.  This data will then be added as Paths to the Airport's
+ runway_number data.  This data will then be added as Paths to the Airport's
      * Path List.
      * @param formatted_string is the formatted representation of the textual
      * data of the Airport's airport diagram.
-     * @param airport is the Airport that will receive the parsed runway data
-     * as Runways, which will be added to the Airport's Path List.
+     * @param airport is the Airport that will receive the parsed runway_number data
+ as Runways, which will be added to the Airport's Path List.
      */
     public void parseRunwayData(String formatted_string, Airport airport)
     {
@@ -71,7 +71,7 @@ public class RunwayDataParser extends DataParser
         Scanner scanner = new Scanner(formatted_string);
         
         /* Keep track of how many "ELEV"s were found, which indicate
-         * a runway elevation.
+         * a runway_number elevation.
          */
         int elev_counter = 0;
         int field_elev_index = -1;
@@ -170,28 +170,15 @@ public class RunwayDataParser extends DataParser
             elevations.remove(field_elev_index);
         }    
                 
-        /*At this point, the runway information is in order across the 
-         *three lists.  Iterating across all three lists together will get
-         *the proper runway data for each runway.
-         */
-        for (int i = 0; i < runways.size(); i++)
-        {
-            airport.addRunway(
-                new Runway(
-                    elevations.get(i),
-                    headings.get(i),
-                    runways.get(i)
-                )
-            );
-        }
+        addSynchronizedRunways(airport, runways, headings, elevations);
     }
     
     /**
-     * Make a list of runway names that the parser will be looking for based
-     * on the runway list that is included somewhere in every airport diagram.
+     * Make a list of runway_number names that the parser will be looking for based
+ on the runway_number list that is included somewhere in every airport diagram.
      * @param file_name is the path to the airport diagram.
-     * @return an ArrayList of runway name Strings that are valid for the
-     * airport.
+     * @return an ArrayList of runway_number name Strings that are valid for the
+ airport.
      */
     private ArrayList<String> makeListOfRunways(String file_name)
     {
@@ -205,7 +192,7 @@ public class RunwayDataParser extends DataParser
             {
                 next_line = scanner.nextLine();
                 
-                /* This pattern looks for runway pairs.  They usually come
+                /* This pattern looks for runway_number pairs.  They usually come
                  * in single pairs, but sometimes they come in a comma
                  * delimited list of pairs.  The first capturing group will
                  * be the list that is wanted, so searchForItem() still
@@ -216,7 +203,7 @@ public class RunwayDataParser extends DataParser
                         next_line
                 );
                 
-                //We found a line with at least one runway pair.
+                //We found a line with at least one runway_number pair.
                 if (!runway_pairs_string.equals(""))
                 {
                     /* Remove all spaces and padding zeros from the String to
@@ -248,7 +235,7 @@ public class RunwayDataParser extends DataParser
                         String[] rwy_set = runway_pair.split("-");
                         for (String runway : rwy_set)
                         {
-                            //Add the runway to the list if it's not there.
+                            //Add the runway_number to the list if it's not there.
                             if (!runways.contains(runway))
                             {
                                 runways.add(runway);
@@ -330,14 +317,14 @@ public class RunwayDataParser extends DataParser
     }
     
     /**
-     * Fix disparity between the runway names near the runways on the diagram
-     * and the names given in the listing on the diagram.
-     * @param runway is the runway to correct.
-     * @return is the corrected runway name.
+     * Fix disparity between the runway_number names near the runways on the diagram
+ and the names given in the listing on the diagram.
+     * @param runway is the runway_number to correct.
+     * @return is the corrected runway_number name.
      */
     private String correctRunway(String runway)
     {
-        /* If the runway has one digit and one letter, pad with a zero.
+        /* If the runway_number has one digit and one letter, pad with a zero.
          * This is necessary because all one-digit runways are padded with
          * a zero in the listing, but not in the actual diagrams.
          */
@@ -352,10 +339,10 @@ public class RunwayDataParser extends DataParser
     }
     
     /**
-     * Get an ArrayList of runway name Strings from the given text.
-     * @param text is the String to search for runway names.
-     * @return an ArrayList of runway Strings if present in the line of text
-     * or an empty ArrayList if there are none.
+     * Get an ArrayList of runway_number name Strings from the given text.
+     * @param text is the String to search for runway_number names.
+     * @return an ArrayList of runway_number Strings if present in the line of text
+ or an empty ArrayList if there are none.
      */
     private ArrayList<String> searchForRunways(String text)
     {
@@ -367,7 +354,7 @@ public class RunwayDataParser extends DataParser
         
         ArrayList<String> runways = new ArrayList<>();
         
-        //While there are parts of the string that match the runway pattern...
+        //While there are parts of the string that match the runway_number pattern...
         while (matcher.find())
         {   
             //Add to the runways list.
@@ -426,6 +413,53 @@ public class RunwayDataParser extends DataParser
                  */
                 i--;
             }
+        }
+    }
+    
+    private void addSynchronizedRunways(Airport airport,
+                                        ArrayList<String> runways,
+                                        ArrayList<Float> headings,
+                                        ArrayList<Integer> elevations)
+    {
+        while (!runways.isEmpty())
+        {
+            String runway = runways.get(0);
+            int runway_number = Integer.parseInt(
+                    runway.replaceAll("[^\\d]*", "")
+            );
+            float heading = 0.0f;
+            int heading_index = -1;
+            for (int i = 0; i < headings.size(); i++)
+            {
+                String heading_text = Float.toString(headings.get(i));
+                if (heading_text.length() < 5)
+                {
+                    heading_text = "0" + heading_text;
+                }
+                
+                int heading_start = Integer.parseInt(
+                    heading_text.substring(0,2)
+                );
+                
+                //Close match; break out of loop.
+                if (runway_number <= heading_start + 1 &&
+                    runway_number >= heading_start - 1)
+                {
+                    heading = headings.get(i);
+                    heading_index = i;
+                    break;
+                }
+            }
+            airport.addRunway(
+                    new Runway(
+                            elevations.get(0),
+                            heading,
+                            runway
+                    )
+            );
+            elevations.remove(0);
+            headings.remove(heading_index);
+            runways.remove(0);
         }
     }
 }

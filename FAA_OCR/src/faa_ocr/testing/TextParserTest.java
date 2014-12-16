@@ -24,8 +24,7 @@ public class TextParserTest
     
     public static void testACYAirport()
     {
-        //Airport airport = new Airport("res/ACY/00669AD.pdf", true);
-    	Airport airport = new Airport("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF", true);
+    	Airport airport = new Airport("res/ACY/00669AD.PDF", true);
         PDFToText pdftotext = new PDFToText();
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());

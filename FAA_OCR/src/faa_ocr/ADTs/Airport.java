@@ -591,7 +591,7 @@ public class Airport {
     {
        Scanner scanner = new Scanner(diagram_text);
        int degrees = -1;
-       int minutes = -1;
+       float minutes = -1;
        String direction = "";
        
        /* Longitude regular expression:
@@ -601,16 +601,21 @@ public class Airport {
         * ([WE]) matches the direction, which is either West or East.
         */
        Pattern long_pattern = Pattern.compile(
-            "(\\d{1,3}) *(\\d\\d)[ \\.\\d]*' *([WE])"
+            "(\\d{1,3}) *(\\d\\d[ \\.\\d]*)' *([WE])"
        );
        
        while (scanner.hasNextLine())
        {
-           Matcher long_matcher = long_pattern.matcher(scanner.nextLine());
+           String next_line = scanner.nextLine();
+           
+           //Remove unnecessary spaces around the decimal point.
+           next_line = next_line.replaceAll(" *\\. *", ".");
+           
+           Matcher long_matcher = long_pattern.matcher(next_line);
            if (long_matcher.find())
            {
                int new_degrees = Integer.parseInt(long_matcher.group(1));
-               int new_minutes = Integer.parseInt(long_matcher.group(2));
+               float new_minutes = Float.parseFloat(long_matcher.group(2));
                
                if (direction.isEmpty())
                {
@@ -660,7 +665,7 @@ public class Airport {
                }
            }
        }
-       float base_longitude = (float) (degrees + ((float)minutes / 60.0f));
+       float base_longitude = (float) (degrees + (minutes / 60.0f));
        
        /* If the diagram is rotated, then the longitude offset should be
         * subtracted.
@@ -706,7 +711,7 @@ public class Airport {
     {
        Scanner scanner = new Scanner(diagram_text);
        int degrees = -1;
-       int minutes = -1;
+       float minutes = -1;
        String direction = "";
        
        /* Latitude regular expression:
@@ -716,16 +721,21 @@ public class Airport {
         * ([NS]) matches the direction, which is either North or South.
         */
        Pattern lat_pattern = Pattern.compile(
-            "(\\d{1,3}) *(\\d\\d)[ \\.\\d]*' *([NS])"
+            "(\\d{1,3}) *(\\d\\d[ \\.\\d]*)' *([NS])"
        );
        
        while (scanner.hasNextLine())
        {
-           Matcher lat_matcher = lat_pattern.matcher(scanner.nextLine());
+           String next_line = scanner.nextLine();
+           
+           //Remove unnecessary spaces around the decimal point.
+           next_line = next_line.replaceAll(" *\\. *", ".");
+           
+           Matcher lat_matcher = lat_pattern.matcher(next_line);
            if (lat_matcher.find())
            {
                int new_degrees = Integer.parseInt(lat_matcher.group(1));
-               int new_minutes = Integer.parseInt(lat_matcher.group(2));
+               float new_minutes = Float.parseFloat(lat_matcher.group(2));
                
                if (direction.isEmpty())
                {
@@ -770,7 +780,7 @@ public class Airport {
            }
        }
        
-       float base_latitude = (float) (degrees + ((float)minutes / 60.0f));
+       float base_latitude = (float) (degrees + (minutes / 60.0f));
        base_latitude += ((float)latitude_offset / pixels_per_unit_lat / 60);
        //Southern latitudes are negative in numeric coordinates
        if (direction.equals("S"))
