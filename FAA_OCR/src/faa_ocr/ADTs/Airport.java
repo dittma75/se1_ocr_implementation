@@ -545,13 +545,13 @@ public class Airport {
         if (DIAGRAM_IS_ROTATED)
         {
             return BASE_LATITUDE -
-                   ((point.getX() - x_margin) / pixels_per_unit_lat);
+                   ((point.getX() - x_margin) / pixels_per_unit_lat / 60.0f);
         }
         //Otherwise y values should be used, and latitude decreases.
         else
         {
             return BASE_LATITUDE -
-                   ((point.getY() - y_margin) / pixels_per_unit_lat);
+                   ((point.getY() - y_margin) / pixels_per_unit_lat / 60.0f);
         }
     }
     
