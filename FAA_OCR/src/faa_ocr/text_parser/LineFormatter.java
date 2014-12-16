@@ -60,6 +60,11 @@ public class LineFormatter
                 "(\\d\\d\\d\\.\\d) (\\d\\d\\d\\.\\d)",
                 "$1\n$2\n"
         );
+
+        formatted_data = formatted_data.replaceAll(
+                " ([4-9]\\d{2}) ",
+                "\n $1 \n"
+        );
         return formatted_data;
     }
 }

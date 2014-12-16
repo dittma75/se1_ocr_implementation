@@ -43,7 +43,7 @@ public class PDFToImage
             if (!image_file.exists())
             {
                 File diagram_file = new File(file_path);
-                String image_path_prefix = file_path.replaceAll("\\.pdf", "");
+                String image_path_prefix = file_path.replaceAll("\\.pdf|\\.PDF", "");
                 if (diagram_file.exists())
                 {
                     //Turn the PDF into a JPEG image.
