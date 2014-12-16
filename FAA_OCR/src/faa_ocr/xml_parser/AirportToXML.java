@@ -31,6 +31,7 @@ public class AirportToXML {
      */
     public String convertToXml(Airport airport)
     {
+    	xml_string = "";
         xml_string += "<airport>\n" +
             "\t" + "<location>" + airport.getLocation() + "</location>\n" +
             "\t" + "<name>" + airport.getName() + "</name>\n" +
