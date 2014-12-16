@@ -75,7 +75,7 @@ public class AirportController
 		
 		//create a new airport with Sting path to PDF
 //TODO: add parameter for rotations!!!!!		
-		airport = new Airport(path, false);
+		airport = new Airport(path, true);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);
@@ -131,7 +131,7 @@ public class AirportController
 		{
 			DiagramRunway alpha = runways.get(ii);
 			
-			for (int kk = ii + 2; kk < num_runways; kk = kk + 1)
+			for (int kk = ii + 1; kk < num_runways; kk = kk + 1)
 			{
 				DiagramRunway beta = runways.get(kk);
 				
@@ -246,6 +246,7 @@ public class AirportController
 			ArrayList<Point> intersections = runways.get(kk).returnIntersections();
 			
 			 //Translate the midpoint and end_point from x/y to lat/long
+//TODO: changed floats to doubles			
             float mid_long = airport.longitudeConversion(midpoint);
             float mid_lat = airport.latitudeConversion(midpoint);
             Node startNode = new Node(mid_long, mid_lat);
@@ -253,6 +254,7 @@ public class AirportController
             float end_long = airport.longitudeConversion(end_point);
             float end_lat = airport.latitudeConversion(end_point);
             Node endNode = new Node(end_long, end_lat);
+//TODO: end changes            
 
             /* Add points to existing Runway instance in airport
              * object.  Each physical runway is two runways, and they
@@ -272,9 +274,10 @@ public class AirportController
                 //Add all intersections to runway
                 for(Point point: intersections)
                 {
+                //DOUBLE FROM FLOAT	
                 	float point_long = airport.longitudeConversion(point);
                 	float point_lat = airport.latitudeConversion(point);
-                	Node pointNode = new Node(point_long, point_lat);
+                	Node pointNode = new Node(point_long,point_lat);
                 	runway.addIntNode(pointNode);
                 }
                 
