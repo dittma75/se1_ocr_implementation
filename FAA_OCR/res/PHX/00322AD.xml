@@ -74,11 +74,11 @@
 		<coordinates>
 			<node>
 				<longitude>-111.98577</longitude>
-				<latitude>32.44722</latitude>
+				<latitude>33.430553</latitude>
 			</node>
 			<node>
 				<longitude>-112.019104</longitude>
-				<latitude>32.44722</latitude>
+				<latitude>33.430553</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -90,11 +90,11 @@
 		<coordinates>
 			<node>
 				<longitude>-111.98577</longitude>
-				<latitude>32.44722</latitude>
+				<latitude>33.430553</latitude>
 			</node>
 			<node>
 				<longitude>-112.019104</longitude>
-				<latitude>32.44722</latitude>
+				<latitude>33.430553</latitude>
 			</node>
 		</coordinates>
 	</path>

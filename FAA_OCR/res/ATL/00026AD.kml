@@ -31,7 +31,7 @@
 		<coordinates>
 		 -74.55639,39.467377,0
 		 -74.57306,39.467377,0
-		 -74.57306,38.467377,0
+		 -74.57306,39.45071,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -48,7 +48,7 @@
 		<coordinates>
 		 -74.55639,39.467377,0
 		 -74.57306,39.467377,0
-		 -74.57306,38.467377,0
+		 -74.57306,39.45071,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -64,8 +64,8 @@
 		<tessellate>1</tessellate>
 		<coordinates>
 		 -74.55639,39.467377,0
-		 -74.57306,38.467377,0
-		 -74.57306,38.467377,0
+		 -74.57306,39.45071,0
+		 -74.57306,39.45071,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -81,8 +81,8 @@
 		<tessellate>1</tessellate>
 		<coordinates>
 		 -74.55639,39.467377,0
-		 -74.57306,38.467377,0
-		 -74.57306,38.467377,0
+		 -74.57306,39.45071,0
+		 -74.57306,39.45071,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -118,8 +118,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,32.67364,0
-		 -84.41861,32.67364,0
+		 -84.45194,33.656975,0
+		 -84.41861,33.656975,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -134,8 +134,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,32.67364,0
-		 -84.41861,32.67364,0
+		 -84.45194,33.656975,0
+		 -84.41861,33.656975,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -150,8 +150,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,32.67364,0
-		 -84.41861,32.67364,0
+		 -84.45194,33.656975,0
+		 -84.41861,33.656975,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -166,8 +166,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,32.67364,0
-		 -84.41861,32.67364,0
+		 -84.45194,33.656975,0
+		 -84.41861,33.656975,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -182,8 +182,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,31.673641,0
-		 -84.41861,31.673641,0
+		 -84.45194,33.64031,0
+		 -84.41861,33.64031,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -198,8 +198,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,31.673641,0
-		 -84.41861,31.673641,0
+		 -84.45194,33.64031,0
+		 -84.41861,33.64031,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -214,8 +214,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,31.673641,0
-		 -84.43527,31.673641,0
+		 -84.45194,33.64031,0
+		 -84.43527,33.64031,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -230,8 +230,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,31.673641,0
-		 -84.43527,31.673641,0
+		 -84.45194,33.64031,0
+		 -84.43527,33.64031,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -246,8 +246,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,30.673641,0
-		 -84.43527,30.673641,0
+		 -84.45194,33.623642,0
+		 -84.43527,33.623642,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
@@ -262,8 +262,8 @@
 	  <LineString>
 		<tessellate>1</tessellate>
 		<coordinates>
-		 -84.45194,30.673641,0
-		 -84.43527,30.673641,0
+		 -84.45194,33.623642,0
+		 -84.43527,33.623642,0
 		</coordinates>
 	  </LineString>
 	</Placemark>
