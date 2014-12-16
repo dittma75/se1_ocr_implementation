@@ -30,7 +30,8 @@ public class RunwayDiagramParser
 	private final int runway_rightcounter_max = 10;
 	//min difference between starting points of runways
 	private final int runway_start_difference = 4;
-	
+	//slope correction
+	private final int slope_correction = 2;
 	
 	private BufferedImage diagram;
 //	private Airport airport;
@@ -131,9 +132,9 @@ public class RunwayDiagramParser
 			}
 		}
 		
-		for(DiagramRunway charlie: runways){
-			charlie.printRunway();
-		}
+//		for(DiagramRunway charlie: runways){
+//			charlie.printRunway();
+//		}
 	}
 	
 	
@@ -711,13 +712,13 @@ public class RunwayDiagramParser
                 	   //Left wing is black and the right wing is not.
                 	   //Correct ourselves to the left so we stay in the middle of the runway
                    {
-                	   curr_point = next_point.adjustPoint(-2,0); //TODO: move 2 as a class variable
+                	   curr_point = next_point.adjustPoint(-slope_correction,0);
                    }
                    else if (!left_wing.isBlack(diagram) && right_wing.isBlack(diagram))
                 	   //right wing is black and the left wing is not.
                 	   //Correct ourselves to the right so we stay in the middle of the runway
                    {
-                	   curr_point = next_point.adjustPoint(2,0); //TODO: move 2 as a class variable. TRy to find correction according to slope
+                	   curr_point = next_point.adjustPoint(slope_correction,0);
                    }
                    else if (next_point.isBlack(diagram))
                    {

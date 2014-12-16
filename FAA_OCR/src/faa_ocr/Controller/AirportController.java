@@ -42,7 +42,11 @@ public class AirportController
 			}
 		}
 		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF", true);
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF", true);//ACY
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ATL/00026AD.PDF", false);//ATL
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/DFW/06039AD.PDF", true);//DFW
+		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/PHX/00322AD.pdf", true);//PHX
+		
 	}
 	
 	
@@ -69,11 +73,9 @@ public class AirportController
 	private void getInformationFromPDF(String path, boolean rotated)
 	{
 		ArrayList <DiagramRunway> runways;
-		Airport airport;
-		
 		
 		//create a new airport with Sting path to PDF
-		airport = new Airport(path, rotated);
+		Airport airport = new Airport(path, rotated);
 		
 		//get textual data from PDF
 		pdf_to_text.parseTextData(airport);
@@ -190,8 +192,8 @@ public class AirportController
             /*Get the distance from the end point of the "first" line
               to where it intercepts the other line */
             double dist = Double.ptLineDist(x3,y3,x4,y4, x1,y1);
-            System.out.println(inter);
-            System.out.println(dist);
+           // System.out.println(inter);
+           // System.out.println(dist);
 
             /*Find intersection X and Y values by subtracting the
               dist from the length of the "first" line. */
