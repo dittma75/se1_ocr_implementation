@@ -128,28 +128,30 @@ public class XMLtoKML
 		{
 			
 			// Define KML file path String
-			kml_path = xml_file.getName().replace(".xml", ".kml");
+			kml_path = xml_file.getPath().replace(".xml", ".kml");
 			File kml_file = new File(kml_path);
 
-			if (kml_file.createNewFile())
-			{
-				System.out.println("The file "+kml_file+" has been created.");
-			} 
-			else
-			{
-				System.out.println("There is already a file in this location named "+kml_file+".");
-				System.out.println("A copy of "+kml_file+" has been created.");
-				File kml_file_copy = new File("(Copy)"+kml_path);
-				kml_file_copy.createNewFile();
-				kml_file = kml_file_copy;
-			}
+//			if (kml_file.createNewFile())
+//			{
+//				System.out.println("The file "+kml_file+" has been created.");
+//			} 
+//			else
+//			{
+//				System.out.println("There is already a file in this location named "+kml_file+".");
+//				System.out.println("A copy of "+kml_file+" has been created.");
+//				File kml_file_copy = new File("(Copy)"+kml_path);
+//				kml_file_copy.createNewFile();
+//				kml_file = kml_file_copy;
+//			}
 			
+			kml_file.createNewFile();
 			BufferedWriter output = new BufferedWriter(new FileWriter(kml_file));
 			output.write(kml_string);
 			output.close();
 		}
 		catch (IOException e)
 		{
+			System.out.println("Could not output KML to file");
 			e.printStackTrace();
 		}
 
