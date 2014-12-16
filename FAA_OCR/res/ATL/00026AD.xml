@@ -9,12 +9,12 @@
 		<elevation>1015</elevation>
 		<coordinates>
 			<node>
-				<longitude>-83.82151</longitude>
-				<latitude>32.233425</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 			<node>
-				<longitude>-82.34325</longitude>
-				<latitude>32.233425</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -25,12 +25,12 @@
 		<elevation>990</elevation>
 		<coordinates>
 			<node>
-				<longitude>-83.82151</longitude>
-				<latitude>32.233425</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 			<node>
-				<longitude>-82.34325</longitude>
-				<latitude>32.233425</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -41,12 +41,12 @@
 		<elevation>1024</elevation>
 		<coordinates>
 			<node>
-				<longitude>-83.78346</longitude>
-				<latitude>32.075813</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 			<node>
-				<longitude>-82.13673</longitude>
-				<latitude>32.075813</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -57,12 +57,12 @@
 		<elevation>995</elevation>
 		<coordinates>
 			<node>
-				<longitude>-83.78346</longitude>
-				<latitude>32.075813</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 			<node>
-				<longitude>-82.13673</longitude>
-				<latitude>32.075813</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>32.67364</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -73,12 +73,12 @@
 		<elevation>1019</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.25629</longitude>
-				<latitude>31.358423</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.22368</longitude>
-				<latitude>31.358423</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -89,12 +89,12 @@
 		<elevation>977</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.25629</longitude>
-				<latitude>31.358423</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.22368</longitude>
-				<latitude>31.358423</latitude>
+				<longitude>-84.41861</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -105,12 +105,12 @@
 		<elevation>1026</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.25629</longitude>
-				<latitude>31.179075</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.7889</longitude>
-				<latitude>31.179075</latitude>
+				<longitude>-84.43527</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -121,12 +121,12 @@
 		<elevation>985</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.25629</longitude>
-				<latitude>31.179075</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.7889</longitude>
-				<latitude>31.179075</latitude>
+				<longitude>-84.43527</longitude>
+				<latitude>31.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -137,12 +137,12 @@
 		<elevation>1000</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.23998</longitude>
-				<latitude>30.48886</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>30.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.7726</longitude>
-				<latitude>30.48886</latitude>
+				<longitude>-84.43527</longitude>
+				<latitude>30.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
@@ -153,12 +153,12 @@
 		<elevation>998</elevation>
 		<coordinates>
 			<node>
-				<longitude>-84.23998</longitude>
-				<latitude>30.48886</latitude>
+				<longitude>-84.45194</longitude>
+				<latitude>30.673641</latitude>
 			</node>
 			<node>
-				<longitude>-82.7726</longitude>
-				<latitude>30.48886</latitude>
+				<longitude>-84.43527</longitude>
+				<latitude>30.673641</latitude>
 			</node>
 		</coordinates>
 	</path>
