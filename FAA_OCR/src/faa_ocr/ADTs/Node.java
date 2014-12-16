@@ -32,6 +32,7 @@ public class Node {
         latitude = lat; //-90 degrees to 90 degrees
     }
     
+    
     /**
      * get the node's degree of longitude
      * 
