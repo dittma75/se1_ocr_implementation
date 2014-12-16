@@ -1,86 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name> ATLANTIC CITY INTL</name>
-    <description>
-     Location:  ATLANTIC CITY, NEW JERSEY,
-     Variation: -12.4.
-    </description>
-    <Style id="runway">
-      <LineStyle>
-        <color>501400FF</color>
-        <width>10</width>
-      </LineStyle>
-    </Style>
-    <Style id="taxiway">
-      <LineStyle>
-        <color>50000000</color>
-        <width>8</width>
-      </LineStyle>
-    </Style>
-    <Placemark>
-      <name>04</name>
-      <description>
-       Path type: runway,
-       Heading: 40.4,
-       Elevation: 75.
-      </description>
-      <styleUrl>#runway</styleUrl>
-      <LineString>
-        <extrude>1</extrude>
-        <tessellate>1</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-        </coordinates>
-      </LineString>
-    </Placemark>
-    <Placemark>
-      <name>13</name>
-      <description>
-       Path type: runway,
-       Heading: 130.4,
-       Elevation: 67.
-      </description>
-      <styleUrl>#runway</styleUrl>
-      <LineString>
-        <extrude>1</extrude>
-        <tessellate>1</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-        </coordinates>
-      </LineString>
-    </Placemark>
-    <Placemark>
-      <name>31</name>
-      <description>
-       Path type: runway,
-       Heading: 310.4,
-       Elevation: 61.
-      </description>
-      <styleUrl>#runway</styleUrl>
-      <LineString>
-        <extrude>1</extrude>
-        <tessellate>1</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-        </coordinates>
-      </LineString>
-    </Placemark>
-    <Placemark>
-      <name>22</name>
-      <description>
-       Path type: runway,
-       Heading: 220.4,
-       Elevation: 63.
-      </description>
-      <styleUrl>#runway</styleUrl>
-      <LineString>
-        <extrude>1</extrude>
-        <tessellate>1</tessellate>
-        <altitudeMode>absolute</altitudeMode>
-        <coordinates>
-        </coordinates>
-      </LineString>
-    </Placemark>
+	<name> ATLANTIC CITY INTL</name>
+	<description>
+	 Location:  ATLANTIC CITY, NEW JERSEY
+	 Variation: -12.4
+	</description>
+	<Style id="runway">
+	  <LineStyle>
+		<color>501400FF</color>
+		<width>10</width>
+	  </LineStyle>
+	</Style>
+	<Style id="taxiway">
+	  <LineStyle>
+		<color>50000000</color>
+		<width>8</width>
+	  </LineStyle>
+	</Style>
+	<Placemark>
+	  <name>04</name>
+	  <description>
+	   Path type: runway
+	   Heading: 40.4
+	   Elevation: 75
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 -74.55639,39.467377,0
+		 -74.57306,39.467377,0
+		 -74.57306,38.467377,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>13</name>
+	  <description>
+	   Path type: runway
+	   Heading: 130.4
+	   Elevation: 67
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 -74.55639,39.467377,0
+		 -74.57306,39.467377,0
+		 -74.57306,38.467377,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>31</name>
+	  <description>
+	   Path type: runway
+	   Heading: 310.4
+	   Elevation: 61
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 -74.55639,39.467377,0
+		 -74.57306,38.467377,0
+		 -74.57306,38.467377,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>22</name>
+	  <description>
+	   Path type: runway
+	   Heading: 220.4
+	   Elevation: 63
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 -74.55639,39.467377,0
+		 -74.57306,38.467377,0
+		 -74.57306,38.467377,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
   </Document>
 </kml>
