@@ -16,7 +16,6 @@ import faa_ocr.xml_parser.AirportToXML;
 import faa_ocr.kml_parser.XMLtoKML;
 
 import java.lang.Math;
-import java.awt.geom.Line2D.Double;
 
 /**
  * Class to control all airport behaviors
@@ -62,9 +61,9 @@ public class AirportController
                 }
             }
             //System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-//            airport_controller.getInformationFromPDF("res/ACY/00669AD.PDF", is_rotated);//ACY
+//            airport_controller.getInformationFromPDF("/res/ACY/00669AD.PDF", is_rotated);//ACY
 //            airport_controller.getInformationFromPDF("res/ATL/00026AD.PDF", is_rotated);//ATL
-//            airport_controller.getInformationFromPDF("res/DFW/06039AD.PDF", is_rotated);//DFW
+//            airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/DFW/06039AD.PDF", true);//DFW
 //            airport_controller.getInformationFromPDF("res/PHX/00322AD.pdf", is_rotated);//PHX	
 	}
 	
@@ -189,6 +188,7 @@ public class AirportController
 			
 			float x3 = two.getStartPoint().getX();
 			float y3 = two.getStartPoint().getY();
+			
 			float x4 = two.getEndPoint().getX();
 			float y4 = two.getEndPoint().getY();
 			
@@ -203,76 +203,22 @@ public class AirportController
 			
 			float y_value = (one_slope * x_value) + b1;
 			
-			returnPoint = new Point((double) x_value, (double) y_value);
+			
 			
 //			System.out.println(x_value);
 //			System.out.println(y_value);
+			if(Math.max(x1,x2) > x_value && Math.min(x1,x2) < x_value &&
+					Math.max(y1, y2) > y_value && Math.min(y1, y2) < y_value)
+			{
+				returnPoint = new Point((double) x_value, (double) y_value);
+			}
 			return returnPoint;
+			
 		}
 		else
 		{
 			return returnPoint;
 		}
-		
-//		double x1 = one.getStartPoint().getX();
-//		double y1 = one.getStartPoint().getY();
-//		double x2 = one.getEndPoint().getX();
-//		double y2 = one.getEndPoint().getY();
-//		
-//		double x3 = two.getStartPoint().getX();
-//		double y3 = two.getStartPoint().getY();
-//		double x4 = two.getEndPoint().getX();
-//		double y4 = two.getEndPoint().getY();
-//		
-//		
-//		Double line1 = new Double(x1,y1,x2,y2);
-//        Double line2 = new Double(x3,y3,x4,y4);
-//        //See if the two paths intercept
-//        boolean inter = line1.intersectsLine(line2);
-//        /*Check that there is an intercept and they aren't the same path.
-//          They may not be the exact same points, and so this if will 
-//          probably need to be changed. */
-//        if(inter == true && x1 != x3 && x1 != x4){
-//            /*Get the distance from the end point of the "first" line
-//              to where it intercepts the other line */
-//            double dist = Double.ptLineDist(x3,y3,x4,y4, x1,y1);
-//           // System.out.println(inter);
-//           // System.out.println(dist);
-//
-//            /*Find intersection X and Y values by subtracting the
-//              dist from the length of the "first" line. */
-//            double xlen = x1 - x2;   // length of x of right triangle (2.31)
-//            if(xlen < 0) //Make pos if neg
-//                xlen = xlen * -1;
-//            double ylen = y1 - y2;   // length of y of right triangle (3.86)
-//            if(ylen < 0) //Make pos if neg
-//                ylen = ylen * -1;
-//            double hpt = Math.hypot(xlen,ylen); // length of hypot 4.498
-//            double x = (xlen/hpt)*dist;
-//            double y = (ylen/hpt)*dist;
-//            
-//            x = x + x1; //Intersection X val
-//            y = y + y1; //Intersection Y val
-//            
-//            System.out.println();
-//            System.out.println(x);
-//            System.out.println(y);
-//            
-//            
-//            return returnPoint = new Point(x,y);
-//            
-//            
-//            
-////            System.out.println(xlen);
-////            System.out.println(ylen);
-////            System.out.println(hpt);
-////            System.out.println(x + ", " + y);
-//        }
-//        //Check if there is an intercept (overlap) ????
-//        else
-//        {
-//        	return returnPoint;
-//        }
     
 	}
 	

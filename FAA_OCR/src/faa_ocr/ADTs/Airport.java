@@ -524,9 +524,11 @@ public class Airport {
             //Look for a minute measurement with a ".5" component.
             if (scanner.nextLine().matches(".*\\.5 *'[NSWE].*"))
             {
+            	scanner.close();
                 return true;
             }
         }
+        scanner.close();
         return false;
     }
     

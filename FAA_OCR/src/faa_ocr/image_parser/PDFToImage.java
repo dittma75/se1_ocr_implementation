@@ -89,34 +89,15 @@ public class PDFToImage
     {
     	ArrayList <DiagramRunway> runways;
   
-      BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
+    	BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
     	
-      //get runway data from image
-      runways = new RunwayDiagramParser().parseRunways(airport_image, airport);
+    	//get runway data from image
+    	runways = new RunwayDiagramParser().parseRunways(airport_image);
 
-      //get taxiway date from image
-      new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
+    	//get taxiway date from image
+    	new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
     	
     	
     	return runways;
-    	
-    	
-//        //create buffered image with the pdf file
-//        BufferedImage airport_image;
-//        try 
-//        {
-//            airport_image = ImageIO.read(new File(airport.getFilePath()));
-//
-//            //get runway data from image
-//            new RunwayDiagramParser().parseRunways(airport_image, airport);
-//
-//            //get taxiway date from image
-//            new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
-//        }
-//        catch (IOException e) 
-//        {
-//                System.err.println("Error when making PDF an image");
-//                e.printStackTrace();
-//        }
     }
 }

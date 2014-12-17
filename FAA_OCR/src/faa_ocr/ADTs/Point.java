@@ -11,7 +11,11 @@ public class Point
 {
 	double x;
 	double y;
-
+	private final int red_max_value = 50;
+	private final int blue_max_value = 50;
+	private final int green_max_value = 50;
+	
+	
 	public Point(int x, int y) 
 	{
 		this.x = x;
@@ -71,9 +75,7 @@ public class Point
 		final int green = (pixel_color >> 8) & 0xff;
 		final int blue = (pixel_color) & 0xff;
 		
-//TODO: making them equal 0	
-//		return (red == 0 && green == 0 && blue == 0);
-		return (red < 100 && green < 100 && blue < 100);
+		return (red < red_max_value && green < green_max_value && blue < blue_max_value);
 	}
 	
 	

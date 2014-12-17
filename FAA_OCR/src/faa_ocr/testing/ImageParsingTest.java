@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import faa_ocr.ADTs.Airport;
-import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.image_parser.RunwayDiagramParser;
 
 public class ImageParsingTest {
@@ -20,19 +18,12 @@ public class ImageParsingTest {
 		//String path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/PHX/00322AD1.jpg";  //PHX
 		
 		File image = new File(path);
-		
-		
-		String acy_pdf_path = "/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/lib/00669AD.PDF";
-		
+				
 		BufferedImage airport_image = ImageIO.read(image);
-		
-		//make airport with ACY
-//		Airport airport = new Airport(acy_pdf_path,false);
-		Airport airport = null;
 		
 		
 	    //get runway data from image
-	    new RunwayDiagramParser().parseRunways(airport_image, airport);
+	    new RunwayDiagramParser().parseRunways(airport_image);
 	    
 	    
 	}

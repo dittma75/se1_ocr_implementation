@@ -7,7 +7,7 @@
 package faa_ocr.ADTs;
 
 /**
- *
+ * Class to contain the slopes of runways
  * @author Kevin Dittmar
  */
 public class Slope
@@ -32,11 +32,9 @@ public class Slope
         int temp = y_component;
         y_component = Math.abs(x_component);
         //Multiply new x_component by the sign of previous x_component to
-        //compensate if x was originally negative. We assume signum will not return 0.
+        //compensate if x was originally negative. We assume signum will not return 0
         //and throw off the slope
         x_component = -1 * temp * Integer.signum(x_component);
-        
-        //TODO: Added multiplying by sign on x_component to compensate to x being negative sometimes.
     }
     
     /**

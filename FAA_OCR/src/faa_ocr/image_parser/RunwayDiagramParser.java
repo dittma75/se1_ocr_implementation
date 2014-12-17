@@ -4,7 +4,6 @@ package faa_ocr.image_parser;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import faa_ocr.ADTs.Airport;
 import faa_ocr.ADTs.DiagramRunway;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Slope;
@@ -34,8 +33,6 @@ public class RunwayDiagramParser
 	private final int slope_correction = 2;
 	
 	private BufferedImage diagram;
-//	private Airport airport;
-//	private int runways_left;
 	private ArrayList <DiagramRunway> runways;
 
 	public RunwayDiagramParser()
@@ -50,12 +47,9 @@ public class RunwayDiagramParser
 	 * @param diagram	is the airport diagram image to parse for runways
 	 * @param airport	the airport to which runway path data should be added
 	 */
-	public ArrayList<DiagramRunway> parseRunways(BufferedImage diagram, Airport airport)
+	public ArrayList<DiagramRunway> parseRunways(BufferedImage diagram)
 	{
             this.diagram = diagram;
-//            this.airport = airport;    
-//TODO:Commented out for testing
-//            this.runways_left = airport.numRunways();
             
             traverseImage();
             return runways;
@@ -99,6 +93,9 @@ public class RunwayDiagramParser
 	
 	//clear out duplicate runways
 	//if 2 runways have same end point take longest runway!
+	/**
+	 * Clear out any duplicated or close runways
+	 */
 	private void cleanUpRunways()
 	{
 		for (int i = 0; i < runways.size(); i++)
@@ -107,18 +104,13 @@ public class RunwayDiagramParser
 			for(int k = i + 1; k < runways.size(); k++)
 			{
 				DiagramRunway beta = runways.get(k);
-				if(alpha.getEndPoint().equals(beta.getEndPoint())) //if the ends are equal remove shortest runway
-				{
-					if(alpha.getLength() > beta.getLength()){
-						runways.remove(k);
-					}
-					else{
-						runways.remove(i);
-					}
-				}
 				
-				//both starts are equal
-				if(alpha.getStartPoint().equals(beta.getStartPoint())) //if the starts are equal remove shortest runway
+				/*
+				 * If two runways have the same start point or end point, we will
+				 * remove the shortest runway of the two
+				 */
+				if(alpha.getEndPoint().equals(beta.getEndPoint()) ||
+						alpha.getStartPoint().equals(beta.getStartPoint()))
 				{
 					if(alpha.getLength() > beta.getLength()){
 						runways.remove(k);
@@ -138,7 +130,13 @@ public class RunwayDiagramParser
 	}
 	
 	
-	
+	/**
+	 * See if the start point of a runway is within a range of another
+	 * start point of a runway we already have.
+	 * @param point
+	 * @return true if the point is too close to a previous runway
+	 * 			or false if it is not
+	 */
 	private boolean checkPixelInRunways(Point point)
 	{
 		for(DiagramRunway runway: runways)
@@ -370,8 +368,8 @@ public class RunwayDiagramParser
             
             Point midpoint_of_runway = initial_point.findMidpoint(end_of_width);
             
-            if(width_of_runway > runway_width_min && width_of_runway < runway_width_max && !checkPixelInRunways(midpoint_of_runway)){
- //           	addToAirport(midpoint_of_runway, slope, width_of_runway);
+            if(width_of_runway > runway_width_min && width_of_runway < runway_width_max && !checkPixelInRunways(midpoint_of_runway))
+            {
             	addToRunways(midpoint_of_runway, slope, width_of_runway);
             }
             else
