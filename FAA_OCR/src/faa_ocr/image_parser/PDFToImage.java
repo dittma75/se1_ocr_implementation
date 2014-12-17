@@ -17,7 +17,8 @@ import org.apache.pdfbox.util.PDFImageWriter;
 
 
 /**
- * 
+ * This calls main purpose is to make an image from a PDF file path and to 
+ * parse the visual data from an airport
  * @author joe kvedaras
  * @author Kevin Dittmar
  */
