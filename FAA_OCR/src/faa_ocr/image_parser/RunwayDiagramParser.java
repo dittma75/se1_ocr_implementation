@@ -180,9 +180,12 @@ public class RunwayDiagramParser
             	Point doubleCheckBottom = topLeft.adjustPoint(0,-1);
             	Point right = pixel.adjustPoint(1,0);
             	Point bottom = pixel.adjustPoint(0, 1);
+            	Point bottomRight = pixel.adjustPoint(1,1);
+            	Point bottomLeft = pixel.adjustPoint(-1,1);
             	
             	if(!doubleCheckTopRight.isBlack(diagram) && !doubleCheckBottom.isBlack(diagram) &&
-            			right.isBlack(diagram) && bottom.isBlack(diagram))
+            			right.isBlack(diagram) && bottom.isBlack(diagram) && bottomRight.isBlack(diagram)
+            			&& !bottomLeft.isBlack(diagram))
             	{
             		return true;
             	}
