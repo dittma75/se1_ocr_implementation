@@ -204,11 +204,14 @@ public class AirportController
 			
 			
 			
-//			System.out.println(x_value);
-//			System.out.println(y_value);
+			
 			if(Math.max(x1,x2) > x_value && Math.min(x1,x2) < x_value &&
-					Math.max(y1, y2) > y_value && Math.min(y1, y2) < y_value)
+					Math.max(y1, y2) > y_value && Math.min(y1, y2) < y_value &&
+					Math.max(x3, x4) > x_value && Math.min(x3, x4) < x_value &&
+					Math.max(y3, y4) > y_value && Math.min(y3, y4) < y_value)
 			{
+				//System.out.println(x_value);
+				//System.out.println(y_value);
 				returnPoint = new Point((double) x_value, (double) y_value);
 			}
 			return returnPoint;
