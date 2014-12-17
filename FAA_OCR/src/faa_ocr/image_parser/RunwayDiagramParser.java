@@ -176,11 +176,13 @@ public class RunwayDiagramParser
             } 
             else if(topLeft.isBlack(diagram)) 
             {
-            	Point doubleCheckTopLeft = topLeft.adjustPoint(-1, 0);
             	Point doubleCheckTopRight = topLeft.adjustPoint(1, 0);
-            	Point doubleCheckBottomLeft = topLeft.adjustPoint(-1,1);
+            	Point doubleCheckBottom = topLeft.adjustPoint(0,-1);
+            	Point right = pixel.adjustPoint(1,0);
+            	Point bottom = pixel.adjustPoint(0, 1);
             	
-            	if(!doubleCheckTopLeft.isBlack(diagram) && !doubleCheckTopRight.isBlack(diagram) && !doubleCheckBottomLeft.isBlack(diagram))
+            	if(!doubleCheckTopRight.isBlack(diagram) && !doubleCheckBottom.isBlack(diagram) &&
+            			right.isBlack(diagram) && bottom.isBlack(diagram))
             	{
             		return true;
             	}
