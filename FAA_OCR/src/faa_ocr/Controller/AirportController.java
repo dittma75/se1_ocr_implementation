@@ -44,10 +44,10 @@ public class AirportController
 			}
 		}
 		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ACY/00669AD.PDF", true);//ACY
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/ATL/00026AD.PDF", false);//ATL
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/DFW/06039AD.PDF", true);//DFW
-		airport_controller.getInformationFromPDF("/Users/jokvedaras/Documents/workspace/faa_implementation/FAA_OCR/res/PHX/00322AD.pdf", true);//PHX
+		airport_controller.getInformationFromPDF("res/ACY/00669AD.PDF", true);//ACY
+		airport_controller.getInformationFromPDF("res/ATL/00026AD.PDF", false);//ATL
+		airport_controller.getInformationFromPDF("res/DFW/06039AD.PDF", true);//DFW
+		airport_controller.getInformationFromPDF("res/PHX/00322AD.pdf", true);//PHX
 		
 	}
 	

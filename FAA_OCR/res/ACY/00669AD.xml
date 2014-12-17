@@ -9,16 +9,16 @@
 		<elevation>75</elevation>
 		<coordinates>
 			<node>
-				<longitude>-74.55639</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.55898</longitude>
+				<latitude>39.45142</latitude>
 			</node>
 			<node>
-				<longitude>-74.57306</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.583534</longitude>
+				<latitude>39.46426</latitude>
 			</node>
 			<intersection>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.57367</longitude>
+				<latitude>39.459114</latitude>
 			</intersection>
 		</coordinates>
 	</path>
@@ -29,16 +29,16 @@
 		<elevation>67</elevation>
 		<coordinates>
 			<node>
-				<longitude>-74.55639</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.55898</longitude>
+				<latitude>39.45142</latitude>
 			</node>
 			<node>
-				<longitude>-74.57306</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.583534</longitude>
+				<latitude>39.46426</latitude>
 			</node>
 			<intersection>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.57367</longitude>
+				<latitude>39.459114</latitude>
 			</intersection>
 		</coordinates>
 	</path>
@@ -49,16 +49,16 @@
 		<elevation>61</elevation>
 		<coordinates>
 			<node>
-				<longitude>-74.55639</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.57074</longitude>
+				<latitude>39.464638</latitude>
 			</node>
 			<node>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.578766</longitude>
+				<latitude>39.44953</latitude>
 			</node>
 			<intersection>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.57367</longitude>
+				<latitude>39.459114</latitude>
 			</intersection>
 		</coordinates>
 	</path>
@@ -69,16 +69,16 @@
 		<elevation>63</elevation>
 		<coordinates>
 			<node>
-				<longitude>-74.55639</longitude>
-				<latitude>39.467377</latitude>
+				<longitude>-74.57074</longitude>
+				<latitude>39.464638</latitude>
 			</node>
 			<node>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.578766</longitude>
+				<latitude>39.44953</latitude>
 			</node>
 			<intersection>
-				<longitude>-74.57306</longitude>
-				<latitude>39.45071</latitude>
+				<longitude>-74.57367</longitude>
+				<latitude>39.459114</latitude>
 			</intersection>
 		</coordinates>
 	</path>

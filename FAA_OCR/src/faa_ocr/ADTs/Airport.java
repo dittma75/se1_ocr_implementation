@@ -545,13 +545,15 @@ public class Airport {
         if (DIAGRAM_IS_ROTATED)
         {
             return BASE_LATITUDE -
-                   ((point.getX() - x_margin) / pixels_per_unit_lat / 60.0f);
+                   ((float)(point.getX() - x_margin) /
+                    (float) pixels_per_unit_lat / 60.0f);
         }
         //Otherwise y values should be used, and latitude decreases.
         else
         {
             return BASE_LATITUDE -
-                   ((point.getY() - y_margin) / pixels_per_unit_lat / 60.0f);
+                   ((float)(point.getY() - y_margin) / 
+                    (float)pixels_per_unit_lat / 60.0f);
         }
     }
     
@@ -570,13 +572,15 @@ public class Airport {
         if (DIAGRAM_IS_ROTATED)
         {
             return BASE_LONGITUDE -
-                   ((point.getY() - y_margin) / pixels_per_unit_lat / 60.0f);
+                   ((float)(point.getY() - y_margin) /
+                    (float)pixels_per_unit_lat / 60.0f);
         }
         //Otherwise, x values should be used, and longitude increases.
         else
         {
             return BASE_LONGITUDE +
-                   ((point.getX() - x_margin) / pixels_per_unit_lat / 60.0f);
+                   ((float)(point.getX() - x_margin) /
+                    (float)pixels_per_unit_lat / 60.0f);
         }
     }
     
