@@ -237,10 +237,10 @@ public class XMLtoKML
                 NodeList intersections = coord_element.getElementsByTagName("intersection");
                 NodeList thresholds = coord_element.getElementsByTagName("threshold");
 
-                /* Now, for all three types of path nodes, loop through and
-                 * add every node's coordinates to the local coord_string
+                /* Now, add the first <node>'s coordinates to the list of
+                 * coordinates, and then put any <itersection> Nodes found
+                 * in between the first and end <node>s.
                  */
-
                 Node node = node_list.item(0);
                     //Check that the Node is an Element
                     if (node.getNodeType() == Node.ELEMENT_NODE) 
@@ -257,7 +257,7 @@ public class XMLtoKML
                                 .getTextContent() + ",0"; // Height 0
                     }
                 
-                    //Check if intersections exist in path
+                //Check if intersections exist in path, and add it to list
                 for(int node_index = 0; node_index < intersections.getLength(); node_index++)
                 {
                     //Obtain an "intersection" Node from its NodeList
@@ -281,6 +281,8 @@ public class XMLtoKML
                 }
                     
                     
+                //Get the end <node> Node and add it to the kml's
+                //list of coordinates
                     node = node_list.item(1);
                     //Check that the Node is an Element
                     if (node.getNodeType() == Node.ELEMENT_NODE) 
@@ -298,6 +300,7 @@ public class XMLtoKML
                     }
                 
                 //Check if displaced thresholds exist in path
+                //and add to list of coordinates
                 for(int node_index = 0; node_index < thresholds.getLength(); node_index++)
                 {
                     //Obtain a "threshold" Node from its NodeList
