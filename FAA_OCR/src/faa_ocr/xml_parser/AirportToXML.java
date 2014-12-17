@@ -48,7 +48,9 @@ public class AirportToXML {
             xml_string += "\t" + "</path>\n";
         }
         xml_string += "</airport>";
-        return writeToFile(airport.getFilePath());
+        File file = new File(airport.getFilePath());
+        String xml_path = file.getAbsolutePath().replaceAll(".pdf|.PDF", ".xml");
+        return writeToFile(xml_path);
     }
     
     /*
@@ -128,22 +130,21 @@ public class AirportToXML {
         xml_string += "\t\t" + "</coordinates>\n";
     }
     
-    private String writeToFile(String filePath)
+    private String writeToFile(String file_path)
     {
-        String xmlPath = filePath.split("\\.")[0];
-        xmlPath += ".xml";
         //remove the extensions from the file path so that we
         //can use the same name with a .xml extension for the new file
         
-        try {
+        try 
+        {
             //create the new .xml file and write the formatted String to it
-            File file = new File(xmlPath);
+            File file = new File(file_path);
             BufferedWriter output = new BufferedWriter(new FileWriter(file));
             output.write(xml_string);
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return xmlPath;        
+        return file_path;        
     }   
 } //end AirportToXML
