@@ -1,4 +1,5 @@
 package faa_ocr.text_parser;
+
 import faa_ocr.ADTs.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,8 +11,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * RunwayDataParser extracts all runway_number data from an airport diagram and puts
- each datum in the proper field in the Airport object.
+ * RunwayDataParser extracts all runway_number data from an airport diagram and
+ * puts
+ * each datum in the proper field in the Airport object.
+ *
  * @author Kevin Dittmar
  */
 public class RunwayDataParser extends DataParser
@@ -23,37 +26,40 @@ public class RunwayDataParser extends DataParser
      * the elevation.
      */
     private final String ELEV_PATTERN = "[^\\d]*([1-9]\\d{0,3})[^.\\d]*";
-    
+
     /* Headings always follow the pattern of a four significant digit number
      * with accuracy to the tenths place.
      */
     private final String HEADING_PATTERN = "(\\d\\d\\d\\.\\d)";
-    
+
     /* Runways always follow the pattern of one or two digits and an optional
      * letter.
      */
     private final String RUNWAY_PATTERN = ".(\\d{1,2}[LCR]*)";
-    
+
     /**
      * No initialization is necessary for the constructor.
      */
     public RunwayDataParser()
     {
-        
+
     }
-    
+
     /**
      * Parse the formatted text version of the airport diagram and extract all
- runway_number data.  This data will then be added as Paths to the Airport's
+     * runway_number data. This data will then be added as Paths to the
+     * Airport's
      * Path List.
+     *
      * @param formatted_string is the formatted representation of the textual
      * data of the Airport's airport diagram.
-     * @param airport is the Airport that will receive the parsed runway_number data
- as Runways, which will be added to the Airport's Path List.
+     * @param airport is the Airport that will receive the parsed runway_number
+     * data
+     * as Runways, which will be added to the Airport's Path List.
      */
     public void parseRunwayData(String formatted_string, Airport airport)
     {
-        
+
         ArrayList<String> valid_runways = makeListOfRunways(
                 PDFToText.getTextPath(airport.getFilePath())
         );
@@ -67,33 +73,33 @@ public class RunwayDataParser extends DataParser
         ArrayList<Float> headings = new ArrayList<>();
 
         ArrayList<Integer> elevations = new ArrayList<>();
-        
+
         Scanner scanner = new Scanner(formatted_string);
-        
+
         /* Keep track of how many "ELEV"s were found, which indicate
          * a runway_number elevation.
          */
         int elev_counter = 0;
         int field_elev_index = -1;
-        
+
         while (scanner.hasNextLine())
         {
             String current_line = scanner.nextLine();
-            
+
             //Check this line for runways.
             ArrayList<String> runways_found;
             runways_found = searchForRunways(current_line);
-            
+
             for (String runway : runways_found)
             {
                 runway = correctRunway(runway);
-                if (valid_runways.contains(runway) &&
-                    !runways.contains(runway))
+                if (valid_runways.contains(runway)
+                    && !runways.contains(runway))
                 {
                     runways.add(runway);
                 }
             }
-            
+
             /*Check this line for headings  String comparison is used because
              *the headings start as Strings that have a defined format, and
              *Doubles are hard to compare accurately.
@@ -103,7 +109,7 @@ public class RunwayDataParser extends DataParser
             {
                 headings.add(Float.parseFloat(heading));
             }
-            
+
             /* Field elevation may or may not be needed.  It will be
              * added along with the other elevations, but the index that
              * it will occupy needs to be saved so it can possibly be
@@ -118,7 +124,7 @@ public class RunwayDataParser extends DataParser
             {
                 elev_counter++;
             }
-            
+
             String elevation = searchForItem(ELEV_PATTERN, current_line);
             if (!elevation.equals("") && elev_counter > 0)
             {
@@ -136,7 +142,7 @@ public class RunwayDataParser extends DataParser
                 {
                     int sample_elev = elevations.get(0);
                     int acceptable_range;
-                    
+
                     //Pick an acceptable range based on the sample elevation.
                     if (sample_elev > 200)
                     {
@@ -150,7 +156,7 @@ public class RunwayDataParser extends DataParser
                     {
                         acceptable_range = 20;
                     }
-                    
+
                     /* If the potential elevation is within an acceptable
                      * range of previous elevations, then add it.
                      */
@@ -163,22 +169,25 @@ public class RunwayDataParser extends DataParser
             }
         }
         scanner.close();
-        
+
         //We have too many elevations.  Drop the field elevation.
         if (elevations.size() > runways.size())
         {
             elevations.remove(field_elev_index);
-        }    
-                
+        }
+
         addSynchronizedRunways(airport, runways, headings, elevations);
     }
-    
+
     /**
-     * Make a list of runway_number names that the parser will be looking for based
- on the runway_number list that is included somewhere in every airport diagram.
+     * Make a list of runway_number names that the parser will be looking for
+     * based
+     * on the runway_number list that is included somewhere in every airport
+     * diagram.
+     *
      * @param file_name is the path to the airport diagram.
      * @return an ArrayList of runway_number name Strings that are valid for the
- airport.
+     * airport.
      */
     private ArrayList<String> makeListOfRunways(String file_name)
     {
@@ -191,7 +200,7 @@ public class RunwayDataParser extends DataParser
             while (scanner.hasNextLine())
             {
                 next_line = scanner.nextLine();
-                
+
                 /* This pattern looks for runway_number pairs.  They usually come
                  * in single pairs, but sometimes they come in a comma
                  * delimited list of pairs.  The first capturing group will
@@ -202,16 +211,16 @@ public class RunwayDataParser extends DataParser
                         "R *W *Y *(( *\\d\\d[RCL]*-\\d\\d[RCL]*,*)*)",
                         next_line
                 );
-                
+
                 //We found a line with at least one runway_number pair.
                 if (!runway_pairs_string.equals(""))
                 {
                     /* Remove all spaces and padding zeros from the String to
                      * ensure proper String comparison.
                      */
-                    runway_pairs_string = 
-                        runway_pairs_string.replaceAll(" ", "");
-                    
+                    runway_pairs_string
+                    = runway_pairs_string.replaceAll(" ", "");
+
                     String runway_pairs[];
                     //We found multiple pairs of runways delimited by commas
                     if (runway_pairs_string.contains(","))
@@ -250,16 +259,17 @@ public class RunwayDataParser extends DataParser
         catch (FileNotFoundException ex)
         {
             Logger.getLogger(RunwayDataParser.class.getName()).log(
-                Level.SEVERE, null, ex
+                    Level.SEVERE, null, ex
             );
             return null;
         }
     }
-    
+
     /**
      * Make a list of all of the valid headings for the given airport diagram.
      * PDFBox is used because pdftotext doesn't transfer ° characters to the
      * plain text file.
+     *
      * @param file_name is the file path of the airport diagram.
      * @return an ArrayList of valid heading Strings for the given airport.
      */
@@ -271,19 +281,19 @@ public class RunwayDataParser extends DataParser
          *heading angles.
          */
         String pdf_text = PDFToText.getTextPDFBox(file_name);
-        
+
         Scanner scanner = new Scanner(pdf_text);
         ArrayList<String> valid_headings = new ArrayList<>();
         while (scanner.hasNextLine())
         {
             String next_line = scanner.nextLine();
-            
+
             /*All headings will have the pattern ###.#°, which is the same as
              *the heading pattern except that the '°' character comes after
              *the angle that we want.  
              */
             String heading = searchForItem(HEADING_PATTERN + "°", next_line);
-            
+
             if (!heading.equals(""))
             {
                 //If we don't already have that heading in the list, add it.
@@ -293,7 +303,7 @@ public class RunwayDataParser extends DataParser
                 }
             }
         }
-        
+
         if (valid_headings.isEmpty())
         {
             pdf_text = PDFToText.getDiagramText(file_name);
@@ -315,10 +325,12 @@ public class RunwayDataParser extends DataParser
         scanner.close();
         return valid_headings;
     }
-    
+
     /**
-     * Fix disparity between the runway_number names near the runways on the diagram
- and the names given in the listing on the diagram.
+     * Fix disparity between the runway_number names near the runways on the
+     * diagram
+     * and the names given in the listing on the diagram.
+     *
      * @param runway is the runway_number to correct.
      * @return is the corrected runway_number name.
      */
@@ -337,48 +349,51 @@ public class RunwayDataParser extends DataParser
             return runway;
         }
     }
-    
+
     /**
      * Get an ArrayList of runway_number name Strings from the given text.
+     *
      * @param text is the String to search for runway_number names.
-     * @return an ArrayList of runway_number Strings if present in the line of text
- or an empty ArrayList if there are none.
+     * @return an ArrayList of runway_number Strings if present in the line of
+     * text
+     * or an empty ArrayList if there are none.
      */
     private ArrayList<String> searchForRunways(String text)
     {
         //Compile the pattern given.
         Pattern matcher_pattern = Pattern.compile(RUNWAY_PATTERN);
-        
+
         //Set up the matcher for the pattern.
         Matcher matcher = matcher_pattern.matcher(text);
-        
+
         ArrayList<String> runways = new ArrayList<>();
-        
+
         //While there are parts of the string that match the runway_number pattern...
         while (matcher.find())
-        {   
+        {
             //Add to the runways list.
             runways.add(matcher.group(1));
         }
         return runways;
     }
-    
+
     /**
      * Validate the headings found by checking to see if each one has
      * a counterpart in the list that differs from it by 180 degrees.
+     *
      * @param headings the non-validated headings list
-     * Post:  All invalid headings are removed from the list.
+     * Post: All invalid headings are removed from the list.
      */
     private void validateHeadings(ArrayList<String> headings)
     {
         ArrayList<Boolean> has_associated_heading = new ArrayList<>();
-        
+
         //No headings are associated to start.
         for (int i = 0; i < headings.size(); i++)
         {
             has_associated_heading.add(false);
         }
-        
+
         //Valid headings should have a counterpart that varies by 180 degrees.
         for (int i = 0; i < headings.size(); i++)
         {
@@ -387,7 +402,7 @@ public class RunwayDataParser extends DataParser
             {
                 float second = Float.parseFloat(headings.get(j));
                 float difference = Math.abs(first - second);
-                
+
                 if (difference > 179 && difference < 181)
                 {
                     has_associated_heading.set(i, Boolean.TRUE);
@@ -396,7 +411,7 @@ public class RunwayDataParser extends DataParser
                 }
             }
         }
-        
+
         //Remove non-validated headings.
         for (int i = 0; i < headings.size(); i++)
         {
@@ -407,7 +422,7 @@ public class RunwayDataParser extends DataParser
             {
                 headings.remove(i);
                 has_associated_heading.remove(i);
-                
+
                 /* Since we are removing corresponding parts of the
                  * ArrayList, the loop counter has to be decremented.
                  */
@@ -415,7 +430,7 @@ public class RunwayDataParser extends DataParser
             }
         }
     }
-    
+
     private void addSynchronizedRunways(Airport airport,
                                         ArrayList<String> runways,
                                         ArrayList<Float> headings,
@@ -436,14 +451,14 @@ public class RunwayDataParser extends DataParser
                 {
                     heading_text = "0" + heading_text;
                 }
-                
+
                 int heading_start = Integer.parseInt(
-                    heading_text.substring(0,2)
+                        heading_text.substring(0, 2)
                 );
-                
+
                 //Close match; break out of loop.
-                if (runway_number <= heading_start + 1 &&
-                    runway_number >= heading_start - 1)
+                if (runway_number <= heading_start + 1
+                    && runway_number >= heading_start - 1)
                 {
                     heading = headings.get(i);
                     heading_index = i;

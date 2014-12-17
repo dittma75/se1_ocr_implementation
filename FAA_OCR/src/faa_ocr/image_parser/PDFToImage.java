@@ -15,19 +15,20 @@ import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFImageWriter;
 
-
 /**
- * This classes main purpose is to make an image from a PDF file path and to 
+ * This classes main purpose is to make an image from a PDF file path and to
  * parse the visual data from an airport
+ *
  * @author joe kvedaras
  * @author Kevin Dittmar
  */
-public class PDFToImage 
+public class PDFToImage
 {
-	
+
     /**
      * Creates the BufferedImage of the airport diagram to be used by parsing
      * methods.
+     *
      * @param file_path is the path to the airport diagram PDF.
      * @return the BufferedImage representation of the airport diagram PDF.
      */
@@ -56,8 +57,8 @@ public class PDFToImage
                      */
                     pdf_image_writer.writeImage(doc,
                                                 "jpg",
-                                                "", 
-                                                1, 
+                                                "",
+                                                1,
                                                 1,
                                                 image_path_prefix);
                     doc.close();
@@ -73,32 +74,30 @@ public class PDFToImage
         catch (IOException ex)
         {
             Logger.getLogger(PDFToImage.class.getName()).log(
-                Level.SEVERE, null, ex
+                    Level.SEVERE, null, ex
             );
         }
-        
+
         return diagram_image;
     }
-    
-
 
     /**
      * Get visual data from Airport
+     *
      * @param airport	from which we extract data from
      */
     public ArrayList<DiagramRunway> parseVisualData(Airport airport)
     {
-    	ArrayList <DiagramRunway> runways;
-  
-    	BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
-    	
-    	//get runway data from image
-    	runways = new RunwayDiagramParser().parseRunways(airport_image);
+        ArrayList<DiagramRunway> runways;
 
-    	//get taxiway date from image
-    	new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
-    	
-    	
-    	return runways;
+        BufferedImage airport_image = PDFToImage.makeImage(airport.getFilePath());
+
+        //get runway data from image
+        runways = new RunwayDiagramParser().parseRunways(airport_image);
+
+        //get taxiway date from image
+        new TaxiwayDiagramParser().parseTaxiways(airport_image, airport);
+
+        return runways;
     }
 }

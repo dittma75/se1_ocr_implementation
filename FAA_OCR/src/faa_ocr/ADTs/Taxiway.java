@@ -12,6 +12,7 @@ package faa_ocr.ADTs;
 /**
  * THis is a class for Taxiways that is out of scope because we will not be
  * able to implement it in time.
+ *
  * @author g_ric_000
  */
 public class Taxiway extends Path
@@ -19,11 +20,12 @@ public class Taxiway extends Path
 
     /**
      * constructor for the Taxiway class
+     *
      * @param name the String value representing the name of the Taxiway
      */
     public Taxiway(String name)
     {
         super(name);
     }
-    
+
 } //end Taxiway 

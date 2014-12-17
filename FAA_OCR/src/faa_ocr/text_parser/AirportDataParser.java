@@ -1,9 +1,12 @@
 package faa_ocr.text_parser;
+
 import faa_ocr.ADTs.*;
 import java.util.Scanner;
+
 /**
  * The AirportDataParser extracts airport-specific information from the
  * airport diagram and puts it in the appropriate fields of an Airport object.
+ *
  * @author Kevin Dittmar
  */
 public class AirportDataParser extends DataParser
@@ -13,22 +16,22 @@ public class AirportDataParser extends DataParser
      * digits, and N,S,W, or E, which stand for the direction of the variation.
      */
     private final String VARIATION_PATTERN = "VAR (\\d+\\.\\d+ [NSWE])";
-    
+
     /* The pattern for the airport abbreviation, which is three characters in
      * parentheses after the string "INTL"
      */
     private final String ABBREVIATION_PATTERN = ".*INTL *\\((...)\\)";
- 
+
     /* The pattern for the name, which comes before the abbreviation code
      * and always includes INTL.
      */
     private final String NAME_PATTERN = "(.*INTL *)\\(...\\)";
-    
+
     /*The pattern for the location is "city, state", where city and state are
      *all capital letters.
      */
     private final String LOCATION_PATTERN = "([A-Z ]+, [A-Z ]+)";
-    
+
     /**
      * No initialization is necessary for the constructor.
      */
@@ -36,9 +39,10 @@ public class AirportDataParser extends DataParser
     {
 
     }
-    
+
     /**
      * Parse the airport-specific data from the airport diagram.
+     *
      * @param formatted_string is the String representation of the airport
      * diagram to be analyzed.
      * @param airport is the Airport that will be given the extracted
@@ -51,16 +55,16 @@ public class AirportDataParser extends DataParser
         boolean found_abbrev = false;
         boolean found_location = false;
         boolean found_name = false;
-        
+
         /*Continue while there are more lines to scan and more information is
          *needed.
          */
-        while (scanner.hasNextLine() &&
-              (!found_variation || !found_abbrev || !found_location ||
-               !found_name))
+        while (scanner.hasNextLine()
+               && (!found_variation || !found_abbrev || !found_location
+                   || !found_name))
         {
             String next_line = scanner.nextLine();
-            
+
             //Look for the variation if we haven't found it.
             if (!found_variation)
             {
@@ -68,11 +72,11 @@ public class AirportDataParser extends DataParser
                 if (!var.equals(""))
                 {
                     found_variation = true;
-                    
+
                     float var_amount = Float.parseFloat(
-                        var.replaceAll("[WE]", "")
+                            var.replaceAll("[WE]", "")
                     );
-                    
+
                     if (var.contains("W"))
                     {
                         var_amount *= -1;
@@ -80,7 +84,7 @@ public class AirportDataParser extends DataParser
                     airport.setVariation(var_amount);
                 }
             }
-            
+
             //Look for the abbreviation if we haven't found it.
             if (!found_abbrev)
             {
@@ -91,7 +95,7 @@ public class AirportDataParser extends DataParser
                     airport.setAbbreviation(abbrev);
                 }
             }
-            
+
             //Look for the location if we haven't found it.
             if (!found_location)
             {
@@ -102,7 +106,7 @@ public class AirportDataParser extends DataParser
                     airport.setLocation(loc);
                 }
             }
-            
+
             //Look for the name of the airport if we haven't found it.
             if (!found_name)
             {
@@ -114,7 +118,7 @@ public class AirportDataParser extends DataParser
                 }
             }
         }
-        
+
         //close scanner
         scanner.close();
     }

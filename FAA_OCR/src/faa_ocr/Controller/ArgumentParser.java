@@ -6,21 +6,22 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * 
+ *
  * @author Joe Kvedaras
  *
  */
-public class ArgumentParser 
-{	
+public class ArgumentParser
+{
     /**
      * Verify an inputed path and make sure it is a .pdf
+     *
      * @param pdf_file_path path to file you want to verify
      * @return true if path is valid and it is a .pdf, false otherwise
      */
     public static boolean parseArgument(String pdf_file_path)
     {
         File file = new File(pdf_file_path);
-        if(file.exists())
+        if (file.exists())
         {
             /* Open the file and check the first 4 characters to make
              * sure it equals %PDF
@@ -31,7 +32,7 @@ public class ArgumentParser
                 String line = reader.readLine();
                 //System.out.println(line);
 
-                if(line.startsWith("%PDF"))
+                if (line.startsWith("%PDF"))
                 {
                     reader.close();
                     return true;
@@ -58,5 +59,4 @@ public class ArgumentParser
             return false;
         }
     }
-	
 }

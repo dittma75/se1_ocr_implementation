@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package faa_ocr.testing;
+
 import faa_ocr.text_parser.*;
 import faa_ocr.ADTs.Airport;
 
@@ -21,15 +21,15 @@ public class TextParserTest
         testDFWAirport();
         testPHXAirport();
     }
-    
+
     public static void testACYAirport()
     {
-    	Airport airport = new Airport("res/ACY/00669AD.PDF", true);
+        Airport airport = new Airport("res/ACY/00669AD.PDF", true);
         PDFToText pdftotext = new PDFToText();
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
     }
-    
+
     public static void testATLAirport()
     {
         Airport airport = new Airport("res/ATL/00026AD.pdf", false);
@@ -37,7 +37,7 @@ public class TextParserTest
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
     }
-    
+
     public static void testDFWAirport()
     {
         Airport airport = new Airport("res/DFW/06039AD.pdf", true);
@@ -45,7 +45,7 @@ public class TextParserTest
         pdftotext.parseTextData(airport);
         System.out.println(airport.toString());
     }
-    
+
     public static void testPHXAirport()
     {
         Airport airport = new Airport("res/PHX/00322AD.pdf", true);
