@@ -4,7 +4,7 @@
 	<name>Atlanta Airport</name>
 	<variation>0.07</variation>
 	<path>
-		<path_type>runway</path>
+		<path_type>runway</path_type>
 		<path_name>R1</path_name>
 		<heading>2346.5</heading>
 		<elevation>100</elevation>
@@ -28,7 +28,7 @@
 		</coordinates>
 	</path>
 	<path>
-		<path_type>runway</path>
+		<path_type>runway</path_type>
 		<path_name>R2</path_name>
 		<heading>2346.5</heading>
 		<elevation>100</elevation>
@@ -48,7 +48,7 @@
 		</coordinates>
 	</path>
 	<path>
-		<path_type>runway</path>
+		<path_type>runway</path_type>
 		<path_name>R3</path_name>
 		<heading>3678.5</heading>
 		<elevation>100</elevation>
@@ -68,7 +68,7 @@
 		</coordinates>
 	</path>
 	<path>
-		<path_type>runway</path>
+		<path_type>runway</path_type>
 		<path_name>R4</path_name>
 		<heading>5062.5</heading>
 		<elevation>54</elevation>
