@@ -21,11 +21,9 @@ import java.io.*;
  */
 public class AirportToXML
 {
-    private String xml_string;
-
     public AirportToXML()
     {
-        xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+
     }
 
     /**
@@ -34,7 +32,7 @@ public class AirportToXML
      */
     public String convertToXml(Airport airport)
     {
-        xml_string = "";
+        String xml_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         xml_string += "<airport>\n"
                       + "\t" + "<location>" 
                       + airport.getLocation() 
@@ -49,7 +47,7 @@ public class AirportToXML
         for (int i = 0; i < airport.numRunways(); i++)
         {
             xml_string += "\t" + "<path>\n";
-            runwayToXml(airport.getRunway(i));
+            xml_string += runwayToXml(airport.getRunway(i));
             xml_string += "\t" + "</path>\n";
         }
         
@@ -62,7 +60,7 @@ public class AirportToXML
         xml_string += "</airport>";
         File file = new File(airport.getFilePath());
         String xml_path = file.getAbsolutePath().replaceAll(".pdf|.PDF", ".xml");
-        return writeToFile(xml_path);
+        return writeToFile(xml_path, xml_string);
     }
 
     /*
@@ -75,9 +73,9 @@ public class AirportToXML
      * @param runway is the instance of Runway that we are currently converting
      * to XML format.
      */
-    private void runwayToXml(Runway runway)
+    private String runwayToXml(Runway runway)
     {
-        xml_string += "\t\t" + "<path_type>runway</path_type>\n";
+        String xml_string = "\t\t" + "<path_type>runway</path_type>\n";
         
         xml_string += "\t\t" + "<path_name>" 
                       + runway.getName() 
@@ -145,6 +143,8 @@ public class AirportToXML
             }
         }
         xml_string += "\t\t" + "</coordinates>\n";
+        
+        return xml_string;
     }
 
     /**
@@ -158,9 +158,9 @@ public class AirportToXML
      * @param taxiway instance of Taxiway that we are currently converting to
      * .xml format
      */
-    private void taxiwayToXml(Taxiway taxiway)
+    private String taxiwayToXml(Taxiway taxiway)
     {
-        xml_string += "\t\t" + "<path_type>taxiway</path_type>\n";
+        String xml_string = "\t\t" + "<path_type>taxiway</path_type>\n";
         
         xml_string += "\t\t" + "<path_name>" 
                       + taxiway.getName() 
@@ -198,9 +198,17 @@ public class AirportToXML
             xml_string += "\t\t\t" + "</intersection>\n";
         }
         xml_string += "\t\t" + "</coordinates>\n";
+        
+        return xml_string;
     }
 
-    private String writeToFile(String file_path)
+    /**
+     * Writes the given XML string to a file at the given path.
+     * @param file_path is the path of the XML file.
+     * @param xml_string is the string to be written to the XML file.
+     * @return the path of the written file.
+     */
+    private String writeToFile(String file_path, String xml_string)
     {
         //remove the extensions from the file path so that we
         //can use the same name with a .xml extension for the new file
