@@ -16,6 +16,10 @@
 				<longitude>-97.01134</longitude>
 				<latitude>32.923424</latitude>
 			</node>
+			<intersection>
+				<longitude>-96.99467</longitude>
+				<latitude>32.906757</latitude>
+			</intersection>
 		</coordinates>
 	</path>
 	<path>
@@ -32,6 +36,10 @@
 				<longitude>-97.01134</longitude>
 				<latitude>32.923424</latitude>
 			</node>
+			<intersection>
+				<longitude>-96.99467</longitude>
+				<latitude>32.906757</latitude>
+			</intersection>
 		</coordinates>
 	</path>
 	<path>
@@ -48,6 +56,10 @@
 				<longitude>-96.99467</longitude>
 				<latitude>32.89009</latitude>
 			</node>
+			<intersection>
+				<longitude>-96.99467</longitude>
+				<latitude>32.906757</latitude>
+			</intersection>
 		</coordinates>
 	</path>
 	<path>
@@ -64,6 +76,10 @@
 				<longitude>-96.99467</longitude>
 				<latitude>32.89009</latitude>
 			</node>
+			<intersection>
+				<longitude>-96.99467</longitude>
+				<latitude>32.906757</latitude>
+			</intersection>
 		</coordinates>
 	</path>
 	<path>

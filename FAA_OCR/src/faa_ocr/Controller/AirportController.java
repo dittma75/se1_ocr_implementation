@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import faa_ocr.ADTs.Airport;
 import faa_ocr.ADTs.DiagramRunway;
+import faa_ocr.ADTs.LineSegment;
 import faa_ocr.ADTs.Node;
 import faa_ocr.ADTs.Point;
 import faa_ocr.ADTs.Runway;
@@ -13,6 +14,7 @@ import faa_ocr.image_parser.PDFToImage;
 import faa_ocr.text_parser.PDFToText;
 import faa_ocr.xml_parser.AirportToXML;
 import faa_ocr.kml_parser.XMLtoKML;
+
 import java.lang.Math;
 import java.awt.geom.Line2D.Double;
 
@@ -157,73 +159,104 @@ public class AirportController
 	{
 		
 		Point returnPoint = null;
-//		//See if two runways intersect
-//		LineSegment alpha = new LineSegment(one.getStartPoint(), one.getEndPoint());
-//		LineSegment beta = new LineSegment(two.getStartPoint(), two.getEndPoint());
-//
-//		if(LineSegment.doBoundingBoxesIntersect(alpha.getBoundingBox(), beta.getBoundingBox()))
-//		{
-//			
-//		}
-//		else
-//		{
-//			return returnPoint;
-//		}
-		
-		double x1 = one.getStartPoint().getX();
-		double y1 = one.getStartPoint().getY();
-		double x2 = one.getEndPoint().getX();
-		double y2 = one.getEndPoint().getY();
-		
-		double x3 = two.getStartPoint().getX();
-		double y3 = two.getStartPoint().getY();
-		double x4 = two.getEndPoint().getX();
-		double y4 = two.getEndPoint().getY();
-		
-		
-		Double line1 = new Double(x1,y1,x2,y2);
-        Double line2 = new Double(x3,y3,x4,y4);
-        //See if the two paths intercept
-        boolean inter = line1.intersectsLine(line2);
-        /*Check that there is an intercept and they aren't the same path.
-          They may not be the exact same points, and so this if will 
-          probably need to be changed. */
-        if(inter == true && x1 != x3 && x1 != x4){
-            /*Get the distance from the end point of the "first" line
-              to where it intercepts the other line */
-            double dist = Double.ptLineDist(x3,y3,x4,y4, x1,y1);
-           // System.out.println(inter);
-           // System.out.println(dist);
+		//See if two runways intersect
+		LineSegment alpha = new LineSegment(one.getStartPoint(), one.getEndPoint());
+		LineSegment beta = new LineSegment(two.getStartPoint(), two.getEndPoint());
 
-            /*Find intersection X and Y values by subtracting the
-              dist from the length of the "first" line. */
-            double xlen = x1 - x2;   // length of x of right triangle (2.31)
-            if(xlen < 0) //Make pos if neg
-                xlen = xlen * -1;
-            double ylen = y1 - y2;   // length of y of right triangle (3.86)
-            if(ylen < 0) //Make pos if neg
-                ylen = ylen * -1;
-            double hpt = Math.hypot(xlen,ylen); // length of hypot 4.498
-            double x = (xlen/hpt)*dist;
-            double y = (ylen/hpt)*dist;
-            
-            x = x + x1; //Intersection X val
-            y = y + y1; //Intersection Y val
-            
-            return returnPoint = new Point(x,y);
-            
-            
-            
-//            System.out.println(xlen);
-//            System.out.println(ylen);
-//            System.out.println(hpt);
-//            System.out.println(x + ", " + y);
-        }
-        //Check if there is an intercept (overlap) ????
-        else
-        {
-        	return returnPoint;
-        }
+		if(LineSegment.doBoundingBoxesIntersect(alpha.getBoundingBox(), beta.getBoundingBox()))
+		{
+			float x1 = one.getStartPoint().getX();
+			float y1 = one.getStartPoint().getY();
+
+			float x2 = one.getEndPoint().getX();
+			float y2 = one.getEndPoint().getY();
+			
+			float x3 = two.getStartPoint().getX();
+			float y3 = two.getStartPoint().getY();
+			float x4 = two.getEndPoint().getX();
+			float y4 = two.getEndPoint().getY();
+			
+			float one_slope = (y2 - y1) / (x2 - x1);
+			float two_slope = (y4 - y3) / (x4 - x3);
+			
+			float b1 = y1 - (one_slope * x1);
+			float b2 = y3 - (two_slope * x3);
+			
+			//x intersection
+			float x_value = (b1 - b2) / (two_slope - one_slope);
+			
+			float y_value = (one_slope * x_value) + b1;
+			
+			returnPoint = new Point((double) x_value, (double) y_value);
+			
+//			System.out.println(x_value);
+//			System.out.println(y_value);
+			return returnPoint;
+		}
+		else
+		{
+			return returnPoint;
+		}
+		
+//		double x1 = one.getStartPoint().getX();
+//		double y1 = one.getStartPoint().getY();
+//		double x2 = one.getEndPoint().getX();
+//		double y2 = one.getEndPoint().getY();
+//		
+//		double x3 = two.getStartPoint().getX();
+//		double y3 = two.getStartPoint().getY();
+//		double x4 = two.getEndPoint().getX();
+//		double y4 = two.getEndPoint().getY();
+//		
+//		
+//		Double line1 = new Double(x1,y1,x2,y2);
+//        Double line2 = new Double(x3,y3,x4,y4);
+//        //See if the two paths intercept
+//        boolean inter = line1.intersectsLine(line2);
+//        /*Check that there is an intercept and they aren't the same path.
+//          They may not be the exact same points, and so this if will 
+//          probably need to be changed. */
+//        if(inter == true && x1 != x3 && x1 != x4){
+//            /*Get the distance from the end point of the "first" line
+//              to where it intercepts the other line */
+//            double dist = Double.ptLineDist(x3,y3,x4,y4, x1,y1);
+//           // System.out.println(inter);
+//           // System.out.println(dist);
+//
+//            /*Find intersection X and Y values by subtracting the
+//              dist from the length of the "first" line. */
+//            double xlen = x1 - x2;   // length of x of right triangle (2.31)
+//            if(xlen < 0) //Make pos if neg
+//                xlen = xlen * -1;
+//            double ylen = y1 - y2;   // length of y of right triangle (3.86)
+//            if(ylen < 0) //Make pos if neg
+//                ylen = ylen * -1;
+//            double hpt = Math.hypot(xlen,ylen); // length of hypot 4.498
+//            double x = (xlen/hpt)*dist;
+//            double y = (ylen/hpt)*dist;
+//            
+//            x = x + x1; //Intersection X val
+//            y = y + y1; //Intersection Y val
+//            
+//            System.out.println();
+//            System.out.println(x);
+//            System.out.println(y);
+//            
+//            
+//            return returnPoint = new Point(x,y);
+//            
+//            
+//            
+////            System.out.println(xlen);
+////            System.out.println(ylen);
+////            System.out.println(hpt);
+////            System.out.println(x + ", " + y);
+//        }
+//        //Check if there is an intercept (overlap) ????
+//        else
+//        {
+//        	return returnPoint;
+//        }
     
 	}
 	
