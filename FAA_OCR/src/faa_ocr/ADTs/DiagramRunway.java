@@ -30,7 +30,10 @@ public class DiagramRunway {
 	
 	public String toString()
 	{
-		return "So.. Much.. Fun..";
+		return "Starting point: " + " X:" + start.getX() + " Y:" + start.getY()
+    	+ "\nEnd Point: " + " X:" + end.getX() + " Y:" + end.getY()
+    	+ "\nSlope: Y:" + slope.getY() + " X:" + slope.getX()
+    	+ "\nLength: " + length;
 	}
 	
 	/**

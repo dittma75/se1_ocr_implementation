@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+	<name>Atlanta Airport</name>
+	<description>
+	 Location: Atlanta, Georgia
+	 Variation: 0.07
+	</description>
+	<Style id="runway">
+	  <LineStyle>
+		<color>501400FF</color>
+		<width>10</width>
+	  </LineStyle>
+	</Style>
+	<Style id="taxiway">
+	  <LineStyle>
+		<color>50000000</color>
+		<width>8</width>
+	  </LineStyle>
+	</Style>
+	<Placemark>
+	  <name>R1</name>
+	  <description>
+	   Path type: runway
+	   Heading: 2346.5
+	   Elevation: 100
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 113.74,36.86,0
+		 113.99,36.01,0
+		 114.02,37.05,0
+		 113.87,36.97,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>R2</name>
+	  <description>
+	   Path type: runway
+	   Heading: 2346.5
+	   Elevation: 100
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 113.74,36.86,0
+		 113.99,36.01,0
+		 114.02,37.05,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>R3</name>
+	  <description>
+	   Path type: runway
+	   Heading: 3678.5
+	   Elevation: 100
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 126.47,63.45,0
+		 113.99,36.01,0
+		 150.23,47.63,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>R4</name>
+	  <description>
+	   Path type: runway
+	   Heading: 5062.5
+	   Elevation: 54
+	  </description>
+	  <styleUrl>#runway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 102.47,27.45,0
+		 109.32,31.36,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>T1</name>
+	  <description>
+	   Path type: taxiway
+	  </description>
+	  <styleUrl>#taxiway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 93.74,41.86,0
+		 95.02,47.46,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>T2</name>
+	  <description>
+	   Path type: taxiway
+	  </description>
+	  <styleUrl>#taxiway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 40.74,41.86,0
+		 42.51,42.51,0
+		 45.02,47.46,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>T3</name>
+	  <description>
+	   Path type: taxiway
+	  </description>
+	  <styleUrl>#taxiway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 70.74,41.86,0
+		 77.51,45.51,0
+		 80.13,48.94,0
+		 74.02,47.46,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+	<Placemark>
+	  <name>T4</name>
+	  <description>
+	   Path type: taxiway
+	  </description>
+	  <styleUrl>#taxiway</styleUrl>
+	  <LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		 41.01,48.86,0
+		 42.51,42.51,0
+		 77.51,45.51,0
+		 80.13,48.94,0
+		 63.02,47.46,0
+		</coordinates>
+	  </LineString>
+	</Placemark>
+  </Document>
+</kml>

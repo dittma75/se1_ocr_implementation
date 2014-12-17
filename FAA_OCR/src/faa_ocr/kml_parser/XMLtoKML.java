@@ -237,13 +237,11 @@ public class XMLtoKML
                 NodeList intersections = coord_element.getElementsByTagName("intersection");
                 NodeList thresholds = coord_element.getElementsByTagName("threshold");
 
-                /* Now, for all three types of path nodes, loop through and
-                 * add every node's coordinates to the local coord_string
+                /* Now, add the first <node>'s coordinates to the list of
+                 * coordinates, and then put any <itersection> Nodes found
+                 * in between the first and end <node>s.
                  */
-                for(int node_index = 0; node_index < node_list.getLength(); node_index++)
-                {
-                    //Obtain a "node" Node from its NodeList
-                    Node node = node_list.item(node_index);
+                Node node = node_list.item(0);
                     //Check that the Node is an Element
                     if (node.getNodeType() == Node.ELEMENT_NODE) 
                     {
@@ -258,30 +256,8 @@ public class XMLtoKML
                                 .item(0)
                                 .getTextContent() + ",0"; // Height 0
                     }
-                }
-
-                //Check if displaced thresholds exist in path
-                for(int node_index = 0; node_index < thresholds.getLength(); node_index++)
-                {
-                    //Obtain a "threshold" Node from its NodeList
-                    Node thresh = thresholds.item(node_index);
-
-                    //Check that the Node is an Element
-                    if (thresh.getNodeType() == Node.ELEMENT_NODE)
-                    {
-                        //Convert to Element
-                        Element node_element = (Element) thresh;
-                        //Add coordinates to String
-                        coord_string += "\n\t\t " +
-                            node_element.getElementsByTagName("longitude")
-                                        .item(0)
-                                        .getTextContent() + "," +
-                            node_element.getElementsByTagName("latitude")
-                                        .item(0)
-                                        .getTextContent() + ",0"; // Height 0
-                    }
-                }
-                //Check if intersections exist in path
+                
+                //Check if intersections exist in path, and add it to list
                 for(int node_index = 0; node_index < intersections.getLength(); node_index++)
                 {
                     //Obtain an "intersection" Node from its NodeList
@@ -295,6 +271,48 @@ public class XMLtoKML
 
                         //Add coordinates to String
                         coord_string += "\n\t\t " + 
+                            node_element.getElementsByTagName("longitude")
+                                        .item(0)
+                                        .getTextContent() + "," +
+                            node_element.getElementsByTagName("latitude")
+                                        .item(0)
+                                        .getTextContent() + ",0"; // Height 0
+                    }
+                }
+                    
+                    
+                //Get the end <node> Node and add it to the kml's
+                //list of coordinates
+                    node = node_list.item(1);
+                    //Check that the Node is an Element
+                    if (node.getNodeType() == Node.ELEMENT_NODE) 
+                    {
+                        //Convert to Element
+                        Element node_element = (Element) node;
+                        //Add coordinates to String
+                        coord_string += "\n\t\t " +
+                            node_element.getElementsByTagName("longitude")
+                                .item(0)
+                                .getTextContent() + "," +
+                            node_element.getElementsByTagName("latitude")
+                                .item(0)
+                                .getTextContent() + ",0"; // Height 0
+                    }
+                
+                //Check if displaced thresholds exist in path
+                //and add to list of coordinates
+                for(int node_index = 0; node_index < thresholds.getLength(); node_index++)
+                {
+                    //Obtain a "threshold" Node from its NodeList
+                    Node thresh = thresholds.item(node_index);
+
+                    //Check that the Node is an Element
+                    if (thresh.getNodeType() == Node.ELEMENT_NODE)
+                    {
+                        //Convert to Element
+                        Element node_element = (Element) thresh;
+                        //Add coordinates to String
+                        coord_string += "\n\t\t " +
                             node_element.getElementsByTagName("longitude")
                                         .item(0)
                                         .getTextContent() + "," +
