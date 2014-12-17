@@ -52,8 +52,13 @@ public class PDFToText
         runway_parser.parseRunwayData(diagram_text, airport);
     }
     
-    //TODO:  Needs documentation about the usage of Xpdftotext
     /**
+     * pdftotext is a part of the open source library Xpdf.  Xpdf components,
+     * including pdftotext, are licensed under the GNU General Public License
+     * version 2, which has been elevated to the GNU General Public License
+     * version 3 for compatibility with the ASF 2.0 license used by PDFBox.
+     * The GNU GPL v3 license is in the root project director in the file
+     * "gplv3.txt"
      * Turns a PDF airport diagram into a text representation that can be
      * analyzed.
      * @param file_path is the file path of the PDF airport diagram that is to
@@ -64,7 +69,9 @@ public class PDFToText
         try
         {
             //Parse the PDF and turn its text into a plain text .txt file.
-            Process pdftotext = Runtime.getRuntime().exec("pdftotext " + file_path);
+            Process pdftotext = Runtime.getRuntime().exec(
+                    "pdftotext " + file_path
+            );
             
             //Wait for pdftotext to terminate.
             pdftotext.waitFor();
@@ -131,8 +138,9 @@ public class PDFToText
         return diagram_pdf_path.replace("pdf", "txt");
     }
     
-    //TODO:  DOCUMENT USAGE OF PDFBOX.
     /**
+     * PDFBox is licensed under the Apache Software Foundation License 2.0.
+     * The license is in the project root directory named "apache_license.txt"
      * Get PDFBox output of airport diagram.
      * @param file_name name of airport diagram PDF file.
      * @return text representation of airport diagram.

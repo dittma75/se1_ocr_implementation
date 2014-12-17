@@ -28,27 +28,44 @@ public class AirportController
 	/* For unit testing Argument Parser */
 	public static void main(String[] args)
 	{		
-		AirportController airport_controller = new AirportController();
-		
-		//Accept list of list of PDFS
-		for(String arg : args){
-			if(ArgumentParser.parseArgument(arg))
-			{
-				//are we going to pass airports around 1 at a time as we see that the path is valid?
-				// or are we going to check everything, then call all the airports?
-				airport_controller.getInformationFromPDF(arg, true);//TODO: place holder for rotation parameter
-			}
-			else
-			{
-				System.out.println(arg + " is not a valid PDF");
-			}
-		}
-		//System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
-		airport_controller.getInformationFromPDF("res/ACY/00669AD.PDF", true);//ACY
-		airport_controller.getInformationFromPDF("res/ATL/00026AD.PDF", false);//ATL
-		airport_controller.getInformationFromPDF("res/DFW/06039AD.PDF", true);//DFW
-		airport_controller.getInformationFromPDF("res/PHX/00322AD.pdf", true);//PHX
-		
+            AirportController airport_controller = new AirportController();
+            boolean is_rotated = false;
+            
+            //Accept list of list of PDFS
+            for(String arg : args)
+            {
+                if (arg.startsWith("-"))
+                {
+                    arg = arg.replaceAll("[- ]*", "");
+                    if (arg.equals("r"))
+                    {
+                        is_rotated = true;
+                    }
+                }
+                else if (ArgumentParser.parseArgument(arg))
+                {
+                    //are we going to pass airports around 1 at a time as we see that the path is valid?
+                    // or are we going to check everything, then call all the airports?
+                    airport_controller.getInformationFromPDF(arg, is_rotated);
+                    
+                    //A PDF has been parsed, so reset is_rotated flag.
+                    is_rotated = false;
+                }
+                else
+                {
+                    System.out.println(arg + " is not a valid PDF");
+                    
+                    /* The file that was supposed to be rotated was not a PDF,
+                     * so consume the rotation flag.
+                     */
+                    is_rotated = false;
+                }
+            }
+            //System.out.println(ArgumentParser.parseArgument("./res/ACY/00669AD.PDF"));
+//            airport_controller.getInformationFromPDF("res/ACY/00669AD.PDF", is_rotated);//ACY
+//            airport_controller.getInformationFromPDF("res/ATL/00026AD.PDF", is_rotated);//ATL
+//            airport_controller.getInformationFromPDF("res/DFW/06039AD.PDF", is_rotated);//DFW
+//            airport_controller.getInformationFromPDF("res/PHX/00322AD.pdf", is_rotated);//PHX	
 	}
 	
 	
@@ -74,30 +91,29 @@ public class AirportController
 	 */
 	private void getInformationFromPDF(String path, boolean rotated)
 	{
-		ArrayList <DiagramRunway> runways;
-		
-		//create a new airport with Sting path to PDF
-		Airport airport = new Airport(path, rotated);
-		
-		//get textual data from PDF
-		pdf_to_text.parseTextData(airport);
-		
-		//get visual data from PDF
-		runways = pdf_to_image.parseVisualData(airport);
-		
-		//All all runways to airport and convert x/y to lat/long
-		addToAirport(airport, runways);
-		
-		//turn Airport into an XML and save path to XML
-		String path_to_xml = xml_parser.convertToXml(airport);
-		
-		//turn xml file into a kml file.
-		String path_to_kml = kml_parser.writeKML(new File(path_to_xml));
-		
-		
-		//print out results of transformations
-		printResults(airport, path_to_xml,path_to_kml);
-		
+            ArrayList <DiagramRunway> runways;
+
+            //create a new airport with Sting path to PDF
+            Airport airport = new Airport(path, rotated);
+
+            //get textual data from PDF
+            pdf_to_text.parseTextData(airport);
+
+            //get visual data from PDF
+            runways = pdf_to_image.parseVisualData(airport);
+
+            //All all runways to airport and convert x/y to lat/long
+            addToAirport(airport, runways);
+
+            //turn Airport into an XML and save path to XML
+            String path_to_xml = xml_parser.convertToXml(airport);
+
+            //turn xml file into a kml file.
+            String path_to_kml = kml_parser.writeKML(new File(path_to_xml));
+
+
+            //print out results of transformations
+            printResults(airport, path_to_xml,path_to_kml);
 	}
 	
 	/**
