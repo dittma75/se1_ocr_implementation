@@ -43,8 +43,7 @@ public class AirportController
                 }
                 else if (ArgumentParser.parseArgument(arg))
                 {
-                    //are we going to pass airports around 1 at a time as we see that the path is valid?
-                    // or are we going to check everything, then call all the airports?
+                	//Retrieve all information from a pdf
                     airport_controller.getInformationFromPDF(arg, is_rotated);
                     
                     //A PDF has been parsed, so reset is_rotated flag.

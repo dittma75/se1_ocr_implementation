@@ -29,7 +29,7 @@ public class ArgumentParser
             {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
                 String line = reader.readLine();
-                System.out.println(line);
+                //System.out.println(line);
 
                 if(line.startsWith("%PDF"))
                 {
